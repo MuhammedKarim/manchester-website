@@ -11,8 +11,4 @@ A simple responsive static website split into clean files.
 
 ## Timetable image
 
-The page currently includes an elegant placeholder for the monthly timetable. To use a real timetable, add your image as `assets/timetable.jpg`, then replace the placeholder block in `index.html` with:
-
-```html
-<img src="assets/timetable.jpg" alt="Current monthly timetable" />
-```
+The May 2026 timetable image is included at `assets/timetable-may-2026.png`. The hero and navigation download links point directly to this PNG using the `download` attribute.
