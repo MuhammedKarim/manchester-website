@@ -55,12 +55,19 @@
           </div>
         </div>
 
-        <aside class="prayer-card prayer-card-wide reveal" aria-label="Salah times">
-          <div class="card-kicker">Live prayer times</div>
-          <div class="masjidbox-frame">
-            <iframe src="https://masjidbox.com/prayer-times/khanqah-naqshbandia" title="Salah Times – Khanqah Naqshbandia Mujaddidia Manchester" loading="lazy" scrolling="no"></iframe>
-          </div>
-        </aside>
+        <div class="prayer-card prayer-card-wide">
+  <p class="card-kicker">Prayer times</p>
+
+  <div class="masjidbox-frame">
+    <a
+      class="masjidbox-widget"
+      data-masjidbox-widget="15pxz2w3ieaj3DCXOYTBt"
+      data-masjidbox-ifr
+      href="https://masjidbox.com/prayer-times/khanqah-naqshbandia">
+      Prayer times Khanqah Naqshbandia
+    </a>
+  </div>
+</div>
       </div>
     </section>
 
@@ -150,5 +157,24 @@
   </footer>
 
   <script src="js/main.js" defer></script>
+  <script>
+  (function (w) {
+    function async_load() {
+      var s = w.document.createElement("script");
+      s.type = "text/javascript";
+      s.async = true;
+      s.defer = true;
+      s.src = "https://masjidbox.com/widgets/loader.js";
+      var x = w.document.getElementsByTagName("script")[0];
+      x.parentNode.insertBefore(s, x);
+    }
+
+    if (w.attachEvent) {
+      w.attachEvent("onload", async_load);
+    } else {
+      w.addEventListener("load", async_load, false);
+    }
+  })(window);
+</script>
 </body>
 </html>

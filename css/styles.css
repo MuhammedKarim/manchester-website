@@ -324,15 +324,21 @@ h3 {
 .masjidbox-frame {
   overflow: hidden;
   border-radius: calc(var(--radius) - 10px);
-  background: rgba(255, 255, 255, 0.08);
+  background: #f7f3e7;
 }
 
 .masjidbox-frame iframe {
   display: block;
   width: 100%;
-  min-height: 430px;
-  height: clamp(430px, 58vh, 520px);
+  min-height: 481px;
+  height: 481px;
   border: 0;
+  border-radius: calc(var(--radius) - 10px);
+}
+
+.masjidbox-widget {
+  display: block;
+  min-height: 481px;
 }
 
 /* Sections */
