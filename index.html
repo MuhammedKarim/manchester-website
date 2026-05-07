@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khanqah Naqshbandia Mujaddidia – Manchester</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-pale: #f5e6bb;
+    --dark: #0a0f0a;
+    --dark2: #0d1a10;
+    --green-deep: #0f2d15;
+    --green-mid: #1a4d22;
+    --green-bright: #2e7d32;
+    --green-light: #4caf50;
+    --white: #f9f5ec;
+    --text-muted: #a8b8a9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--white);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.1rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(10,15,10,0.97), transparent);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--gold); text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--text-muted); text-decoration: none;
+    font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100svh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 7rem 2rem 5rem;
+    position: relative;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 40%, rgba(30,90,35,0.35) 0%, transparent 70%),
+      linear-gradient(175deg, #0a1a0c 0%, #0a0f0a 55%, #0d1a10 100%);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(201,168,76,0.06) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(46,125,50,0.08) 0%, transparent 40%);
+  }
+  .hero-bismillah {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--gold);
+    letter-spacing: 0.25em;
+    margin-bottom: 2.5rem;
+    opacity: 0.85;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+  .hero h1 span { color: var(--gold-light); font-weight: 700; }
+  .hero-sub {
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 3.5rem;
+  }
+  .hero-divider {
+    width: 120px; height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 0 auto 3.5rem;
+  }
+
+  /* ── MASJIDBOX EMBED ── */
+  .masjidbox-wrap {
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 4px;
+    overflow: hidden;
+    width: 560px;
+    max-width: 90vw;
+  }
+  .masjidbox-wrap iframe {
+    display: block;
+    width: 100%;
+    border: none;
+    min-height: 320px;
+  }
+
+  /* ── SECTION SHARED ── */
+  section {
+    padding: 6rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .section-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 2rem;
+  }
+  .section-divider {
+    width: 60px; height: 1px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    margin-bottom: 2.5rem;
+  }
+  .section-body {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: rgba(249,245,236,0.75);
+    max-width: 700px;
+  }
+  .section-body p + p { margin-top: 1.25rem; }
+
+  /* ── FULL-WIDTH BAND ── */
+  .band {
+    background: linear-gradient(135deg, #0d1f10 0%, #0f2d15 50%, #0a1a0c 100%);
+    border-top: 1px solid rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    padding: 6rem 2rem;
+  }
+  .band-inner { max-width: 1100px; margin: 0 auto; }
+
+  /* ── FACILITIES ── */
+  .facilities-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .facility-circle {
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.4);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    background: radial-gradient(circle at 40% 30%, rgba(30,77,34,0.6), rgba(15,45,21,0.9));
+    transition: border-color 0.3s, transform 0.3s;
+    cursor: default;
+  }
+  .facility-circle:hover {
+    border-color: var(--gold);
+    transform: scale(1.05);
+  }
+  .facility-icon { font-size: 1.6rem; margin-bottom: 0.5rem; color: var(--gold-light); }
+  .facility-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.2rem;
+  }
+  .facility-detail {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+  }
+
+  /* ── DHIKR ── */
+  .dhikr-card {
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 4px;
+    padding: 2.5rem 3rem;
+    background: rgba(15,45,21,0.4);
+    position: relative;
+    overflow: hidden;
+    max-width: 750px;
+  }
+  .dhikr-card::before {
+    content: '﷽';
+    position: absolute; right: 2rem; top: 1rem;
+    font-size: 3.5rem;
+    color: rgba(201,168,76,0.07);
+    font-family: serif;
+  }
+  .dhikr-card p { line-height: 1.9; color: rgba(249,245,236,0.8); }
+  .dhikr-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    border-bottom: 1px solid rgba(201,168,76,0.35);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .dhikr-link:hover { color: var(--gold-light); border-color: var(--gold-light); }
+
+  /* ── TIMETABLE ── */
+  .timetable-upload-zone {
+    border: 1px dashed rgba(201,168,76,0.35);
+    border-radius: 4px;
+    padding: 4rem 2rem;
+    text-align: center;
+    margin-top: 2rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .timetable-upload-zone:hover {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.04);
+  }
+  .timetable-upload-zone .upload-icon { font-size: 2rem; margin-bottom: 0.75rem; color: var(--gold); opacity: 0.6; }
+  #timetable-img { display: none; max-width: 100%; border-radius: 4px; border: 1px solid rgba(201,168,76,0.2); margin-top: 1rem; }
+  #file-input { display: none; }
+
+  /* ── OPENING HOURS ── */
+  .hours-box {
+    background: rgba(15,45,21,0.4);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    padding: 2rem 2.5rem;
+    max-width: 600px;
+    margin-top: 2rem;
+  }
+  .hours-box p { color: rgba(249,245,236,0.8); line-height: 1.85; }
+
+  /* ── DONATE ── */
+  .hadith-quote {
+    border-left: 2px solid var(--gold);
+    padding-left: 1.5rem;
+    margin-bottom: 2.5rem;
+    max-width: 650px;
+  }
+  .hadith-quote p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(249,245,236,0.85);
+    font-style: italic;
+  }
+  .hadith-quote cite {
+    display: block;
+    margin-top: 0.6rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    font-style: normal;
+    text-transform: uppercase;
+  }
+  .bank-details {
+    background: rgba(15,45,21,0.5);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 4px;
+    padding: 2rem 2.5rem;
+    max-width: 480px;
+  }
+  .bank-details h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.05em;
+  }
+  .bank-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    font-size: 0.9rem;
+  }
+  .bank-row:last-child { border-bottom: none; }
+  .bank-label { color: var(--text-muted); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .bank-value { color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; letter-spacing: 0.05em; }
+
+  /* ── CONTACT ── */
+  .contact-card {
+    background: rgba(15,45,21,0.4);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    padding: 2rem 2.5rem;
+    max-width: 400px;
+    margin-top: 2rem;
+  }
+  .contact-card a {
+    color: var(--gold-light);
+    text-decoration: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.05em;
+  }
+  .contact-card a:hover { color: var(--gold); }
+  .contact-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid rgba(201,168,76,0.1);
+    padding: 2.5rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+    background: #080e08;
+  }
+  footer .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; color: var(--gold); font-weight: 600; letter-spacing: 0.1em;
+  }
+  footer p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SCROLL ANIMATION ── */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 680px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { gap: 1.2rem; }
+    .nav-links a { font-size: 0.72rem; }
+    .salah-box { min-width: unset; padding: 1.2rem 1rem; }
+    .salah-grid { grid-template-columns: repeat(3, 1fr); gap: 1rem 0.5rem; }
+    section { padding: 4rem 1.25rem; }
+    .facilities-grid { justify-content: center; }
+    .dhikr-card { padding: 1.5rem 1.25rem; }
+  }
+
+  img, iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  body, html {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  @supports (-webkit-touch-callout: none) {
+    .hero {
+      min-height: -webkit-fill-available;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    nav {
+      padding: 1rem;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .nav-links {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .hero {
+      padding-top: 10rem;
+    }
+
+    .masjidbox-wrap {
+      width: 100%;
+    }
+
+    .facility-circle {
+      width: 140px;
+      height: 140px;
+    }
+
+    footer {
+      text-align: center;
+      justify-content: center;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">The Khanqah</a>
+  <ul class="nav-links">
+    <li><a href="#hours">Opening Hours</a></li>
+    <li><a href="#donate">Donate</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#timetable">Timetable</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="home">
+  <div class="hero-bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+  <h1>Welcome to<br><span>Khanqah Naqshbandia</span><br>Mujaddidia</h1>
+  <p class="hero-sub">Manchester</p>
+  <div class="hero-divider"></div>
+
+  <!-- MasjidBox Salah Times Tile -->
+  <div class="masjidbox-wrap">
+    <iframe src="https://www.masjidbox.com/prayer-times/khanqah-naqshbandia-mujaddidia-manchester" height="280" scrolling="no" title="Salah Times – Khanqah Naqshbandia Mujaddidia Manchester"></iframe>
+  </div>
+</div>
+
+<!-- ABOUT US -->
+<section id="about" class="reveal">
+  <p class="section-label">About Us</p>
+  <h2 class="section-heading">A Sanctuary of<br>Spiritual Contemplation</h2>
+  <div class="section-divider"></div>
+  <div class="section-body">
+    <p>The Manchester Khanqah is of the Naqshbandia Mujaddidia Sufi order and was one of the first of its kind in Europe. The word 'Khanqah' is of Persian origin, and it denotes a place set aside for Islamic spiritual contemplation, self-rectification and study.</p>
+    <p>This spiritual aspect of the religion of Islam, known as Sufism, involves gatherings held for the remembrance of Allah (also known as Dhikrullah). At these gatherings, verses of the Holy Qur'an are recited, and opportunities afforded for meditation and reflection on the Divine Names, or Attributes, of God, and also on the condition of one's own heart.</p>
+    <p>The centre opened in 1994 in Burnage, south Manchester. The location and amenities of the premises allowed for the establishment of a fully-functioning congregational mosque, which provides a place for the performance of the obligatory five times daily prayers, as well as the Friday Prayer and other events in the Islamic calendar. These services, and also the Sufi gatherings described above, are much-appreciated by the many Muslims who live in the area.</p>
+  </div>
+</section>
+
+<!-- FACILITIES -->
+<div class="band" id="facilities">
+  <div class="band-inner reveal">
+    <p class="section-label">Facilities</p>
+    <h2 class="section-heading">What We Offer</h2>
+    <div class="section-divider"></div>
+    <div class="facilities-grid">
+      <div class="facility-circle">
+        <div class="facility-icon">🕌</div>
+        <div class="facility-name">Masjid</div>
+        <div class="facility-detail">Capacity<br>1,000 worshippers</div>
+      </div>
+      <div class="facility-circle">
+        <div class="facility-icon">🚗</div>
+        <div class="facility-name">Car Park</div>
+        <div class="facility-detail">150 car<br>spaces</div>
+      </div>
+      <div class="facility-circle">
+        <div class="facility-icon">🚿</div>
+        <div class="facility-name">Wudhu Khana</div>
+        <div class="facility-detail">Ablution<br>facilities</div>
+      </div>
+      <div class="facility-circle">
+        <div class="facility-icon">🚻</div>
+        <div class="facility-name">Toilets</div>
+        <div class="facility-detail">Available</div>
+      </div>
+      <div class="facility-circle">
+        <div class="facility-icon">🌿</div>
+        <div class="facility-name">Itr Shelf</div>
+        <div class="facility-detail">Fragrance &<br>attar available</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DHIKR GATHERINGS -->
+<section id="dhikr" class="reveal">
+  <p class="section-label">Dhikr Gatherings</p>
+  <h2 class="section-heading">Remembrance<br>of Allah</h2>
+  <div class="section-divider"></div>
+  <div class="dhikr-card">
+    <p>Live Dhikr gatherings are held every day after <strong style="color:var(--gold-light);font-weight:500;">Fajr</strong> and <strong style="color:var(--gold-light);font-weight:500;">Maghrib/Isha</strong>, led by <em>Hadhrat Sheikh Asif Hussain Farooqui, Daamat Barakaatuhum (UK)</em>.</p>
+    <p style="margin-top:1rem;">All are warmly welcome to attend in person or to join via the live stream.</p>
+    <a href="https://sufi.org.uk/live" class="dhikr-link" target="_blank">▶ &nbsp; Listen Live at sufi.org.uk/live</a>
+  </div>
+</section>
+
+<!-- MONTHLY TIMETABLE -->
+<div class="band" id="timetable">
+  <div class="band-inner reveal">
+    <p class="section-label">Monthly Timetable</p>
+    <h2 class="section-heading">Programme<br>of Events</h2>
+    <div class="section-divider"></div>
+    <p style="color:rgba(249,245,236,0.65); font-size:0.9rem; margin-bottom:1rem;">Current monthly timetable:</p>
+    <img id="timetable-img" src="file_000000004d64722f975ab7f3a3921834.png" alt="Monthly Timetable" style="display:block; width:100%; max-width:900px; margin:auto; border-radius:6px; border:1px solid rgba(201,168,76,0.25);">
+  </div>
+</div>
+
+<!-- OPENING HOURS -->
+<section id="hours" class="reveal">
+  <p class="section-label">Opening Hours</p>
+  <h2 class="section-heading">When We<br>Are Open</h2>
+  <div class="section-divider"></div>
+  <div class="hours-box">
+    <p>The Khanqah opens <strong style="color:var(--gold-light);font-weight:500;">15 minutes before</strong> and closes <strong style="color:var(--gold-light);font-weight:500;">15 minutes after</strong> each Jamaat time.</p>
+  </div>
+</section>
+
+<!-- DONATE -->
+<div class="band" id="donate">
+  <div class="band-inner reveal">
+    <p class="section-label">Donate</p>
+    <h2 class="section-heading">Support the<br>Khanqah</h2>
+    <div class="section-divider"></div>
+    <div class="hadith-quote">
+      <p>"Whoever builds a mosque for the sake of Allah, Allah will build for him a house like it in Paradise."</p>
+      <cite>— Sahih al-Bukhari &amp; Sahih Muslim</cite>
+    </div>
+    <div class="bank-details">
+      <h3>Bank Transfer Details</h3>
+      <div class="bank-row">
+        <span class="bank-label">Account Name</span>
+        <span class="bank-value">Khanka Naqshbandia Mujaddadia</span>
+      </div>
+      <div class="bank-row">
+        <span class="bank-label">Bank</span>
+        <span class="bank-value">HSBC Bank</span>
+      </div>
+      <div class="bank-row">
+        <span class="bank-label">Sort Code</span>
+        <span class="bank-value">40 – 31 – 17</span>
+      </div>
+      <div class="bank-row">
+        <span class="bank-label">Account Number</span>
+        <span class="bank-value">21439936</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact" class="reveal">
+  <p class="section-label">Contact Us</p>
+  <h2 class="section-heading">Get in Touch</h2>
+  <div class="section-divider"></div>
+  <p class="section-body" style="margin-bottom:1.5rem;">For further inquiries, please don't hesitate to contact us directly.</p>
+  <div class="contact-card">
+    <p class="contact-label">Phone</p>
+    <a href="tel:07967631738">07967 631738</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Khanqah Naqshbandia Mujaddidia · Manchester</span>
+  <p>181 Mauldeth Road, Manchester, M19 1BA</p>
+</footer>
+
+<script>
+
+  
+
+  // ── SCROLL REVEAL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
