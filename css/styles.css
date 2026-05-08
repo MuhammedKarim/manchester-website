@@ -225,8 +225,12 @@ select {
 
 .arabic {
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(1rem, 2vw, 1.35rem);
-  letter-spacing: 0.18em;
+  font-size: clamp(1.2rem, 2.8vw, 1.8rem);
+  letter-spacing: 0;
+  word-spacing: 0.15em;
+  direction: rtl;
+  unicode-bidi: isolate;
+  line-height: 1.8;
 }
 
 h1,
