@@ -295,6 +295,33 @@ h3 {
   color: var(--gold-soft);
 }
 
+@media (max-width: 760px) {
+  .hero-copy {
+    text-align: center;
+    align-items: center;
+    margin-inline: auto;
+  }
+
+  .hero-copy h1,
+  .hero-copy p,
+  .hero-copy .arabic,
+  .hero-copy .eyebrow {
+    margin-inline: auto;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  h1 {
+    max-width: 100%;
+  }
+
+  .hero-lede {
+    max-width: 22ch;
+  }
+}
+
 /* Cards */
 
 .prayer-card,
