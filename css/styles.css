@@ -113,29 +113,22 @@ select {
 }
 
 .brand-mark {
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   display: grid;
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 50%;
-  color: var(--gold-soft);
-  background: rgba(214, 184, 90, 0.08);
+  background: rgba(214, 184, 90, 0.06);
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
-.brand strong {
+.brand-mark img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
   display: block;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.1rem;
-  letter-spacing: 0.06em;
-}
-
-.brand small {
-  display: block;
-  color: var(--muted);
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
 }
 
 .nav-menu {
