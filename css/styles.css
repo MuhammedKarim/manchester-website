@@ -149,24 +149,6 @@ select {
   margin-top: 0.15rem;
 }
 
-@media (max-width: 760px) {
-  .brand {
-    gap: 0.65rem;
-  }
-
-  .brand strong {
-    font-size: 1.15rem;
-    line-height: 1.05;
-    margin: 0;
-  }
-
-  .brand small {
-    font-size: 0.78rem;
-    line-height: 1;
-    margin-top: 0.2rem;
-  }
-}
-
 .nav-menu {
   display: flex;
   align-items: center;
@@ -324,33 +306,6 @@ h3 {
   color: var(--gold-soft);
 }
 
-@media (max-width: 760px) {
-  .hero-copy {
-    text-align: center;
-    align-items: center;
-    margin-inline: auto;
-  }
-
-  .hero-copy h1,
-  .hero-copy p,
-  .hero-copy .arabic,
-  .hero-copy .eyebrow {
-    margin-inline: auto;
-  }
-
-  .hero-actions {
-    justify-content: center;
-  }
-
-  h1 {
-    max-width: 100%;
-  }
-
-  .hero-lede {
-    max-width: 22ch;
-  }
-}
-
 /* Cards */
 
 .prayer-card,
@@ -390,15 +345,15 @@ h3 {
 .masjidbox-frame iframe {
   display: block;
   width: 100%;
-  min-height: 481px;
-  height: 481px;
+  min-height: 487px;
+  height: 487px;
   border: 0;
   border-radius: calc(var(--radius) - 10px);
 }
 
 .masjidbox-widget {
   display: block;
-  min-height: 481px;
+  min-height: 487px;
 }
 
 /* Sections */
@@ -652,8 +607,42 @@ dd {
     grid-template-columns: 1fr;
   }
 
+  .hero-grid {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .hero-copy {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .hero-copy h1,
+  .hero-copy p,
+  .hero-copy .arabic,
+  .hero-copy .eyebrow {
+    margin-inline: auto;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .prayer-card-wide {
+    justify-self: center;
+    width: min(100%, 700px);
+  }
+
+  .card-kicker {
+    text-align: center;
+  }
+
   h1 {
-    max-width: 12ch;
+    max-width: 100%;
+  }
+
+  .hero-lede {
+    max-width: 34rem;
   }
 }
 
@@ -665,6 +654,22 @@ dd {
 
   .nav {
     min-height: 72px;
+  }
+
+  .brand {
+    gap: 0.65rem;
+  }
+
+  .brand strong {
+    font-size: 1rem;
+    line-height: 1.05;
+    margin: 0;
+  }
+
+  .brand small {
+    font-size: 0.7rem;
+    line-height: 1;
+    margin-top: 0.2rem;
   }
 
   .nav-toggle {
@@ -719,6 +724,10 @@ dd {
   .hero-actions,
   .button {
     width: 100%;
+  }
+
+  .hero-lede {
+    max-width: 22ch;
   }
 
   .info-grid,
