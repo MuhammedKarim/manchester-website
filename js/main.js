@@ -37,3 +37,22 @@ if ('IntersectionObserver' in window) {
 } else {
   revealItems.forEach(item => item.classList.add('is-visible'));
 }
+
+const copyAddressButton = document.querySelector(".copy-address-button");
+
+copyAddressButton?.addEventListener("click", async () => {
+  const address = copyAddressButton.dataset.copyAddress;
+
+  try {
+    await navigator.clipboard.writeText(address);
+
+    const originalText = copyAddressButton.textContent;
+    copyAddressButton.textContent = "Copied";
+
+    setTimeout(() => {
+      copyAddressButton.textContent = originalText;
+    }, 1600);
+  } catch {
+    copyAddressButton.textContent = "Copy failed";
+  }
+});

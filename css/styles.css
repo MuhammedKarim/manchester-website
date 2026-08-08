@@ -808,6 +808,40 @@ dd {
   line-height: 1.55;
 }
 
+.location-address-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.copy-address-button {
+  flex-shrink: 0;
+  min-height: 38px;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--gold-soft);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.copy-address-button:hover {
+  background: rgba(214, 184, 90, 0.12);
+  border-color: rgba(240, 216, 135, 0.5);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 760px) {
+  .location-address-wrap {
+    flex-direction: column;
+  }
+}
+
 .directions-button {
   flex-shrink: 0;
   display: inline-flex;
