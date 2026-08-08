@@ -808,10 +808,22 @@ dd {
   line-height: 1.55;
 }
 
-.location-address-wrap {
+.location-info {
+  min-width: 0;
+}
+
+.location-label {
+  margin: 0 0 0.5rem;
+}
+
+.location-address-row {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.location-address {
+  margin: 0;
 }
 
 .copy-address-button {
@@ -837,8 +849,9 @@ dd {
 }
 
 @media (max-width: 760px) {
-  .location-address-wrap {
-    flex-direction: column;
+  .location-address-row {
+    align-items: center;
+    justify-content: center;
   }
 }
 
