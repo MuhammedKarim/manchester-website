@@ -226,9 +226,20 @@ function formatCountdown(milliseconds) {
     .join(':');
 }
 
-function getFinalPrayerEvent(prayer, dateKey) {
+function getJamatTime(prayerKey, prayer) {
   if (!prayer) return null;
-  return makeManchesterDate(dateKey, prayer.jamat || prayer.start);
+
+  if (prayerKey === 'maghrib') {
+    return prayer.start || null;
+  }
+
+  return prayer.jamat || null;
+}
+
+function getFinalPrayerEvent(prayerKey, prayer, dateKey) {
+  if (!prayer) return null;
+  const jamatTime = getJamatTime(prayerKey, prayer);
+  return makeManchesterDate(dateKey, jamatTime || prayer.start);
 }
 
 function isJumuahLabelActive(now, todayKey, todayTimes) {
@@ -273,14 +284,16 @@ function getNextPrayerEvent(now, todayKey, tomorrowKey, todayTimes, tomorrowTime
       };
     }
 
-    if (timing.jamat) {
-      const jamatDate = makeManchesterDate(todayKey, timing.jamat);
+    const jamatTime = getJamatTime(prayer.key, timing);
+
+    if (jamatTime && jamatTime !== timing.start) {
+      const jamatDate = makeManchesterDate(todayKey, jamatTime);
 
       if (now < jamatDate) {
         return {
           date: jamatDate,
           label: `${prayerLabel} Jamaat in`,
-          target: `${prayerLabel} Jamaat · ${formatPrayerTime(timing.jamat)}`
+          target: `${prayerLabel} Jamaat · ${formatPrayerTime(jamatTime)}`
         };
       }
     }
@@ -303,7 +316,7 @@ function getDisplayTiming(prayerKey, now, todayKey, tomorrowKey, todayTimes, tom
   const todayPrayer = todayTimes?.[prayerKey];
   if (!todayPrayer) return null;
 
-  const finalTodayEvent = getFinalPrayerEvent(todayPrayer, todayKey);
+  const finalTodayEvent = getFinalPrayerEvent(prayerKey, todayPrayer, todayKey);
 
   if (finalTodayEvent && now >= finalTodayEvent && tomorrowTimes?.[prayerKey]) {
     return {
@@ -348,14 +361,16 @@ function renderPrayerTable(now, todayKey, tomorrowKey, todayTimes, tomorrowTimes
       ? '<span class="prayer-day-badge">Tomorrow</span>'
       : '';
 
+    const jamatTime = getJamatTime(prayer.key, display.timing);
+
     return `
       <tr>
         <td>
           <span class="prayer-name">${label}${badge}</span>
         </td>
         <td><span class="prayer-time-main">${formatPrayerTime(display.timing.start)}</span></td>
-        <td class="${display.timing.jamat ? '' : 'prayer-time-muted'}">
-          ${display.timing.jamat ? `<span class="prayer-time-main">${formatPrayerTime(display.timing.jamat)}</span>` : '—'}
+        <td class="${jamatTime ? '' : 'prayer-time-muted'}">
+          ${jamatTime ? `<span class="prayer-time-main">${formatPrayerTime(jamatTime)}</span>` : '—'}
         </td>
       </tr>
     `;
