@@ -80,7 +80,6 @@ select {
   color: #081009;
 }
 
-
 .site-header {
   position: fixed;
   inset: 0 0 auto;
@@ -141,7 +140,7 @@ select {
 .brand small {
   display: block;
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   line-height: 1;
@@ -161,7 +160,10 @@ select {
 }
 
 .nav-menu a {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
   padding: 0.65rem 0.9rem;
   border-radius: 999px;
   color: var(--muted);
@@ -169,6 +171,7 @@ select {
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  text-align: center;
   text-decoration: none;
   transition: background 0.2s ease, color 0.2s ease;
 }
@@ -183,7 +186,6 @@ select {
 .nav-toggle {
   display: none;
 }
-
 
 .hero {
   position: relative;
@@ -304,7 +306,6 @@ h3 {
   color: var(--gold-soft);
 }
 
-
 .prayer-card,
 .glass-card,
 .bank-card,
@@ -333,19 +334,22 @@ h3 {
   justify-self: end;
 }
 
+#prayer-times {
+  scroll-margin-top: 100px;
+}
 
 .prayer-widget {
   overflow: hidden;
-  border-radius: calc(var(--radius) - 10px);
   border: 1px solid rgba(214, 184, 90, 0.18);
+  border-radius: calc(var(--radius) - 10px);
   background:
-    radial-gradient(circle at 10% 0%, rgba(214, 184, 90, 0.1), transparent 18rem),
+    radial-gradient(circle at 10% 0%, rgba(214, 184, 90, 0.10), transparent 18rem),
     linear-gradient(180deg, #12351c 0%, #0b2412 100%);
   color: var(--gold-soft);
 }
 
 .prayer-widget-header {
-  padding: 1.35rem 1.35rem 1.15rem;
+  padding: 1.15rem 1.15rem 0.95rem;
   text-align: center;
 }
 
@@ -353,10 +357,10 @@ h3 {
   display: block;
   color: var(--gold-soft);
   font-family: "Jost", system-ui, sans-serif;
-  font-size: clamp(2rem, 5vw, 3.15rem);
+  font-size: clamp(2.15rem, 4.6vw, 3.05rem);
   font-weight: 500;
   line-height: 1;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.055em;
   font-variant-numeric: tabular-nums;
 }
 
@@ -366,26 +370,26 @@ h3 {
 }
 
 .prayer-gregorian-date {
-  margin-top: 0.75rem;
+  margin-top: 0.65rem;
   color: var(--text);
-  font-size: 0.88rem;
-  font-weight: 500;
+  font-size: 0.76rem;
+  font-weight: 600;
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 
 .prayer-hijri-date {
-  margin-top: 0.12rem;
+  margin-top: 0.15rem;
   color: var(--gold);
-  font-size: 0.76rem;
-  font-weight: 600;
+  font-size: 0.72rem;
+  font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 
 .prayer-countdown {
-  margin: 0 1rem 1rem;
-  padding: 1.15rem 1rem;
+  margin: 0 1rem 0.85rem;
+  padding: 1rem 0.9rem;
   border-radius: 18px;
   background: linear-gradient(135deg, var(--gold-soft), var(--gold));
   color: var(--green);
@@ -399,26 +403,26 @@ h3 {
 }
 
 .prayer-countdown-label {
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: 0.7rem;
+  font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
 .prayer-countdown-time {
-  margin: 0.28rem 0 0.15rem;
+  margin: 0.3rem 0 0.2rem;
   font-family: "Jost", system-ui, sans-serif;
-  font-size: clamp(2rem, 7vw, 3.35rem);
+  font-size: clamp(2.2rem, 6.2vw, 3.15rem);
   font-weight: 600;
   line-height: 1;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   font-variant-numeric: tabular-nums;
 }
 
 .prayer-countdown-target {
-  color: rgba(7, 16, 10, 0.72);
-  font-size: 0.78rem;
-  font-weight: 600;
+  color: rgba(7, 16, 10, 0.76);
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .prayer-table-wrap {
@@ -437,73 +441,77 @@ h3 {
 
 .prayer-table th,
 .prayer-table td {
-  padding: 0.72rem 0.68rem;
+  padding: 0.86rem 0.9rem;
   border-bottom: 1px solid rgba(214, 184, 90, 0.12);
 }
 
-.prayer-table tr:last-child td {
+.prayer-table tbody tr:last-child td {
   border-bottom: 0;
 }
 
 .prayer-table th {
   color: var(--gold);
   background: rgba(214, 184, 90, 0.07);
-  font-size: 0.66rem;
+  font-size: 0.84rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-align: right;
   text-transform: uppercase;
 }
 
-.prayer-table th:first-child {
+.prayer-table th:first-child,
+.prayer-table td:first-child {
   text-align: left;
 }
 
 .prayer-table td {
   color: var(--text);
-  font-size: 0.88rem;
+  font-size: 1.08rem;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-.prayer-table td:first-child {
-  text-align: left;
-}
-
 .prayer-name {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   color: var(--gold-soft);
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.08rem;
+  font-size: 1.42rem;
   font-weight: 600;
-}
-
-.prayer-day-badge {
-  display: inline-flex;
-  align-items: center;
-  min-height: 20px;
-  padding: 0.12rem 0.42rem;
-  border: 1px solid rgba(214, 184, 90, 0.2);
-  border-radius: 999px;
-  color: var(--muted);
-  background: rgba(255, 255, 255, 0.035);
-  font-family: "Jost", system-ui, sans-serif;
-  font-size: 0.55rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  line-height: 1.1;
 }
 
 .prayer-time-main {
   display: block;
   color: var(--text);
-  font-weight: 500;
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 1.08rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .prayer-time-muted {
-  color: rgba(183, 196, 181, 0.58);
+  color: rgba(183, 196, 181, 0.58) !important;
+}
+
+.prayer-day-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 0.14rem 0.45rem;
+  border: 1px solid rgba(214, 184, 90, 0.2);
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.035);
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .prayer-loading,
@@ -515,9 +523,37 @@ h3 {
 .prayer-status {
   margin: 0;
   padding: 0 1rem 1rem;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
 }
 
+.jumuah-card {
+  margin-top: 0.75rem;
+  padding: 0.78rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid rgba(214, 184, 90, 0.22);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(214, 184, 90, 0.11), rgba(214, 184, 90, 0.045));
+}
+
+.jumuah-label {
+  color: var(--gold-soft);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.jumuah-time {
+  color: var(--text);
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
 
 .section {
   padding: clamp(4.5rem, 9vw, 8rem) 0;
@@ -564,7 +600,6 @@ strong {
     radial-gradient(circle at 70% 20%, rgba(214, 184, 90, 0.12), transparent 28rem);
 }
 
-
 .facility-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -600,7 +635,6 @@ strong {
   color: rgba(249, 245, 236, 0.72);
 }
 
-
 .glass-card,
 .bank-card {
   padding: clamp(1.4rem, 4vw, 2.4rem);
@@ -616,6 +650,73 @@ strong {
   text-underline-offset: 0.32em;
 }
 
+.dhikr-times {
+  margin-top: 1.5rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--line);
+}
+
+.dhikr-times-head .eyebrow {
+  margin-bottom: 0.9rem;
+}
+
+.dhikr-times-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.dhikr-section.has-night .dhikr-times-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dhikr-time-card {
+  min-width: 0;
+  padding: 1.05rem 1rem;
+  border: 1px solid rgba(214, 184, 90, 0.3);
+  border-radius: 16px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(214, 184, 90, 0.11),
+      rgba(255, 255, 255, 0.03)
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 8px 24px rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+.dhikr-time-label {
+  display: block;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.dhikr-time-value {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--gold-soft);
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.dhikr-time-card[hidden] {
+  display: none;
+}
+
+.dhikr-status {
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-align: center;
+}
 
 .donate {
   background: linear-gradient(180deg, rgba(214, 184, 90, 0.08), transparent);
@@ -674,7 +775,6 @@ dd {
   letter-spacing: 0.08em;
 }
 
-
 .info-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -693,7 +793,6 @@ dd {
 .compact-card {
   max-width: none;
 }
-
 
 .site-footer {
   border-top: 1px solid var(--line);
@@ -718,7 +817,6 @@ dd {
   font-size: 1.2rem;
 }
 
-
 .reveal {
   opacity: 0;
   transform: translateY(18px);
@@ -729,7 +827,6 @@ dd {
   opacity: 1;
   transform: none;
 }
-
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -746,10 +843,58 @@ dd {
   }
 }
 
-
 @media (max-width: 1100px) {
   .facility-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1050px) {
+  .nav-toggle {
+    display: inline-grid;
+    gap: 5px;
+    width: 46px;
+    height: 46px;
+    place-content: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+  }
+
+  .nav-toggle span:not(.sr-only) {
+    width: 18px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 99px;
+  }
+
+  .nav-menu {
+    position: fixed;
+    inset: 92px 20px auto;
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.8rem;
+    border-radius: 22px;
+    background: rgba(7, 16, 10, 0.97);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(18px);
+    transform-origin: top;
+    transform: scale(0.98) translateY(-10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .nav-menu.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  .nav-menu a {
+    text-align: center;
   }
 }
 
@@ -796,6 +941,28 @@ dd {
 
   .hero-lede {
     max-width: 34rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .dhikr-times-grid,
+  .dhikr-section.has-night .dhikr-times-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dhikr-time-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    text-align: left;
+  }
+
+  .dhikr-time-value {
+    margin-top: 0;
+    font-size: 1.15rem;
+    text-align: right;
   }
 }
 
@@ -907,7 +1074,6 @@ dd {
     justify-content: center;
   }
 }
-
 
 .location-card {
   margin-top: 3rem;
@@ -1054,55 +1220,88 @@ dd {
 }
 
 @media (max-width: 760px) {
-  .prayer-card {
-    padding: 0.7rem;
+  #prayer-times {
+    scroll-margin-top: 82px;
   }
 
   .prayer-widget-header {
-    padding: 1.15rem 0.85rem 1rem;
+    padding: 1rem 0.8rem 0.8rem;
+  }
+
+  .prayer-current-time {
+    font-size: clamp(2rem, 11vw, 2.75rem);
+    letter-spacing: 0.035em;
+  }
+
+  .prayer-gregorian-date {
+    font-size: 0.75rem;
+  }
+
+  .prayer-hijri-date {
+    font-size: 0.72rem;
   }
 
   .prayer-countdown {
-    margin-inline: 0.7rem;
-    border-radius: 15px;
+    margin-inline: 0.75rem;
+    padding: 0.9rem 0.65rem;
+  }
+
+  .prayer-countdown-time {
+    font-size: clamp(2.05rem, 11vw, 2.85rem);
+    letter-spacing: 0.035em;
   }
 
   .prayer-table-wrap {
-    padding: 0 0.7rem 0.7rem;
+    padding-inline: 0.75rem;
   }
 
   .prayer-table th,
   .prayer-table td {
-    padding: 0.68rem 0.48rem;
+    padding: 0.82rem 0.58rem;
   }
 
   .prayer-table th {
-    font-size: 0.58rem;
-    letter-spacing: 0.1em;
-  }
-
-  .prayer-table td {
-    font-size: 0.82rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.09em;
   }
 
   .prayer-name {
-    gap: 0.35rem;
-    font-size: 1rem;
+    font-size: 1.24rem;
   }
 
-  .prayer-day-badge {
-    padding-inline: 0.32rem;
-    font-size: 0.5rem;
+  .prayer-time-main {
+    font-size: 0.98rem;
+  }
+
+  .jumuah-card {
+    padding: 0.72rem 0.85rem;
+  }
+
+  .jumuah-label {
+    font-size: 1.2rem;
+  }
+
+  .jumuah-time {
+    font-size: 0.96rem;
   }
 }
 
-@media (max-width: 390px) {
+@media (max-width: 420px) {
   .prayer-table th,
   .prayer-table td {
-    padding-inline: 0.38rem;
+    padding-inline: 0.48rem;
   }
 
-  .prayer-day-badge {
-    display: none;
+  .prayer-table th {
+    font-size: 0.64rem;
+    letter-spacing: 0.06em;
+  }
+
+  .prayer-name {
+    font-size: 1.14rem;
+  }
+
+  .prayer-time-main {
+    font-size: 0.9rem;
   }
 }
