@@ -34,7 +34,6 @@
     -webkit-text-size-adjust: 100%;
   }
 
-  /* ── NAV ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     padding: 1.1rem 3rem;
@@ -55,7 +54,6 @@
   }
   .nav-links a:hover { color: var(--gold-light); }
 
-  /* ── HERO ── */
   .hero {
     min-height: 100svh;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -104,7 +102,6 @@
     margin: 0 auto 3.5rem;
   }
 
-  /* ── MASJIDBOX EMBED ── */
   .masjidbox-wrap {
     border: 1px solid rgba(201,168,76,0.3);
     border-radius: 4px;
@@ -119,7 +116,6 @@
     min-height: 320px;
   }
 
-  /* ── SECTION SHARED ── */
   section {
     padding: 6rem 2rem;
     max-width: 1100px;
@@ -153,7 +149,6 @@
   }
   .section-body p + p { margin-top: 1.25rem; }
 
-  /* ── FULL-WIDTH BAND ── */
   .band {
     background: linear-gradient(135deg, #0d1f10 0%, #0f2d15 50%, #0a1a0c 100%);
     border-top: 1px solid rgba(201,168,76,0.1);
@@ -162,7 +157,6 @@
   }
   .band-inner { max-width: 1100px; margin: 0 auto; }
 
-  /* ── FACILITIES ── */
   .facilities-grid {
     display: flex;
     flex-wrap: wrap;
@@ -200,7 +194,6 @@
     line-height: 1.4;
   }
 
-  /* ── DHIKR ── */
   .dhikr-card {
     border: 1px solid rgba(201,168,76,0.25);
     border-radius: 4px;
@@ -231,7 +224,6 @@
   }
   .dhikr-link:hover { color: var(--gold-light); border-color: var(--gold-light); }
 
-  /* ── TIMETABLE ── */
   .timetable-upload-zone {
     border: 1px dashed rgba(201,168,76,0.35);
     border-radius: 4px;
@@ -252,7 +244,6 @@
   #timetable-img { display: none; max-width: 100%; border-radius: 4px; border: 1px solid rgba(201,168,76,0.2); margin-top: 1rem; }
   #file-input { display: none; }
 
-  /* ── OPENING HOURS ── */
   .hours-box {
     background: rgba(15,45,21,0.4);
     border: 1px solid rgba(201,168,76,0.2);
@@ -263,7 +254,6 @@
   }
   .hours-box p { color: rgba(249,245,236,0.8); line-height: 1.85; }
 
-  /* ── DONATE ── */
   .hadith-quote {
     border-left: 2px solid var(--gold);
     padding-left: 1.5rem;
@@ -312,7 +302,6 @@
   .bank-label { color: var(--text-muted); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
   .bank-value { color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; letter-spacing: 0.05em; }
 
-  /* ── CONTACT ── */
   .contact-card {
     background: rgba(15,45,21,0.4);
     border: 1px solid rgba(201,168,76,0.2);
@@ -337,7 +326,6 @@
     margin-bottom: 0.5rem;
   }
 
-  /* ── FOOTER ── */
   footer {
     border-top: 1px solid rgba(201,168,76,0.1);
     padding: 2.5rem 3rem;
@@ -355,11 +343,9 @@
     letter-spacing: 0.05em;
   }
 
-  /* ── SCROLL ANIMATION ── */
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .reveal.visible { opacity: 1; transform: none; }
 
-  /* ── MOBILE ── */
   @media (max-width: 680px) {
     nav { padding: 1rem 1.25rem; }
     .nav-links { gap: 1.2rem; }
@@ -423,7 +409,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="#home" class="nav-logo">The Khanqah</a>
   <ul class="nav-links">
@@ -434,20 +419,17 @@
   </ul>
 </nav>
 
-<!-- HERO -->
 <div class="hero" id="home">
   <div class="hero-bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
   <h1>Welcome to<br><span>Khanqah Naqshbandia</span><br>Mujaddidia</h1>
   <p class="hero-sub">Manchester</p>
   <div class="hero-divider"></div>
 
-  <!-- MasjidBox Salah Times Tile -->
   <div class="masjidbox-wrap">
     <iframe src="https://masjidbox.com/prayer-times/khanqah-naqshbandia" height="280" scrolling="no" title="Salah Times – Khanqah Naqshbandia Mujaddidia Manchester"></iframe>
   </div>
 </div>
 
-<!-- ABOUT US -->
 <section id="about" class="reveal">
   <p class="section-label">About Us</p>
   <h2 class="section-heading">A Sanctuary of<br>Spiritual Contemplation</h2>
@@ -459,7 +441,6 @@
   </div>
 </section>
 
-<!-- FACILITIES -->
 <div class="band" id="facilities">
   <div class="band-inner reveal">
     <p class="section-label">Facilities</p>
@@ -495,7 +476,6 @@
   </div>
 </div>
 
-<!-- DHIKR GATHERINGS -->
 <section id="dhikr" class="reveal">
   <p class="section-label">Dhikr Gatherings</p>
   <h2 class="section-heading">Remembrance<br>of Allah</h2>
@@ -507,7 +487,6 @@
   </div>
 </section>
 
-<!-- MONTHLY TIMETABLE -->
 <div class="band" id="timetable">
   <div class="band-inner reveal">
     <p class="section-label">Monthly Timetable</p>
@@ -518,7 +497,6 @@
   </div>
 </div>
 
-<!-- OPENING HOURS -->
 <section id="hours" class="reveal">
   <p class="section-label">Opening Hours</p>
   <h2 class="section-heading">When We<br>Are Open</h2>
@@ -528,7 +506,6 @@
   </div>
 </section>
 
-<!-- DONATE -->
 <div class="band" id="donate">
   <div class="band-inner reveal">
     <p class="section-label">Donate</p>
@@ -560,7 +537,6 @@
   </div>
 </div>
 
-<!-- CONTACT -->
 <section id="contact" class="reveal">
   <p class="section-label">Contact Us</p>
   <h2 class="section-heading">Get in Touch</h2>
@@ -572,7 +548,6 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <span class="footer-logo">Khanqah Naqshbandia Mujaddidia · Manchester</span>
   <p>181 Mauldeth Road, Manchester, M19 1BA</p>
@@ -582,7 +557,6 @@
 
   
 
-  // ── SCROLL REVEAL ──
   const reveals = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => {

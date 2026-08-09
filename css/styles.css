@@ -80,7 +80,6 @@ select {
   color: #081009;
 }
 
-/* Header */
 
 .site-header {
   position: fixed;
@@ -185,7 +184,6 @@ select {
   display: none;
 }
 
-/* Hero */
 
 .hero {
   position: relative;
@@ -306,7 +304,6 @@ h3 {
   color: var(--gold-soft);
 }
 
-/* Cards */
 
 .prayer-card,
 .glass-card,
@@ -336,27 +333,191 @@ h3 {
   justify-self: end;
 }
 
-.masjidbox-frame {
+
+.prayer-widget {
   overflow: hidden;
   border-radius: calc(var(--radius) - 10px);
-  background: #f7f3e7;
+  border: 1px solid rgba(214, 184, 90, 0.18);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(214, 184, 90, 0.1), transparent 18rem),
+    linear-gradient(180deg, #12351c 0%, #0b2412 100%);
+  color: var(--gold-soft);
 }
 
-.masjidbox-frame iframe {
+.prayer-widget-header {
+  padding: 1.35rem 1.35rem 1.15rem;
+  text-align: center;
+}
+
+.prayer-current-time {
   display: block;
+  color: var(--gold-soft);
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: clamp(2rem, 5vw, 3.15rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.prayer-gregorian-date,
+.prayer-hijri-date {
+  margin: 0;
+}
+
+.prayer-gregorian-date {
+  margin-top: 0.75rem;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.prayer-hijri-date {
+  margin-top: 0.12rem;
+  color: var(--gold);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.prayer-countdown {
+  margin: 0 1rem 1rem;
+  padding: 1.15rem 1rem;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+  color: var(--green);
+  text-align: center;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+}
+
+.prayer-countdown-label,
+.prayer-countdown-target {
+  margin: 0;
+}
+
+.prayer-countdown-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.prayer-countdown-time {
+  margin: 0.28rem 0 0.15rem;
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: clamp(2rem, 7vw, 3.35rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+}
+
+.prayer-countdown-target {
+  color: rgba(7, 16, 10, 0.72);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.prayer-table-wrap {
+  padding: 0 1rem 1rem;
+}
+
+.prayer-table {
   width: 100%;
-  min-height: 487px;
-  height: 487px;
-  border: 0;
-  border-radius: calc(var(--radius) - 10px);
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid rgba(214, 184, 90, 0.16);
+  border-radius: 16px;
+  background: rgba(4, 20, 9, 0.35);
 }
 
-.masjidbox-widget {
+.prayer-table th,
+.prayer-table td {
+  padding: 0.72rem 0.68rem;
+  border-bottom: 1px solid rgba(214, 184, 90, 0.12);
+}
+
+.prayer-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.prayer-table th {
+  color: var(--gold);
+  background: rgba(214, 184, 90, 0.07);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.prayer-table th:first-child {
+  text-align: left;
+}
+
+.prayer-table td {
+  color: var(--text);
+  font-size: 0.88rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.prayer-table td:first-child {
+  text-align: left;
+}
+
+.prayer-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--gold-soft);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.08rem;
+  font-weight: 600;
+}
+
+.prayer-day-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 0.12rem 0.42rem;
+  border: 1px solid rgba(214, 184, 90, 0.2);
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.035);
+  font-family: "Jost", system-ui, sans-serif;
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.prayer-time-main {
   display: block;
-  min-height: 487px;
+  color: var(--text);
+  font-weight: 500;
 }
 
-/* Sections */
+.prayer-time-muted {
+  color: rgba(183, 196, 181, 0.58);
+}
+
+.prayer-loading,
+.prayer-status {
+  color: var(--muted);
+  text-align: center !important;
+}
+
+.prayer-status {
+  margin: 0;
+  padding: 0 1rem 1rem;
+  font-size: 0.78rem;
+}
+
 
 .section {
   padding: clamp(4.5rem, 9vw, 8rem) 0;
@@ -403,7 +564,6 @@ strong {
     radial-gradient(circle at 70% 20%, rgba(214, 184, 90, 0.12), transparent 28rem);
 }
 
-/* Facilities */
 
 .facility-grid {
   display: grid;
@@ -440,7 +600,6 @@ strong {
   color: rgba(249, 245, 236, 0.72);
 }
 
-/* Content cards */
 
 .glass-card,
 .bank-card {
@@ -457,7 +616,6 @@ strong {
   text-underline-offset: 0.32em;
 }
 
-/* Donate */
 
 .donate {
   background: linear-gradient(180deg, rgba(214, 184, 90, 0.08), transparent);
@@ -516,7 +674,6 @@ dd {
   letter-spacing: 0.08em;
 }
 
-/* Contact + Hours */
 
 .info-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -537,7 +694,6 @@ dd {
   max-width: none;
 }
 
-/* Footer */
 
 .site-footer {
   border-top: 1px solid var(--line);
@@ -562,7 +718,6 @@ dd {
   font-size: 1.2rem;
 }
 
-/* Animation */
 
 .reveal {
   opacity: 0;
@@ -575,7 +730,6 @@ dd {
   transform: none;
 }
 
-/* Reduced motion */
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -592,7 +746,6 @@ dd {
   }
 }
 
-/* Responsive */
 
 @media (max-width: 1100px) {
   .facility-grid {
@@ -755,7 +908,6 @@ dd {
   }
 }
 
-/* Location map */
 
 .location-card {
   margin-top: 3rem;
@@ -898,5 +1050,59 @@ dd {
 
   .directions-button {
     width: 100%;
+  }
+}
+
+@media (max-width: 760px) {
+  .prayer-card {
+    padding: 0.7rem;
+  }
+
+  .prayer-widget-header {
+    padding: 1.15rem 0.85rem 1rem;
+  }
+
+  .prayer-countdown {
+    margin-inline: 0.7rem;
+    border-radius: 15px;
+  }
+
+  .prayer-table-wrap {
+    padding: 0 0.7rem 0.7rem;
+  }
+
+  .prayer-table th,
+  .prayer-table td {
+    padding: 0.68rem 0.48rem;
+  }
+
+  .prayer-table th {
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+  }
+
+  .prayer-table td {
+    font-size: 0.82rem;
+  }
+
+  .prayer-name {
+    gap: 0.35rem;
+    font-size: 1rem;
+  }
+
+  .prayer-day-badge {
+    padding-inline: 0.32rem;
+    font-size: 0.5rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .prayer-table th,
+  .prayer-table td {
+    padding-inline: 0.38rem;
+  }
+
+  .prayer-day-badge {
+    display: none;
   }
 }
