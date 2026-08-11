@@ -18,7 +18,49 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="notice-banner" data-notice-banner hidden>
+    <button class="notice-banner-button" type="button" data-poster-open>
+      <div class="notice-track">
+        <span>IMPORTANT NOTICE - CLICK TO OPEN</span>
+        <span>IMPORTANT NOTICE - CLICK TO OPEN</span>
+        <span>IMPORTANT NOTICE - CLICK TO OPEN</span>
+        <span>IMPORTANT NOTICE - CLICK TO OPEN</span>
 
+        <span aria-hidden="true">IMPORTANT NOTICE - CLICK TO OPEN</span>
+        <span aria-hidden="true">IMPORTANT NOTICE - CLICK TO OPEN</span>
+        <span aria-hidden="true">IMPORTANT NOTICE - CLICK TO OPEN</span>
+        <span aria-hidden="true">IMPORTANT NOTICE - CLICK TO OPEN</span>
+      </div>
+    </button>
+  </div>
+
+  <div
+    class="poster-modal"
+    data-poster-modal
+    role="dialog"
+    aria-modal="true"
+    aria-label="Important notice"
+    hidden
+  >
+    <div class="poster-modal-backdrop" data-poster-close></div>
+
+    <div class="poster-modal-content">
+      <button
+        class="poster-modal-close"
+        type="button"
+        data-poster-close
+        aria-label="Close notice"
+      >
+        ×
+      </button>
+
+      <img
+        data-poster-image
+        src=""
+        alt="Important notice"
+      >
+    </div>
+  </div>
   <header class="site-header" data-header>
     <nav class="nav container" aria-label="Primary navigation">
       <a class="brand" href="#home" aria-label="Khanqah home">
@@ -41,7 +83,7 @@
         <li><a href="#about">About</a></li>
         <li><a href="#dhikr">Dhikr</a></li>
         <li><a href="#facilities">Facilities</a></li>
-        <li><a href="assets/timetable.png" download>Download Timetable</a></li>
+        <li><a href="#" class="timetable-download" data-timetable-download>Download Timetable</a></li>
         <li><a href="#donate">Donate</a></li>
         <li><a class="nav-cta" href="#contact">Contact</a></li>
       </ul>
@@ -59,7 +101,7 @@
           <h1 id="hero-title">Khanqah Naqshbandia Mujaddidia</h1>
           <p class="hero-lede">A peaceful sanctuary in Manchester for prayer, remembrance, reflection, and community.</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="assets/timetable.png" download>Download Monthly Timetable</a>
+            <a class="button button-primary timetable-download" href="#" data-timetable-download>Download Monthly Timetable</a>
             <a class="button button-ghost" href="#donate">Support the Khanqah</a>
           </div>
         </div>

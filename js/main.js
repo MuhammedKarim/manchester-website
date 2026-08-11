@@ -46,6 +46,191 @@ if ('IntersectionObserver' in window) {
   revealItems.forEach(item => item.classList.add('is-visible'));
 }
 
+const ASSET_EXTENSIONS = [
+  'png',
+  'jpg',
+  'jpeg',
+  'webp',
+  'gif',
+  'avif',
+  'pdf'
+];
+
+async function findAssetFile(baseName) {
+  for (const extension of ASSET_EXTENSIONS) {
+    const url = `assets/${baseName}.${extension}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        cache: 'no-store'
+      });
+
+      if (!response.ok) {
+        continue;
+      }
+
+      const contentType =
+        response.headers.get('content-type') || '';
+
+      const validImage =
+        contentType.startsWith('image/');
+
+      const validPdf =
+        contentType.includes('application/pdf');
+
+      if (validImage || validPdf) {
+        return url;
+      }
+    } catch {
+    }
+  }
+
+  return null;
+}
+
+async function setupTimetableDownload() {
+  const links =
+    document.querySelectorAll(
+      '[data-timetable-download]'
+    );
+
+  if (!links.length) return;
+
+  const timetableUrl =
+    await findAssetFile('timetable');
+
+  links.forEach(link => {
+    if (timetableUrl) {
+      link.href = timetableUrl;
+      link.setAttribute('download', '');
+      link.removeAttribute('aria-disabled');
+    } else {
+      link.href = '#';
+      link.removeAttribute('download');
+      link.setAttribute(
+        'aria-disabled',
+        'true'
+      );
+    }
+  });
+}
+
+const noticeBanner =
+  document.querySelector(
+    '[data-notice-banner]'
+  );
+
+const posterModal =
+  document.querySelector(
+    '[data-poster-modal]'
+  );
+
+const posterImage =
+  document.querySelector(
+    '[data-poster-image]'
+  );
+
+const posterOpen =
+  document.querySelector(
+    '[data-poster-open]'
+  );
+
+const posterCloseButtons =
+  document.querySelectorAll(
+    '[data-poster-close]'
+  );
+
+let lastFocusedElement = null;
+
+function openPoster() {
+  if (!posterModal) return;
+
+  lastFocusedElement =
+    document.activeElement;
+
+  posterModal.hidden = false;
+
+  document.body.classList.add(
+    'poster-open'
+  );
+
+  posterModal
+    .querySelector(
+      '.poster-modal-close'
+    )
+    ?.focus();
+}
+
+function closePoster() {
+  if (!posterModal) return;
+
+  posterModal.hidden = true;
+
+  document.body.classList.remove(
+    'poster-open'
+  );
+
+  lastFocusedElement?.focus();
+}
+
+async function setupPosterNotice() {
+  if (
+    !noticeBanner ||
+    !posterModal ||
+    !posterImage
+  ) {
+    return;
+  }
+
+  const posterUrl =
+    await findAssetFile('poster');
+
+  if (!posterUrl) {
+    noticeBanner.hidden = true;
+    document.body.classList.remove(
+      'has-notice'
+    );
+    return;
+  }
+
+  posterImage.src = posterUrl;
+
+  noticeBanner.hidden = false;
+
+  document.body.classList.add(
+    'has-notice'
+  );
+}
+
+posterOpen?.addEventListener(
+  'click',
+  openPoster
+);
+
+posterCloseButtons.forEach(button => {
+  button.addEventListener(
+    'click',
+    closePoster
+  );
+});
+
+document.addEventListener(
+  'keydown',
+  event => {
+    if (
+      event.key === 'Escape' &&
+      posterModal &&
+      !posterModal.hidden
+    ) {
+      closePoster();
+    }
+  }
+);
+
+setupTimetableDownload();
+setupPosterNotice();
+
 const copyAddressButton = document.querySelector('.copy-address-button');
 
 copyAddressButton?.addEventListener('click', async () => {
