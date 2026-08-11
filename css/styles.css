@@ -12,6 +12,7 @@
   --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
   --radius: 28px;
   --container: min(1120px, calc(100% - 40px));
+  --notice-height: 38px;
 }
 
 * {
@@ -81,9 +82,13 @@ select {
 }
 
 .notice-banner {
-  position: relative;
-  z-index: 30;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
   width: 100%;
+  height: var(--notice-height);
   overflow: hidden;
   background: #b82020;
   color: #fff;
@@ -141,11 +146,15 @@ select {
 }
 
 body.has-notice .site-header {
-  top: 41px;
+  top: var(--notice-height);
 }
 
 body.has-notice .hero {
-  padding-top: calc(9rem + 41px);
+  padding-top: calc(9rem + var(--notice-height));
+}
+
+body.has-notice #prayer-times {
+  scroll-margin-top: calc(100px + var(--notice-height));
 }
 
 .poster-modal[hidden] {
@@ -217,17 +226,25 @@ body.poster-open {
 }
 
 @media (max-width: 760px) {
+  :root {
+    --notice-height: 36px;
+  }
+
   .notice-banner-button span {
     padding-inline: 2rem;
     font-size: 0.68rem;
   }
 
   body.has-notice .site-header {
-    top: 38px;
+    top: var(--notice-height);
   }
 
   body.has-notice .hero {
-    padding-top: calc(7rem + 38px);
+    padding-top: calc(7rem + var(--notice-height));
+  }
+
+  body.has-notice #prayer-times {
+    scroll-margin-top: calc(82px + var(--notice-height));
   }
 
   .poster-modal {
@@ -1047,6 +1064,10 @@ dd {
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
 
+  body.has-notice .nav-menu {
+    inset: calc(92px + var(--notice-height)) 20px auto;
+  }
+
   .nav-menu.is-open {
     opacity: 1;
     pointer-events: auto;
@@ -1185,6 +1206,10 @@ dd {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  body.has-notice .nav-menu {
+    inset: calc(82px + var(--notice-height)) 14px auto;
   }
 
   .nav-menu.is-open {
