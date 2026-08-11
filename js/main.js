@@ -183,24 +183,19 @@ async function setupPosterNotice() {
     return;
   }
 
-  const posterUrl =
-    await findAssetFile('poster');
+  const posterUrl = await findAssetFile('poster');
 
   if (!posterUrl) {
     noticeBanner.hidden = true;
-    document.body.classList.remove(
-      'has-notice'
-    );
+    document.body.classList.remove('has-notice');
     return;
   }
 
   posterImage.src = posterUrl;
-
   noticeBanner.hidden = false;
+  document.body.classList.add('has-notice');
 
-  document.body.classList.add(
-    'has-notice'
-  );
+  openPoster();
 }
 
 posterOpen?.addEventListener(
