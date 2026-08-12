@@ -1,6 +1,8 @@
 const PRAYER_TIMES_URL = 'https://muhammedkarim.github.io/manchester-khanqah/prayer-times.json';
 const DHIKR_TIMES_URL = 'https://sufi.org.uk/live-dzp';
 
+const POSTER_CONTROL_URL = 'assets/poster.json';
+
 const header = document.querySelector('[data-header]');
 const navToggle = document.querySelector('[data-nav-toggle]');
 const navMenu = document.querySelector('[data-nav-menu]');
@@ -22,41 +24,47 @@ navMenu?.addEventListener('click', event => {
 });
 
 document.addEventListener('keydown', event => {
-  if (event.key === 'Escape' && navMenu?.classList.contains('is-open')) {
+  if (
+    event.key === 'Escape' &&
+    navMenu?.classList.contains('is-open')
+  ) {
     navMenu.classList.remove('is-open');
     navToggle?.setAttribute('aria-expanded', 'false');
     navToggle?.focus();
   }
 });
 
-window.addEventListener('scroll', setHeaderState, { passive: true });
+window.addEventListener('scroll', setHeaderState, {
+  passive: true
+});
+
 setHeaderState();
 
 const revealItems = document.querySelectorAll('.reveal');
 
 if ('IntersectionObserver' in window) {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.14 });
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.14
+    }
+  );
 
-  revealItems.forEach(item => observer.observe(item));
+  revealItems.forEach(item => {
+    observer.observe(item);
+  });
 } else {
-  revealItems.forEach(item => item.classList.add('is-visible'));
+  revealItems.forEach(item => {
+    item.classList.add('is-visible');
+  });
 }
-
-const POSTER_EXTENSIONS = [
-  'png',
-  'jpg',
-  'jpeg',
-  'webp',
-  'gif',
-  'avif'
-];
 
 const TIMETABLE_EXTENSIONS = [
   'png',
@@ -68,9 +76,11 @@ const TIMETABLE_EXTENSIONS = [
   'pdf'
 ];
 
-async function findAssetFile(baseName, extensions, type) {
-  for (const extension of extensions) {
-    const url = `assets/${baseName}.${extension}`;
+async function findTimetableFile() {
+  const timestamp = Date.now();
+
+  for (const extension of TIMETABLE_EXTENSIONS) {
+    const url = `assets/timetable.${extension}?v=${timestamp}`;
 
     try {
       const response = await fetch(url, {
@@ -86,17 +96,149 @@ async function findAssetFile(baseName, extensions, type) {
         response.headers.get('content-type') || ''
       ).toLowerCase();
 
-      if (type === 'poster' && !contentType.startsWith('image/')) {
+      const validImage =
+        contentType.startsWith('image/');
+
+      const validPdf =
+        contentType.includes('application/pdf');
+
+      if (!validImage && !validPdf) {
         continue;
       }
 
-      if (type === 'timetable') {
-        const validImage = contentType.startsWith('image/');
-        const validPdf = contentType.includes('application/pdf');
+      return {
+        url,
+        filename: `timetable.${extension}`
+      };
+    } catch {
+    }
+  }
 
-        if (!validImage && !validPdf) {
-          continue;
-        }
+  return null;
+}
+
+async function setupTimetableDownload() {
+  const links = document.querySelectorAll(
+    '[data-timetable-download]'
+  );
+
+  if (!links.length) {
+    return;
+  }
+
+  const timetable = await findTimetableFile();
+
+  links.forEach(link => {
+    if (timetable) {
+      link.href = timetable.url;
+      link.setAttribute('download', timetable.filename);
+      link.removeAttribute('aria-disabled');
+    } else {
+      link.href = '#';
+      link.removeAttribute('download');
+      link.setAttribute('aria-disabled', 'true');
+    }
+  });
+}
+
+const POSTER_EXTENSIONS = [
+  'png',
+  'jpg',
+  'jpeg',
+  'webp',
+  'gif',
+  'avif'
+];
+
+const noticeBanner =
+  document.querySelector('[data-notice-banner]');
+
+const posterModal =
+  document.querySelector('[data-poster-modal]');
+
+const posterImage =
+  document.querySelector('[data-poster-image]');
+
+const posterOpen =
+  document.querySelector('[data-poster-open]');
+
+const posterCloseButtons =
+  document.querySelectorAll('[data-poster-close]');
+
+let lastFocusedElement = null;
+
+function openPoster() {
+  if (
+    !posterModal ||
+    !posterImage ||
+    !posterImage.getAttribute('src')
+  ) {
+    return;
+  }
+
+  lastFocusedElement = document.activeElement;
+
+  posterModal.hidden = false;
+
+  document.body.classList.add('poster-open');
+
+  posterModal
+    .querySelector('.poster-modal-close')
+    ?.focus();
+}
+
+function closePoster() {
+  if (!posterModal) {
+    return;
+  }
+
+  posterModal.hidden = true;
+
+  document.body.classList.remove('poster-open');
+
+  lastFocusedElement?.focus();
+}
+
+function disablePosterNotice() {
+  if (posterImage) {
+    posterImage.removeAttribute('src');
+  }
+
+  if (noticeBanner) {
+    noticeBanner.hidden = true;
+  }
+
+  if (posterModal) {
+    posterModal.hidden = true;
+  }
+
+  document.body.classList.remove(
+    'has-notice',
+    'poster-open'
+  );
+}
+
+async function findPosterFile(timestamp) {
+  for (const extension of POSTER_EXTENSIONS) {
+    const url =
+      `assets/poster.${extension}?v=${timestamp}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        cache: 'no-store'
+      });
+
+      if (!response.ok) {
+        continue;
+      }
+
+      const contentType = (
+        response.headers.get('content-type') || ''
+      ).toLowerCase();
+
+      if (!contentType.startsWith('image/')) {
+        continue;
       }
 
       return url;
@@ -107,180 +249,248 @@ async function findAssetFile(baseName, extensions, type) {
   return null;
 }
 
-async function setupTimetableDownload() {
-  const links = document.querySelectorAll('[data-timetable-download]');
-
-  if (!links.length) return;
-
-  const timetableUrl = await findAssetFile(
-    'timetable',
-    TIMETABLE_EXTENSIONS,
-    'timetable'
-  );
-
-  links.forEach(link => {
-    if (timetableUrl) {
-      link.href = timetableUrl;
-      link.setAttribute('download', '');
-      link.removeAttribute('aria-disabled');
-    } else {
-      link.href = '#';
-      link.removeAttribute('download');
-      link.setAttribute('aria-disabled', 'true');
-    }
-  });
-}
-
-const noticeBanner = document.querySelector('[data-notice-banner]');
-const posterModal = document.querySelector('[data-poster-modal]');
-const posterImage = document.querySelector('[data-poster-image]');
-const posterOpen = document.querySelector('[data-poster-open]');
-const posterCloseButtons = document.querySelectorAll('[data-poster-close]');
-
-let lastFocusedElement = null;
-
-function openPoster() {
-  if (!posterModal) return;
-
-  lastFocusedElement = document.activeElement;
-  posterModal.hidden = false;
-  document.body.classList.add('poster-open');
-
-  posterModal
-    .querySelector('.poster-modal-close')
-    ?.focus();
-}
-
-function closePoster() {
-  if (!posterModal) return;
-
-  posterModal.hidden = true;
-  document.body.classList.remove('poster-open');
-  lastFocusedElement?.focus();
-}
-
 async function setupPosterNotice() {
-  if (!noticeBanner || !posterModal || !posterImage) {
+  if (
+    !noticeBanner ||
+    !posterModal ||
+    !posterImage
+  ) {
     return;
   }
 
-  const posterUrl = await findAssetFile(
-    'poster',
-    POSTER_EXTENSIONS,
-    'poster'
-  );
+  try {
+    const timestamp = Date.now();
 
-  if (!posterUrl) {
-    posterImage.removeAttribute('src');
-    noticeBanner.hidden = true;
-    posterModal.hidden = true;
-    document.body.classList.remove('has-notice', 'poster-open');
-    return;
+    const configResponse = await fetch(
+      `${POSTER_CONTROL_URL}?v=${timestamp}`,
+      {
+        cache: 'no-store'
+      }
+    );
+
+    if (!configResponse.ok) {
+      throw new Error(
+        `Poster config request failed with HTTP ${configResponse.status}`
+      );
+    }
+
+    const configText = await configResponse.text();
+    const config = JSON.parse(configText);
+
+    if (config.active !== true) {
+      disablePosterNotice();
+      return;
+    }
+
+    const posterUrl =
+      await findPosterFile(timestamp);
+
+    if (!posterUrl) {
+      disablePosterNotice();
+      return;
+    }
+
+    posterImage.src = posterUrl;
+
+    noticeBanner.hidden = false;
+
+    document.body.classList.add('has-notice');
+
+    openPoster();
+  } catch (error) {
+    console.error(
+      'Unable to load poster:',
+      error
+    );
+
+    disablePosterNotice();
   }
-
-  posterImage.src = posterUrl;
-  noticeBanner.hidden = false;
-  document.body.classList.add('has-notice');
-  openPoster();
 }
 
-posterOpen?.addEventListener('click', openPoster);
+posterOpen?.addEventListener(
+  'click',
+  openPoster
+);
 
 posterCloseButtons.forEach(button => {
-  button.addEventListener('click', closePoster);
+  button.addEventListener(
+    'click',
+    closePoster
+  );
 });
 
-document.addEventListener('keydown', event => {
-  if (
-    event.key === 'Escape' &&
-    posterModal &&
-    !posterModal.hidden
-  ) {
-    closePoster();
+document.addEventListener(
+  'keydown',
+  event => {
+    if (
+      event.key === 'Escape' &&
+      posterModal &&
+      !posterModal.hidden
+    ) {
+      closePoster();
+    }
   }
-});
+);
 
 setupTimetableDownload();
 setupPosterNotice();
 
-const copyAddressButton = document.querySelector('.copy-address-button');
+const copyAddressButton =
+  document.querySelector('.copy-address-button');
 
-copyAddressButton?.addEventListener('click', async () => {
-  const address = copyAddressButton.dataset.copyAddress;
-  const originalText = copyAddressButton.textContent;
+copyAddressButton?.addEventListener(
+  'click',
+  async () => {
+    const address =
+      copyAddressButton.dataset.copyAddress;
 
-  try {
-    await navigator.clipboard.writeText(address);
-    copyAddressButton.textContent = 'Copied';
-  } catch {
-    copyAddressButton.textContent = 'Copy failed';
+    const originalText =
+      copyAddressButton.textContent;
+
+    try {
+      await navigator.clipboard.writeText(address);
+      copyAddressButton.textContent = 'Copied';
+    } catch {
+      copyAddressButton.textContent = 'Copy failed';
+    }
+
+    setTimeout(() => {
+      copyAddressButton.textContent =
+        originalText;
+    }, 1600);
   }
-
-  setTimeout(() => {
-    copyAddressButton.textContent = originalText;
-  }, 1600);
-});
+);
 
 const PRAYER_TIME_ZONE = 'Europe/London';
 
 const PRAYER_ORDER = [
-  { key: 'fajr', label: 'Fajr', countdown: true },
-  { key: 'sunrise', label: 'Sunrise', countdown: true },
-  { key: 'dhuhr', label: 'Dhuhr', countdown: true },
-  { key: 'asr', label: 'Asr', countdown: true },
-  { key: 'maghrib', label: 'Maghrib', countdown: true },
-  { key: 'isha', label: 'Isha', countdown: true }
+  {
+    key: 'fajr',
+    label: 'Fajr',
+    countdown: true
+  },
+  {
+    key: 'sunrise',
+    label: 'Sunrise',
+    countdown: true
+  },
+  {
+    key: 'dhuhr',
+    label: 'Dhuhr',
+    countdown: true
+  },
+  {
+    key: 'asr',
+    label: 'Asr',
+    countdown: true
+  },
+  {
+    key: 'maghrib',
+    label: 'Maghrib',
+    countdown: true
+  },
+  {
+    key: 'isha',
+    label: 'Isha',
+    countdown: true
+  }
 ];
 
-const prayerWidget = document.querySelector('[data-prayer-widget]');
-const prayerClock = document.querySelector('[data-prayer-clock]');
-const prayerGregorian = document.querySelector('[data-prayer-gregorian]');
-const prayerHijri = document.querySelector('[data-prayer-hijri]');
-const countdownLabel = document.querySelector('[data-countdown-label]');
-const countdownTime = document.querySelector('[data-countdown-time]');
-const countdownTarget = document.querySelector('[data-countdown-target]');
-const prayerTableBody = document.querySelector('[data-prayer-table]');
-const jumuahTimeElement = document.querySelector('[data-jumuah-time]');
-const prayerStatus = document.querySelector('[data-prayer-status]');
+const prayerWidget =
+  document.querySelector('[data-prayer-widget]');
+
+const prayerClock =
+  document.querySelector('[data-prayer-clock]');
+
+const prayerGregorian =
+  document.querySelector('[data-prayer-gregorian]');
+
+const prayerHijri =
+  document.querySelector('[data-prayer-hijri]');
+
+const countdownLabel =
+  document.querySelector('[data-countdown-label]');
+
+const countdownTime =
+  document.querySelector('[data-countdown-time]');
+
+const countdownTarget =
+  document.querySelector('[data-countdown-target]');
+
+const prayerTableBody =
+  document.querySelector('[data-prayer-table]');
+
+const jumuahTimeElement =
+  document.querySelector('[data-jumuah-time]');
+
+const prayerStatus =
+  document.querySelector('[data-prayer-status]');
 
 let prayerTimes = null;
 
-const manchesterClockFormatter = new Intl.DateTimeFormat('en-GB', {
-  timeZone: PRAYER_TIME_ZONE,
-  hour: 'numeric',
-  minute: '2-digit',
-  second: '2-digit',
-  hour12: true
-});
-
-const gregorianFormatter = new Intl.DateTimeFormat('en-GB', {
-  timeZone: PRAYER_TIME_ZONE,
-  weekday: 'long',
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric'
-});
-
-const hijriFormatter = new Intl.DateTimeFormat('en-GB-u-ca-islamic-umalqura', {
-  timeZone: PRAYER_TIME_ZONE,
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric'
-});
-
-function getManchesterDateParts(date = new Date()) {
-  const parts = new Intl.DateTimeFormat('en-GB', {
-    timeZone: PRAYER_TIME_ZONE,
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit'
-  }).formatToParts(date);
-
-  const values = Object.fromEntries(
-    parts
-      .filter(part => part.type !== 'literal')
-      .map(part => [part.type, part.value])
+const manchesterClockFormatter =
+  new Intl.DateTimeFormat(
+    'en-GB',
+    {
+      timeZone: PRAYER_TIME_ZONE,
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    }
   );
+
+const gregorianFormatter =
+  new Intl.DateTimeFormat(
+    'en-GB',
+    {
+      timeZone: PRAYER_TIME_ZONE,
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }
+  );
+
+const hijriFormatter =
+  new Intl.DateTimeFormat(
+    'en-GB-u-ca-islamic-umalqura',
+    {
+      timeZone: PRAYER_TIME_ZONE,
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }
+  );
+
+function getManchesterDateParts(
+  date = new Date()
+) {
+  const parts =
+    new Intl.DateTimeFormat(
+      'en-GB',
+      {
+        timeZone: PRAYER_TIME_ZONE,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }
+    ).formatToParts(date);
+
+  const values =
+    Object.fromEntries(
+      parts
+        .filter(
+          part =>
+            part.type !== 'literal'
+        )
+        .map(
+          part => [
+            part.type,
+            part.value
+          ]
+        )
+    );
 
   return {
     year: Number(values.year),
@@ -289,8 +499,14 @@ function getManchesterDateParts(date = new Date()) {
   };
 }
 
-function getDateKey(date = new Date()) {
-  const { year, month, day } = getManchesterDateParts(date);
+function getDateKey(
+  date = new Date()
+) {
+  const {
+    year,
+    month,
+    day
+  } = getManchesterDateParts(date);
 
   return [
     year,
@@ -299,138 +515,331 @@ function getDateKey(date = new Date()) {
   ].join('-');
 }
 
-function addDaysToDateKey(dateKey, days) {
-  const [year, month, day] = dateKey.split('-').map(Number);
-  const date = new Date(Date.UTC(year, month - 1, day + days, 12));
+function addDaysToDateKey(
+  dateKey,
+  days
+) {
+  const [
+    year,
+    month,
+    day
+  ] = dateKey
+    .split('-')
+    .map(Number);
+
+  const date =
+    new Date(
+      Date.UTC(
+        year,
+        month - 1,
+        day + days,
+        12
+      )
+    );
 
   return [
     date.getUTCFullYear(),
-    String(date.getUTCMonth() + 1).padStart(2, '0'),
-    String(date.getUTCDate()).padStart(2, '0')
+    String(
+      date.getUTCMonth() + 1
+    ).padStart(2, '0'),
+    String(
+      date.getUTCDate()
+    ).padStart(2, '0')
   ].join('-');
 }
 
-function getTimeZoneOffsetMs(date, timeZone) {
-  const parts = new Intl.DateTimeFormat('en-GB', {
-    timeZone,
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hourCycle: 'h23'
-  }).formatToParts(date);
+function getTimeZoneOffsetMs(
+  date,
+  timeZone
+) {
+  const parts =
+    new Intl.DateTimeFormat(
+      'en-GB',
+      {
+        timeZone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hourCycle: 'h23'
+      }
+    ).formatToParts(date);
 
-  const values = Object.fromEntries(
-    parts
-      .filter(part => part.type !== 'literal')
-      .map(part => [part.type, Number(part.value)])
-  );
+  const values =
+    Object.fromEntries(
+      parts
+        .filter(
+          part =>
+            part.type !== 'literal'
+        )
+        .map(
+          part => [
+            part.type,
+            Number(part.value)
+          ]
+        )
+    );
 
-  const asUtc = Date.UTC(
-    values.year,
-    values.month - 1,
-    values.day,
-    values.hour,
-    values.minute,
-    values.second
-  );
+  const asUtc =
+    Date.UTC(
+      values.year,
+      values.month - 1,
+      values.day,
+      values.hour,
+      values.minute,
+      values.second
+    );
 
   return asUtc - date.getTime();
 }
 
-function makeManchesterDate(dateKey, time) {
-  if (!dateKey || !time) return null;
+function makeManchesterDate(
+  dateKey,
+  time
+) {
+  if (!dateKey || !time) {
+    return null;
+  }
 
-  const [year, month, day] = dateKey.split('-').map(Number);
-  const [hour, minute] = time.split(':').map(Number);
-  const wallClockUtc = Date.UTC(year, month - 1, day, hour, minute, 0);
+  const [
+    year,
+    month,
+    day
+  ] = dateKey
+    .split('-')
+    .map(Number);
 
-  let candidate = new Date(wallClockUtc);
-  let offset = getTimeZoneOffsetMs(candidate, PRAYER_TIME_ZONE);
-  candidate = new Date(wallClockUtc - offset);
+  const [
+    hour,
+    minute
+  ] = time
+    .split(':')
+    .map(Number);
 
-  const correctedOffset = getTimeZoneOffsetMs(candidate, PRAYER_TIME_ZONE);
+  const wallClockUtc =
+    Date.UTC(
+      year,
+      month - 1,
+      day,
+      hour,
+      minute,
+      0
+    );
 
-  if (correctedOffset !== offset) {
-    candidate = new Date(wallClockUtc - correctedOffset);
+  let candidate =
+    new Date(wallClockUtc);
+
+  let offset =
+    getTimeZoneOffsetMs(
+      candidate,
+      PRAYER_TIME_ZONE
+    );
+
+  candidate =
+    new Date(
+      wallClockUtc - offset
+    );
+
+  const correctedOffset =
+    getTimeZoneOffsetMs(
+      candidate,
+      PRAYER_TIME_ZONE
+    );
+
+  if (
+    correctedOffset !== offset
+  ) {
+    candidate =
+      new Date(
+        wallClockUtc -
+        correctedOffset
+      );
   }
 
   return candidate;
 }
 
 function formatPrayerTime(time) {
-  if (!time) return '—';
+  if (!time) {
+    return '—';
+  }
 
-  const [hour, minute] = time.split(':').map(Number);
-  const period = hour >= 12 ? 'PM' : 'AM';
-  const twelveHour = hour % 12 || 12;
+  const [
+    hour,
+    minute
+  ] = time
+    .split(':')
+    .map(Number);
 
-  return `${twelveHour}:${String(minute).padStart(2, '0')} ${period}`;
+  const period =
+    hour >= 12
+      ? 'PM'
+      : 'AM';
+
+  const twelveHour =
+    hour % 12 || 12;
+
+  return `${twelveHour}:${String(
+    minute
+  ).padStart(2, '0')} ${period}`;
 }
 
 function formatHijriDate(date) {
-  const parts = hijriFormatter.formatToParts(date);
+  const parts =
+    hijriFormatter
+      .formatToParts(date);
 
-  const values = Object.fromEntries(
-    parts
-      .filter(part => part.type !== 'literal' && part.type !== 'era')
-      .map(part => [part.type, part.value])
-  );
+  const values =
+    Object.fromEntries(
+      parts
+        .filter(
+          part =>
+            part.type !== 'literal' &&
+            part.type !== 'era'
+        )
+        .map(
+          part => [
+            part.type,
+            part.value
+          ]
+        )
+    );
 
-  if (!values.day || !values.month || !values.year) {
-    return `${hijriFormatter.format(date).toUpperCase()} AH`;
+  if (
+    !values.day ||
+    !values.month ||
+    !values.year
+  ) {
+    return `${
+      hijriFormatter
+        .format(date)
+        .toUpperCase()
+    } AH`;
   }
 
-  return `${values.day} ${values.month} ${values.year}`.toUpperCase() + ' AH';
+  return (
+    `${
+      values.day
+    } ${
+      values.month
+    } ${
+      values.year
+    }`.toUpperCase() +
+    ' AH'
+  );
 }
 
-function getHijriDisplayDate(now, todayKey, tomorrowKey, todayTimes) {
-  const maghribStart = todayTimes?.maghrib?.start;
+function getHijriDisplayDate(
+  now,
+  todayKey,
+  tomorrowKey,
+  todayTimes
+) {
+  const maghribStart =
+    todayTimes?.maghrib?.start;
 
   if (!maghribStart) {
     return now;
   }
 
-  const maghribDate = makeManchesterDate(todayKey, maghribStart);
+  const maghribDate =
+    makeManchesterDate(
+      todayKey,
+      maghribStart
+    );
 
-  if (maghribDate && now >= maghribDate) {
-    return makeManchesterDate(tomorrowKey, '12:00') || now;
+  if (
+    maghribDate &&
+    now >= maghribDate
+  ) {
+    return (
+      makeManchesterDate(
+        tomorrowKey,
+        '12:00'
+      ) || now
+    );
   }
 
   return now;
 }
 
-function formatCountdown(milliseconds) {
-  const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
+function formatCountdown(
+  milliseconds
+) {
+  const totalSeconds =
+    Math.max(
+      0,
+      Math.floor(
+        milliseconds / 1000
+      )
+    );
 
-  return [hours, minutes, seconds]
-    .map(value => String(value).padStart(2, '0'))
+  const hours =
+    Math.floor(
+      totalSeconds / 3600
+    );
+
+  const minutes =
+    Math.floor(
+      (
+        totalSeconds % 3600
+      ) / 60
+    );
+
+  const seconds =
+    totalSeconds % 60;
+
+  return [
+    hours,
+    minutes,
+    seconds
+  ]
+    .map(
+      value =>
+        String(value)
+          .padStart(2, '0')
+    )
     .join(':');
 }
 
-function getJamatTime(prayerKey, prayer) {
-  if (!prayer) return null;
+function getJamatTime(
+  prayerKey,
+  prayer
+) {
+  if (!prayer) {
+    return null;
+  }
 
-  if (prayerKey === 'maghrib') {
+  if (
+    prayerKey === 'maghrib'
+  ) {
     return prayer.start || null;
   }
 
   return prayer.jamat || null;
 }
 
-function getFinalPrayerEvent(prayerKey, prayer, dateKey) {
-  if (!prayer) return null;
+function getFinalPrayerEvent(
+  prayerKey,
+  prayer,
+  dateKey
+) {
+  if (!prayer) {
+    return null;
+  }
 
-  const jamatTime = getJamatTime(prayerKey, prayer);
+  const jamatTime =
+    getJamatTime(
+      prayerKey,
+      prayer
+    );
 
   return makeManchesterDate(
     dateKey,
-    jamatTime || prayer.start
+    jamatTime ||
+    prayer.start
   );
 }
 
@@ -441,59 +850,92 @@ function getNextPrayerEvent(
   todayTimes,
   tomorrowTimes
 ) {
-  for (const prayer of PRAYER_ORDER) {
-    if (!prayer.countdown) continue;
+  for (
+    const prayer of PRAYER_ORDER
+  ) {
+    if (!prayer.countdown) {
+      continue;
+    }
 
-    const timing = todayTimes?.[prayer.key];
+    const timing =
+      todayTimes?.[prayer.key];
 
-    if (!timing?.start) continue;
+    if (!timing?.start) {
+      continue;
+    }
 
-    const startDate = makeManchesterDate(
-      todayKey,
-      timing.start
-    );
+    const startDate =
+      makeManchesterDate(
+        todayKey,
+        timing.start
+      );
 
-    if (now < startDate) {
+    if (
+      now < startDate
+    ) {
       return {
         date: startDate,
-        label: `${prayer.label} starts in`,
-        target: `${prayer.label} start · ${formatPrayerTime(timing.start)}`
+        label:
+          `${prayer.label} starts in`,
+        target:
+          `${prayer.label} start · ${formatPrayerTime(
+            timing.start
+          )}`
       };
     }
 
-    const jamatTime = getJamatTime(
-      prayer.key,
-      timing
-    );
-
-    if (jamatTime && jamatTime !== timing.start) {
-      const jamatDate = makeManchesterDate(
-        todayKey,
-        jamatTime
+    const jamatTime =
+      getJamatTime(
+        prayer.key,
+        timing
       );
 
-      if (now < jamatDate) {
+    if (
+      jamatTime &&
+      jamatTime !== timing.start
+    ) {
+      const jamatDate =
+        makeManchesterDate(
+          todayKey,
+          jamatTime
+        );
+
+      if (
+        now < jamatDate
+      ) {
         return {
           date: jamatDate,
-          label: `${prayer.label} Jamat in`,
-          target: `${prayer.label} Jamat · ${formatPrayerTime(jamatTime)}`
+          label:
+            `${prayer.label} Jamat in`,
+          target:
+            `${prayer.label} Jamat · ${formatPrayerTime(
+              jamatTime
+            )}`
         };
       }
     }
   }
 
-  const tomorrowFajr = tomorrowTimes?.fajr;
+  const tomorrowFajr =
+    tomorrowTimes?.fajr;
 
-  if (tomorrowFajr?.start) {
-    const fajrDate = makeManchesterDate(
-      tomorrowKey,
-      tomorrowFajr.start
-    );
+  if (
+    tomorrowFajr?.start
+  ) {
+    const fajrDate =
+      makeManchesterDate(
+        tomorrowKey,
+        tomorrowFajr.start
+      );
 
     return {
       date: fajrDate,
-      label: 'Fajr starts in',
-      target: `Tomorrow · ${formatPrayerTime(tomorrowFajr.start)}`
+      label:
+        'Fajr starts in',
+      target:
+        `Tomorrow · ${formatPrayerTime(
+          tomorrowFajr.start
+        )}`
     };
   }
 
@@ -508,15 +950,19 @@ function getDisplayTiming(
   todayTimes,
   tomorrowTimes
 ) {
-  const todayPrayer = todayTimes?.[prayerKey];
+  const todayPrayer =
+    todayTimes?.[prayerKey];
 
-  if (!todayPrayer) return null;
+  if (!todayPrayer) {
+    return null;
+  }
 
-  const finalTodayEvent = getFinalPrayerEvent(
-    prayerKey,
-    todayPrayer,
-    todayKey
-  );
+  const finalTodayEvent =
+    getFinalPrayerEvent(
+      prayerKey,
+      todayPrayer,
+      todayKey
+    );
 
   if (
     finalTodayEvent &&
@@ -524,16 +970,24 @@ function getDisplayTiming(
     tomorrowTimes?.[prayerKey]
   ) {
     return {
-      timing: tomorrowTimes[prayerKey],
-      dateKey: tomorrowKey,
-      isTomorrow: true
+      timing:
+        tomorrowTimes[
+          prayerKey
+        ],
+      dateKey:
+        tomorrowKey,
+      isTomorrow:
+        true
     };
   }
 
   return {
-    timing: todayPrayer,
-    dateKey: todayKey,
-    isTomorrow: false
+    timing:
+      todayPrayer,
+    dateKey:
+      todayKey,
+    isTomorrow:
+      false
   };
 }
 
@@ -544,67 +998,89 @@ function renderPrayerTable(
   todayTimes,
   tomorrowTimes
 ) {
-  if (!prayerTableBody) return;
+  if (!prayerTableBody) {
+    return;
+  }
 
-  prayerTableBody.innerHTML = PRAYER_ORDER.map(prayer => {
-    const display = getDisplayTiming(
-      prayer.key,
-      now,
-      todayKey,
-      tomorrowKey,
-      todayTimes,
-      tomorrowTimes
-    );
+  prayerTableBody.innerHTML =
+    PRAYER_ORDER
+      .map(prayer => {
+        const display =
+          getDisplayTiming(
+            prayer.key,
+            now,
+            todayKey,
+            tomorrowKey,
+            todayTimes,
+            tomorrowTimes
+          );
 
-    if (!display) {
-      return `
-        <tr>
-          <td>
-            <span class="prayer-name">${prayer.label}</span>
-          </td>
-          <td class="prayer-time-muted">—</td>
-          <td class="prayer-time-muted">—</td>
-        </tr>
-      `;
-    }
-
-    const badge = display.isTomorrow
-      ? '<span class="prayer-day-badge">Tomorrow</span>'
-      : '';
-
-    const jamatTime = getJamatTime(
-      prayer.key,
-      display.timing
-    );
-
-    return `
-      <tr>
-        <td>
-          <span class="prayer-name">
-            ${prayer.label}${badge}
-          </span>
-        </td>
-
-        <td>
-          <span class="prayer-time-main">
-            ${formatPrayerTime(display.timing.start)}
-          </span>
-        </td>
-
-        <td class="${jamatTime ? '' : 'prayer-time-muted'}">
-          ${
-            jamatTime
-              ? `
-                <span class="prayer-time-main">
-                  ${formatPrayerTime(jamatTime)}
+        if (!display) {
+          return `
+            <tr>
+              <td>
+                <span class="prayer-name">
+                  ${prayer.label}
                 </span>
-              `
-              : '—'
-          }
-        </td>
-      </tr>
-    `;
-  }).join('');
+              </td>
+              <td class="prayer-time-muted">
+                —
+              </td>
+              <td class="prayer-time-muted">
+                —
+              </td>
+            </tr>
+          `;
+        }
+
+        const badge =
+          display.isTomorrow
+            ? '<span class="prayer-day-badge">Tomorrow</span>'
+            : '';
+
+        const jamatTime =
+          getJamatTime(
+            prayer.key,
+            display.timing
+          );
+
+        return `
+          <tr>
+            <td>
+              <span class="prayer-name">
+                ${prayer.label}${badge}
+              </span>
+            </td>
+
+            <td>
+              <span class="prayer-time-main">
+                ${formatPrayerTime(
+                  display.timing.start
+                )}
+              </span>
+            </td>
+
+            <td class="${
+              jamatTime
+                ? ''
+                : 'prayer-time-muted'
+            }">
+              ${
+                jamatTime
+                  ? `
+                    <span class="prayer-time-main">
+                      ${formatPrayerTime(
+                        jamatTime
+                      )}
+                    </span>
+                  `
+                  : '—'
+              }
+            </td>
+          </tr>
+        `;
+      })
+      .join('');
 }
 
 function renderJumuahTime(
@@ -614,34 +1090,50 @@ function renderJumuahTime(
   todayTimes,
   tomorrowTimes
 ) {
-  if (!jumuahTimeElement) return;
+  if (!jumuahTimeElement) {
+    return;
+  }
 
-  const display = getDisplayTiming(
-    'dhuhr',
-    now,
-    todayKey,
-    tomorrowKey,
-    todayTimes,
-    tomorrowTimes
-  );
+  const display =
+    getDisplayTiming(
+      'dhuhr',
+      now,
+      todayKey,
+      tomorrowKey,
+      todayTimes,
+      tomorrowTimes
+    );
 
-  const dhuhrJamat = getJamatTime(
-    'dhuhr',
-    display?.timing
-  );
+  const dhuhrJamat =
+    getJamatTime(
+      'dhuhr',
+      display?.timing
+    );
 
   jumuahTimeElement.textContent =
     dhuhrJamat
-      ? formatPrayerTime(dhuhrJamat)
+      ? formatPrayerTime(
+          dhuhrJamat
+        )
       : '—';
 }
 
 function renderPrayerWidget() {
-  if (!prayerWidget) return;
+  if (!prayerWidget) {
+    return;
+  }
 
-  const now = new Date();
-  const todayKey = getDateKey(now);
-  const tomorrowKey = addDaysToDateKey(todayKey, 1);
+  const now =
+    new Date();
+
+  const todayKey =
+    getDateKey(now);
+
+  const tomorrowKey =
+    addDaysToDateKey(
+      todayKey,
+      1
+    );
 
   if (prayerClock) {
     prayerClock.textContent =
@@ -662,22 +1154,32 @@ function renderPrayerWidget() {
         .toUpperCase();
   }
 
-  const todayTimes = prayerTimes?.[todayKey];
-  const tomorrowTimes = prayerTimes?.[tomorrowKey];
+  const todayTimes =
+    prayerTimes?.[todayKey];
+
+  const tomorrowTimes =
+    prayerTimes?.[
+      tomorrowKey
+    ];
 
   if (prayerHijri) {
-    const hijriDate = getHijriDisplayDate(
-      now,
-      todayKey,
-      tomorrowKey,
-      todayTimes
-    );
+    const hijriDate =
+      getHijriDisplayDate(
+        now,
+        todayKey,
+        tomorrowKey,
+        todayTimes
+      );
 
     prayerHijri.textContent =
-      formatHijriDate(hijriDate);
+      formatHijriDate(
+        hijriDate
+      );
   }
 
-  if (!prayerTimes) return;
+  if (!prayerTimes) {
+    return;
+  }
 
   if (!todayTimes) {
     if (countdownLabel) {
@@ -709,19 +1211,21 @@ function renderPrayerWidget() {
     }
 
     if (jumuahTimeElement) {
-      jumuahTimeElement.textContent = '—';
+      jumuahTimeElement.textContent =
+        '—';
     }
 
     return;
   }
 
-  const nextEvent = getNextPrayerEvent(
-    now,
-    todayKey,
-    tomorrowKey,
-    todayTimes,
-    tomorrowTimes
-  );
+  const nextEvent =
+    getNextPrayerEvent(
+      now,
+      todayKey,
+      tomorrowKey,
+      todayTimes,
+      tomorrowTimes
+    );
 
   if (nextEvent) {
     if (countdownLabel) {
@@ -775,22 +1279,28 @@ function renderPrayerWidget() {
 }
 
 async function loadPrayerTimes() {
-  if (!prayerWidget) return;
+  if (!prayerWidget) {
+    return;
+  }
 
   try {
     if (prayerStatus) {
-      prayerStatus.hidden = true;
+      prayerStatus.hidden =
+        true;
     }
 
-    const response = await fetch(
-      PRAYER_TIMES_URL,
-      {
-        cache: 'no-store',
-        headers: {
-          Accept: 'application/json'
+    const response =
+      await fetch(
+        PRAYER_TIMES_URL,
+        {
+          cache:
+            'no-store',
+          headers: {
+            Accept:
+              'application/json'
+          }
         }
-      }
-    );
+      );
 
     if (!response.ok) {
       throw new Error(
@@ -798,7 +1308,8 @@ async function loadPrayerTimes() {
       );
     }
 
-    prayerTimes = await response.json();
+    prayerTimes =
+      await response.json();
 
     renderPrayerWidget();
   } catch (error) {
@@ -818,7 +1329,8 @@ async function loadPrayerTimes() {
     }
 
     if (countdownTarget) {
-      countdownTarget.textContent = '';
+      countdownTarget.textContent =
+        '';
     }
 
     if (prayerTableBody) {
@@ -835,11 +1347,13 @@ async function loadPrayerTimes() {
     }
 
     if (jumuahTimeElement) {
-      jumuahTimeElement.textContent = '—';
+      jumuahTimeElement.textContent =
+        '—';
     }
 
     if (prayerStatus) {
-      prayerStatus.hidden = false;
+      prayerStatus.hidden =
+        false;
 
       prayerStatus.textContent =
         'Please refresh the page or use the downloadable timetable.';
@@ -863,38 +1377,60 @@ if (prayerWidget) {
   );
 }
 
-const DHIKR_ROLLOVER_MINUTES = 30;
+const DHIKR_ROLLOVER_MINUTES =
+  30;
 
 const dhikrSection =
-  document.querySelector('.dhikr-section');
+  document.querySelector(
+    '.dhikr-section'
+  );
 
 const dhikrMorning =
-  document.getElementById('dhikr-morning');
+  document.getElementById(
+    'dhikr-morning'
+  );
 
 const dhikrEvening =
-  document.getElementById('dhikr-evening');
+  document.getElementById(
+    'dhikr-evening'
+  );
 
 const dhikrNight =
-  document.getElementById('dhikr-night');
+  document.getElementById(
+    'dhikr-night'
+  );
 
 const dhikrNightCol =
-  document.getElementById('dhikr-night-col');
+  document.getElementById(
+    'dhikr-night-col'
+  );
 
 const dhikrStatus =
-  document.querySelector('[data-dhikr-status]');
+  document.querySelector(
+    '[data-dhikr-status]'
+  );
 
 let dhikrData = null;
 
-function formatDhikrTime(time) {
-  if (!time) return '—';
+function formatDhikrTime(
+  time
+) {
+  if (!time) {
+    return '—';
+  }
 
-  const [hourString, minute] =
-    time.split(':');
+  const [
+    hourString,
+    minute
+  ] = time.split(':');
 
-  const hour = Number(hourString);
+  const hour =
+    Number(hourString);
 
   const period =
-    hour >= 12 ? 'PM' : 'AM';
+    hour >= 12
+      ? 'PM'
+      : 'AM';
 
   const twelveHour =
     hour % 12 || 12;
@@ -902,21 +1438,31 @@ function formatDhikrTime(time) {
   return `${twelveHour}:${minute} ${period}`;
 }
 
-function getDhikrDisplayTime(period) {
-  if (!dhikrData) return null;
+function getDhikrDisplayTime(
+  period
+) {
+  if (!dhikrData) {
+    return null;
+  }
 
   const todayTime =
-    dhikrData.today?.[period] || null;
+    dhikrData.today?.[
+      period
+    ] || null;
 
   const tomorrowTime =
-    dhikrData.tomorrow?.[period] || null;
+    dhikrData.tomorrow?.[
+      period
+    ] || null;
 
   if (!todayTime) {
     return tomorrowTime;
   }
 
   const todayKey =
-    getDateKey(new Date());
+    getDateKey(
+      new Date()
+    );
 
   const gatheringTime =
     makeManchesterDate(
@@ -937,7 +1483,8 @@ function getDhikrDisplayTime(period) {
     );
 
   if (
-    new Date() >= rolloverTime &&
+    new Date() >=
+      rolloverTime &&
     tomorrowTime
   ) {
     return tomorrowTime;
@@ -947,7 +1494,9 @@ function getDhikrDisplayTime(period) {
 }
 
 function hasDhikrNight() {
-  if (!dhikrData) return false;
+  if (!dhikrData) {
+    return false;
+  }
 
   return Boolean(
     dhikrData.today?.night ||
@@ -956,31 +1505,40 @@ function hasDhikrNight() {
 }
 
 function renderDhikrTimes() {
-  if (!dhikrSection || !dhikrData) {
+  if (
+    !dhikrSection ||
+    !dhikrData
+  ) {
     return;
   }
 
   if (dhikrMorning) {
     dhikrMorning.textContent =
       formatDhikrTime(
-        getDhikrDisplayTime('morning')
+        getDhikrDisplayTime(
+          'morning'
+        )
       );
   }
 
   if (dhikrEvening) {
     dhikrEvening.textContent =
       formatDhikrTime(
-        getDhikrDisplayTime('evening')
+        getDhikrDisplayTime(
+          'evening'
+        )
       );
   }
 
   const showNight =
     hasDhikrNight();
 
-  dhikrSection.classList.toggle(
-    'has-night',
-    showNight
-  );
+  dhikrSection
+    .classList
+    .toggle(
+      'has-night',
+      showNight
+    );
 
   if (dhikrNightCol) {
     dhikrNightCol.hidden =
@@ -1000,19 +1558,24 @@ function renderDhikrTimes() {
 }
 
 async function loadDhikrTimes() {
-  if (!dhikrSection) return;
+  if (!dhikrSection) {
+    return;
+  }
 
   try {
     if (dhikrStatus) {
-      dhikrStatus.hidden = true;
+      dhikrStatus.hidden =
+        true;
     }
 
-    const response = await fetch(
-      DHIKR_TIMES_URL,
-      {
-        cache: 'no-store'
-      }
-    );
+    const response =
+      await fetch(
+        DHIKR_TIMES_URL,
+        {
+          cache:
+            'no-store'
+        }
+      );
 
     if (!response.ok) {
       throw new Error(
@@ -1031,27 +1594,34 @@ async function loadDhikrTimes() {
     );
 
     if (dhikrMorning) {
-      dhikrMorning.textContent = '—';
+      dhikrMorning.textContent =
+        '—';
     }
 
     if (dhikrEvening) {
-      dhikrEvening.textContent = '—';
+      dhikrEvening.textContent =
+        '—';
     }
 
     if (dhikrNight) {
-      dhikrNight.textContent = '—';
+      dhikrNight.textContent =
+        '—';
     }
 
     if (dhikrNightCol) {
-      dhikrNightCol.hidden = true;
+      dhikrNightCol.hidden =
+        true;
     }
 
-    dhikrSection?.classList.remove(
-      'has-night'
-    );
+    dhikrSection
+      ?.classList
+      .remove(
+        'has-night'
+      );
 
     if (dhikrStatus) {
-      dhikrStatus.hidden = false;
+      dhikrStatus.hidden =
+        false;
 
       dhikrStatus.textContent =
         'Gathering times are temporarily unavailable.';
