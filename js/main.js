@@ -1,3 +1,6 @@
+const PRAYER_TIMES_URL = 'https://muhammedkarim.github.io/manchester-khanqah/prayer-times.json';
+const DHIKR_TIMES_URL = 'https://sufi.org.uk/live-dzp';
+
 const header = document.querySelector('[data-header]');
 const navToggle = document.querySelector('[data-nav-toggle]');
 const navMenu = document.querySelector('[data-nav-menu]');
@@ -46,7 +49,16 @@ if ('IntersectionObserver' in window) {
   revealItems.forEach(item => item.classList.add('is-visible'));
 }
 
-const ASSET_EXTENSIONS = [
+const POSTER_EXTENSIONS = [
+  'png',
+  'jpg',
+  'jpeg',
+  'webp',
+  'gif',
+  'avif'
+];
+
+const TIMETABLE_EXTENSIONS = [
   'png',
   'jpg',
   'jpeg',
@@ -56,8 +68,8 @@ const ASSET_EXTENSIONS = [
   'pdf'
 ];
 
-async function findAssetFile(baseName) {
-  for (const extension of ASSET_EXTENSIONS) {
+async function findAssetFile(baseName, extensions, type) {
+  for (const extension of extensions) {
     const url = `assets/${baseName}.${extension}`;
 
     try {
@@ -70,18 +82,24 @@ async function findAssetFile(baseName) {
         continue;
       }
 
-      const contentType =
-        response.headers.get('content-type') || '';
+      const contentType = (
+        response.headers.get('content-type') || ''
+      ).toLowerCase();
 
-      const validImage =
-        contentType.startsWith('image/');
-
-      const validPdf =
-        contentType.includes('application/pdf');
-
-      if (validImage || validPdf) {
-        return url;
+      if (type === 'poster' && !contentType.startsWith('image/')) {
+        continue;
       }
+
+      if (type === 'timetable') {
+        const validImage = contentType.startsWith('image/');
+        const validPdf = contentType.includes('application/pdf');
+
+        if (!validImage && !validPdf) {
+          continue;
+        }
+      }
+
+      return url;
     } catch {
     }
   }
@@ -90,15 +108,15 @@ async function findAssetFile(baseName) {
 }
 
 async function setupTimetableDownload() {
-  const links =
-    document.querySelectorAll(
-      '[data-timetable-download]'
-    );
+  const links = document.querySelectorAll('[data-timetable-download]');
 
   if (!links.length) return;
 
-  const timetableUrl =
-    await findAssetFile('timetable');
+  const timetableUrl = await findAssetFile(
+    'timetable',
+    TIMETABLE_EXTENSIONS,
+    'timetable'
+  );
 
   links.forEach(link => {
     if (timetableUrl) {
@@ -108,57 +126,28 @@ async function setupTimetableDownload() {
     } else {
       link.href = '#';
       link.removeAttribute('download');
-      link.setAttribute(
-        'aria-disabled',
-        'true'
-      );
+      link.setAttribute('aria-disabled', 'true');
     }
   });
 }
 
-const noticeBanner =
-  document.querySelector(
-    '[data-notice-banner]'
-  );
-
-const posterModal =
-  document.querySelector(
-    '[data-poster-modal]'
-  );
-
-const posterImage =
-  document.querySelector(
-    '[data-poster-image]'
-  );
-
-const posterOpen =
-  document.querySelector(
-    '[data-poster-open]'
-  );
-
-const posterCloseButtons =
-  document.querySelectorAll(
-    '[data-poster-close]'
-  );
+const noticeBanner = document.querySelector('[data-notice-banner]');
+const posterModal = document.querySelector('[data-poster-modal]');
+const posterImage = document.querySelector('[data-poster-image]');
+const posterOpen = document.querySelector('[data-poster-open]');
+const posterCloseButtons = document.querySelectorAll('[data-poster-close]');
 
 let lastFocusedElement = null;
 
 function openPoster() {
   if (!posterModal) return;
 
-  lastFocusedElement =
-    document.activeElement;
-
+  lastFocusedElement = document.activeElement;
   posterModal.hidden = false;
-
-  document.body.classList.add(
-    'poster-open'
-  );
+  document.body.classList.add('poster-open');
 
   posterModal
-    .querySelector(
-      '.poster-modal-close'
-    )
+    .querySelector('.poster-modal-close')
     ?.focus();
 }
 
@@ -166,62 +155,50 @@ function closePoster() {
   if (!posterModal) return;
 
   posterModal.hidden = true;
-
-  document.body.classList.remove(
-    'poster-open'
-  );
-
+  document.body.classList.remove('poster-open');
   lastFocusedElement?.focus();
 }
 
 async function setupPosterNotice() {
-  if (
-    !noticeBanner ||
-    !posterModal ||
-    !posterImage
-  ) {
+  if (!noticeBanner || !posterModal || !posterImage) {
     return;
   }
 
-  const posterUrl = await findAssetFile('poster');
+  const posterUrl = await findAssetFile(
+    'poster',
+    POSTER_EXTENSIONS,
+    'poster'
+  );
 
   if (!posterUrl) {
+    posterImage.removeAttribute('src');
     noticeBanner.hidden = true;
-    document.body.classList.remove('has-notice');
+    posterModal.hidden = true;
+    document.body.classList.remove('has-notice', 'poster-open');
     return;
   }
 
   posterImage.src = posterUrl;
   noticeBanner.hidden = false;
   document.body.classList.add('has-notice');
-
   openPoster();
 }
 
-posterOpen?.addEventListener(
-  'click',
-  openPoster
-);
+posterOpen?.addEventListener('click', openPoster);
 
 posterCloseButtons.forEach(button => {
-  button.addEventListener(
-    'click',
-    closePoster
-  );
+  button.addEventListener('click', closePoster);
 });
 
-document.addEventListener(
-  'keydown',
-  event => {
-    if (
-      event.key === 'Escape' &&
-      posterModal &&
-      !posterModal.hidden
-    ) {
-      closePoster();
-    }
+document.addEventListener('keydown', event => {
+  if (
+    event.key === 'Escape' &&
+    posterModal &&
+    !posterModal.hidden
+  ) {
+    closePoster();
   }
-);
+});
 
 setupTimetableDownload();
 setupPosterNotice();
@@ -244,7 +221,6 @@ copyAddressButton?.addEventListener('click', async () => {
   }, 1600);
 });
 
-const PRAYER_TIMES_URL = 'https://muhammedkarim.github.io/manchester-khanqah/prayer-times.json';
 const PRAYER_TIME_ZONE = 'Europe/London';
 
 const PRAYER_ORDER = [
@@ -376,6 +352,7 @@ function makeManchesterDate(dateKey, time) {
   candidate = new Date(wallClockUtc - offset);
 
   const correctedOffset = getTimeZoneOffsetMs(candidate, PRAYER_TIME_ZONE);
+
   if (correctedOffset !== offset) {
     candidate = new Date(wallClockUtc - correctedOffset);
   }
@@ -395,6 +372,7 @@ function formatPrayerTime(time) {
 
 function formatHijriDate(date) {
   const parts = hijriFormatter.formatToParts(date);
+
   const values = Object.fromEntries(
     parts
       .filter(part => part.type !== 'literal' && part.type !== 'era')
@@ -449,17 +427,31 @@ function getFinalPrayerEvent(prayerKey, prayer, dateKey) {
   if (!prayer) return null;
 
   const jamatTime = getJamatTime(prayerKey, prayer);
-  return makeManchesterDate(dateKey, jamatTime || prayer.start);
+
+  return makeManchesterDate(
+    dateKey,
+    jamatTime || prayer.start
+  );
 }
 
-function getNextPrayerEvent(now, todayKey, tomorrowKey, todayTimes, tomorrowTimes) {
+function getNextPrayerEvent(
+  now,
+  todayKey,
+  tomorrowKey,
+  todayTimes,
+  tomorrowTimes
+) {
   for (const prayer of PRAYER_ORDER) {
     if (!prayer.countdown) continue;
 
     const timing = todayTimes?.[prayer.key];
+
     if (!timing?.start) continue;
 
-    const startDate = makeManchesterDate(todayKey, timing.start);
+    const startDate = makeManchesterDate(
+      todayKey,
+      timing.start
+    );
 
     if (now < startDate) {
       return {
@@ -469,10 +461,16 @@ function getNextPrayerEvent(now, todayKey, tomorrowKey, todayTimes, tomorrowTime
       };
     }
 
-    const jamatTime = getJamatTime(prayer.key, timing);
+    const jamatTime = getJamatTime(
+      prayer.key,
+      timing
+    );
 
     if (jamatTime && jamatTime !== timing.start) {
-      const jamatDate = makeManchesterDate(todayKey, jamatTime);
+      const jamatDate = makeManchesterDate(
+        todayKey,
+        jamatTime
+      );
 
       if (now < jamatDate) {
         return {
@@ -487,7 +485,10 @@ function getNextPrayerEvent(now, todayKey, tomorrowKey, todayTimes, tomorrowTime
   const tomorrowFajr = tomorrowTimes?.fajr;
 
   if (tomorrowFajr?.start) {
-    const fajrDate = makeManchesterDate(tomorrowKey, tomorrowFajr.start);
+    const fajrDate = makeManchesterDate(
+      tomorrowKey,
+      tomorrowFajr.start
+    );
 
     return {
       date: fajrDate,
@@ -499,13 +500,29 @@ function getNextPrayerEvent(now, todayKey, tomorrowKey, todayTimes, tomorrowTime
   return null;
 }
 
-function getDisplayTiming(prayerKey, now, todayKey, tomorrowKey, todayTimes, tomorrowTimes) {
+function getDisplayTiming(
+  prayerKey,
+  now,
+  todayKey,
+  tomorrowKey,
+  todayTimes,
+  tomorrowTimes
+) {
   const todayPrayer = todayTimes?.[prayerKey];
+
   if (!todayPrayer) return null;
 
-  const finalTodayEvent = getFinalPrayerEvent(prayerKey, todayPrayer, todayKey);
+  const finalTodayEvent = getFinalPrayerEvent(
+    prayerKey,
+    todayPrayer,
+    todayKey
+  );
 
-  if (finalTodayEvent && now >= finalTodayEvent && tomorrowTimes?.[prayerKey]) {
+  if (
+    finalTodayEvent &&
+    now >= finalTodayEvent &&
+    tomorrowTimes?.[prayerKey]
+  ) {
     return {
       timing: tomorrowTimes[prayerKey],
       dateKey: tomorrowKey,
@@ -520,7 +537,13 @@ function getDisplayTiming(prayerKey, now, todayKey, tomorrowKey, todayTimes, tom
   };
 }
 
-function renderPrayerTable(now, todayKey, tomorrowKey, todayTimes, tomorrowTimes) {
+function renderPrayerTable(
+  now,
+  todayKey,
+  tomorrowKey,
+  todayTimes,
+  tomorrowTimes
+) {
   if (!prayerTableBody) return;
 
   prayerTableBody.innerHTML = PRAYER_ORDER.map(prayer => {
@@ -536,7 +559,9 @@ function renderPrayerTable(now, todayKey, tomorrowKey, todayTimes, tomorrowTimes
     if (!display) {
       return `
         <tr>
-          <td><span class="prayer-name">${prayer.label}</span></td>
+          <td>
+            <span class="prayer-name">${prayer.label}</span>
+          </td>
           <td class="prayer-time-muted">—</td>
           <td class="prayer-time-muted">—</td>
         </tr>
@@ -547,27 +572,48 @@ function renderPrayerTable(now, todayKey, tomorrowKey, todayTimes, tomorrowTimes
       ? '<span class="prayer-day-badge">Tomorrow</span>'
       : '';
 
-    const jamatTime = getJamatTime(prayer.key, display.timing);
+    const jamatTime = getJamatTime(
+      prayer.key,
+      display.timing
+    );
 
     return `
       <tr>
         <td>
-          <span class="prayer-name">${prayer.label}${badge}</span>
+          <span class="prayer-name">
+            ${prayer.label}${badge}
+          </span>
         </td>
+
         <td>
-          <span class="prayer-time-main">${formatPrayerTime(display.timing.start)}</span>
+          <span class="prayer-time-main">
+            ${formatPrayerTime(display.timing.start)}
+          </span>
         </td>
+
         <td class="${jamatTime ? '' : 'prayer-time-muted'}">
-          ${jamatTime
-            ? `<span class="prayer-time-main">${formatPrayerTime(jamatTime)}</span>`
-            : '—'}
+          ${
+            jamatTime
+              ? `
+                <span class="prayer-time-main">
+                  ${formatPrayerTime(jamatTime)}
+                </span>
+              `
+              : '—'
+          }
         </td>
       </tr>
     `;
   }).join('');
 }
 
-function renderJumuahTime(now, todayKey, tomorrowKey, todayTimes, tomorrowTimes) {
+function renderJumuahTime(
+  now,
+  todayKey,
+  tomorrowKey,
+  todayTimes,
+  tomorrowTimes
+) {
   if (!jumuahTimeElement) return;
 
   const display = getDisplayTiming(
@@ -579,8 +625,15 @@ function renderJumuahTime(now, todayKey, tomorrowKey, todayTimes, tomorrowTimes)
     tomorrowTimes
   );
 
-  const dhuhrJamat = getJamatTime('dhuhr', display?.timing);
-  jumuahTimeElement.textContent = dhuhrJamat ? formatPrayerTime(dhuhrJamat) : '—';
+  const dhuhrJamat = getJamatTime(
+    'dhuhr',
+    display?.timing
+  );
+
+  jumuahTimeElement.textContent =
+    dhuhrJamat
+      ? formatPrayerTime(dhuhrJamat)
+      : '—';
 }
 
 function renderPrayerWidget() {
@@ -591,36 +644,74 @@ function renderPrayerWidget() {
   const tomorrowKey = addDaysToDateKey(todayKey, 1);
 
   if (prayerClock) {
-    prayerClock.textContent = manchesterClockFormatter.format(now).toUpperCase();
-    prayerClock.setAttribute('datetime', now.toISOString());
+    prayerClock.textContent =
+      manchesterClockFormatter
+        .format(now)
+        .toUpperCase();
+
+    prayerClock.setAttribute(
+      'datetime',
+      now.toISOString()
+    );
   }
 
   if (prayerGregorian) {
-    prayerGregorian.textContent = gregorianFormatter.format(now).toUpperCase();
+    prayerGregorian.textContent =
+      gregorianFormatter
+        .format(now)
+        .toUpperCase();
   }
 
   const todayTimes = prayerTimes?.[todayKey];
   const tomorrowTimes = prayerTimes?.[tomorrowKey];
 
   if (prayerHijri) {
-    const hijriDate = getHijriDisplayDate(now, todayKey, tomorrowKey, todayTimes);
-    prayerHijri.textContent = formatHijriDate(hijriDate);
+    const hijriDate = getHijriDisplayDate(
+      now,
+      todayKey,
+      tomorrowKey,
+      todayTimes
+    );
+
+    prayerHijri.textContent =
+      formatHijriDate(hijriDate);
   }
 
   if (!prayerTimes) return;
 
   if (!todayTimes) {
-    if (countdownLabel) countdownLabel.textContent = 'Prayer times unavailable';
-    if (countdownTime) countdownTime.textContent = '--:--:--';
-    if (countdownTarget) countdownTarget.textContent = todayKey;
+    if (countdownLabel) {
+      countdownLabel.textContent =
+        'Prayer times unavailable';
+    }
+
+    if (countdownTime) {
+      countdownTime.textContent =
+        '--:--:--';
+    }
+
+    if (countdownTarget) {
+      countdownTarget.textContent =
+        todayKey;
+    }
+
     if (prayerTableBody) {
       prayerTableBody.innerHTML = `
         <tr>
-          <td colspan="3" class="prayer-loading">No prayer times found for today.</td>
+          <td
+            colspan="3"
+            class="prayer-loading"
+          >
+            No prayer times found for today.
+          </td>
         </tr>
       `;
     }
-    if (jumuahTimeElement) jumuahTimeElement.textContent = '—';
+
+    if (jumuahTimeElement) {
+      jumuahTimeElement.textContent = '—';
+    }
+
     return;
   }
 
@@ -633,14 +724,36 @@ function renderPrayerWidget() {
   );
 
   if (nextEvent) {
-    if (countdownLabel) countdownLabel.textContent = nextEvent.label;
-    if (countdownTime) countdownTime.textContent = formatCountdown(nextEvent.date - now);
-    if (countdownTarget) countdownTarget.textContent = nextEvent.target;
-  } else {
-    if (countdownLabel) countdownLabel.textContent = 'Next prayer';
-    if (countdownTime) countdownTime.textContent = '--:--:--';
+    if (countdownLabel) {
+      countdownLabel.textContent =
+        nextEvent.label;
+    }
+
+    if (countdownTime) {
+      countdownTime.textContent =
+        formatCountdown(
+          nextEvent.date - now
+        );
+    }
+
     if (countdownTarget) {
-      countdownTarget.textContent = 'Next day prayer times are not available yet.';
+      countdownTarget.textContent =
+        nextEvent.target;
+    }
+  } else {
+    if (countdownLabel) {
+      countdownLabel.textContent =
+        'Next prayer';
+    }
+
+    if (countdownTime) {
+      countdownTime.textContent =
+        '--:--:--';
+    }
+
+    if (countdownTarget) {
+      countdownTarget.textContent =
+        'Next day prayer times are not available yet.';
     }
   }
 
@@ -665,69 +778,126 @@ async function loadPrayerTimes() {
   if (!prayerWidget) return;
 
   try {
-    if (prayerStatus) prayerStatus.hidden = true;
+    if (prayerStatus) {
+      prayerStatus.hidden = true;
+    }
 
-    const response = await fetch(PRAYER_TIMES_URL, {
-      cache: 'no-store',
-      headers: { Accept: 'application/json' }
-    });
+    const response = await fetch(
+      PRAYER_TIMES_URL,
+      {
+        cache: 'no-store',
+        headers: {
+          Accept: 'application/json'
+        }
+      }
+    );
 
     if (!response.ok) {
-      throw new Error(`Prayer times request failed with HTTP ${response.status}`);
+      throw new Error(
+        `Prayer times request failed with HTTP ${response.status}`
+      );
     }
 
     prayerTimes = await response.json();
+
     renderPrayerWidget();
   } catch (error) {
-    console.error('Unable to load prayer times:', error);
+    console.error(
+      'Unable to load prayer times:',
+      error
+    );
 
-    if (countdownLabel) countdownLabel.textContent = 'Prayer times unavailable';
-    if (countdownTime) countdownTime.textContent = '--:--:--';
-    if (countdownTarget) countdownTarget.textContent = '';
+    if (countdownLabel) {
+      countdownLabel.textContent =
+        'Prayer times unavailable';
+    }
+
+    if (countdownTime) {
+      countdownTime.textContent =
+        '--:--:--';
+    }
+
+    if (countdownTarget) {
+      countdownTarget.textContent = '';
+    }
+
     if (prayerTableBody) {
       prayerTableBody.innerHTML = `
         <tr>
-          <td colspan="3" class="prayer-loading">Unable to load prayer times.</td>
+          <td
+            colspan="3"
+            class="prayer-loading"
+          >
+            Unable to load prayer times.
+          </td>
         </tr>
       `;
     }
-    if (jumuahTimeElement) jumuahTimeElement.textContent = '—';
+
+    if (jumuahTimeElement) {
+      jumuahTimeElement.textContent = '—';
+    }
 
     if (prayerStatus) {
       prayerStatus.hidden = false;
-      prayerStatus.textContent = 'Please refresh the page or use the downloadable timetable.';
+
+      prayerStatus.textContent =
+        'Please refresh the page or use the downloadable timetable.';
     }
   }
 }
 
 if (prayerWidget) {
   renderPrayerWidget();
+
   loadPrayerTimes();
 
-  setInterval(renderPrayerWidget, 1000);
+  setInterval(
+    renderPrayerWidget,
+    1000
+  );
 
-  setInterval(loadPrayerTimes, 30 * 60 * 1000);
+  setInterval(
+    loadPrayerTimes,
+    30 * 60 * 1000
+  );
 }
 
-const DHIKR_TIMES_URL = 'https://sufi.org.uk/live-dzp';
 const DHIKR_ROLLOVER_MINUTES = 30;
 
-const dhikrSection = document.querySelector('.dhikr-section');
-const dhikrMorning = document.getElementById('dhikr-morning');
-const dhikrEvening = document.getElementById('dhikr-evening');
-const dhikrNight = document.getElementById('dhikr-night');
-const dhikrNightCol = document.getElementById('dhikr-night-col');
-const dhikrStatus = document.querySelector('[data-dhikr-status]');
+const dhikrSection =
+  document.querySelector('.dhikr-section');
+
+const dhikrMorning =
+  document.getElementById('dhikr-morning');
+
+const dhikrEvening =
+  document.getElementById('dhikr-evening');
+
+const dhikrNight =
+  document.getElementById('dhikr-night');
+
+const dhikrNightCol =
+  document.getElementById('dhikr-night-col');
+
+const dhikrStatus =
+  document.querySelector('[data-dhikr-status]');
 
 let dhikrData = null;
 
 function formatDhikrTime(time) {
   if (!time) return '—';
 
-  const [hourString, minute] = time.split(':');
+  const [hourString, minute] =
+    time.split(':');
+
   const hour = Number(hourString);
-  const period = hour >= 12 ? 'PM' : 'AM';
-  const twelveHour = hour % 12 || 12;
+
+  const period =
+    hour >= 12 ? 'PM' : 'AM';
+
+  const twelveHour =
+    hour % 12 || 12;
 
   return `${twelveHour}:${minute} ${period}`;
 }
@@ -735,24 +905,36 @@ function formatDhikrTime(time) {
 function getDhikrDisplayTime(period) {
   if (!dhikrData) return null;
 
-  const todayTime = dhikrData.today?.[period] || null;
-  const tomorrowTime = dhikrData.tomorrow?.[period] || null;
+  const todayTime =
+    dhikrData.today?.[period] || null;
+
+  const tomorrowTime =
+    dhikrData.tomorrow?.[period] || null;
 
   if (!todayTime) {
     return tomorrowTime;
   }
 
-  const todayKey = getDateKey(new Date());
-  const gatheringTime = makeManchesterDate(todayKey, todayTime);
+  const todayKey =
+    getDateKey(new Date());
+
+  const gatheringTime =
+    makeManchesterDate(
+      todayKey,
+      todayTime
+    );
 
   if (!gatheringTime) {
     return todayTime;
   }
 
-  const rolloverTime = new Date(
-    gatheringTime.getTime() +
-    DHIKR_ROLLOVER_MINUTES * 60 * 1000
-  );
+  const rolloverTime =
+    new Date(
+      gatheringTime.getTime() +
+      DHIKR_ROLLOVER_MINUTES *
+        60 *
+        1000
+    );
 
   if (
     new Date() >= rolloverTime &&
@@ -774,7 +956,9 @@ function hasDhikrNight() {
 }
 
 function renderDhikrTimes() {
-  if (!dhikrSection || !dhikrData) return;
+  if (!dhikrSection || !dhikrData) {
+    return;
+  }
 
   if (dhikrMorning) {
     dhikrMorning.textContent =
@@ -790,7 +974,8 @@ function renderDhikrTimes() {
       );
   }
 
-  const showNight = hasDhikrNight();
+  const showNight =
+    hasDhikrNight();
 
   dhikrSection.classList.toggle(
     'has-night',
@@ -798,15 +983,19 @@ function renderDhikrTimes() {
   );
 
   if (dhikrNightCol) {
-    dhikrNightCol.hidden = !showNight;
+    dhikrNightCol.hidden =
+      !showNight;
   }
 
   if (dhikrNight) {
-    dhikrNight.textContent = showNight
-      ? formatDhikrTime(
-          getDhikrDisplayTime('night')
-        )
-      : '—';
+    dhikrNight.textContent =
+      showNight
+        ? formatDhikrTime(
+            getDhikrDisplayTime(
+              'night'
+            )
+          )
+        : '—';
   }
 }
 
@@ -831,7 +1020,8 @@ async function loadDhikrTimes() {
       );
     }
 
-    dhikrData = await response.json();
+    dhikrData =
+      await response.json();
 
     renderDhikrTimes();
   } catch (error) {
@@ -862,6 +1052,7 @@ async function loadDhikrTimes() {
 
     if (dhikrStatus) {
       dhikrStatus.hidden = false;
+
       dhikrStatus.textContent =
         'Gathering times are temporarily unavailable.';
     }
