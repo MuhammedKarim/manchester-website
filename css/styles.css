@@ -378,6 +378,28 @@ body.poster-open {
     0 12px 30px rgba(0, 0, 0, 0.18);
 }
 
+.media-links-heading {
+  margin: 0 0 0.15rem;
+  color: var(--text);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+
+.media-links-heading a {
+  color: var(--gold-soft);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: color 0.2s ease;
+}
+
+.media-links-heading a:hover,
+.media-links-heading a:focus-visible {
+  color: #fff1b8;
+}
+
 body.has-notice .media-links {
   padding-top: calc(82px + var(--notice-height) + 1.35rem);
 }
