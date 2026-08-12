@@ -1,0 +1,5 @@
+/assets/poster.*
+  Cache-Control: no-store
+
+/assets/timetable.*
+  Cache-Control: no-store
