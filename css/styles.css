@@ -386,19 +386,19 @@ body.has-notice .media-banner {
 
 .media-banner-zone {
   position: absolute;
-  top: 0;
-  height: 100%;
+  left: 0;
+  width: 100%;
   z-index: 2;
 }
 
-.media-banner-zone-left {
-  left: 0;
-  width: 50%;
+.media-banner-zone-top {
+  top: 0;
+  height: 50%;
 }
 
-.media-banner-zone-right {
-  right: 0;
-  width: 50%;
+.media-banner-zone-bottom {
+  bottom: 0;
+  height: 50%;
 }
 
 .media-banner-zone:focus-visible {
