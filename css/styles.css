@@ -408,7 +408,7 @@ body.has-notice .media-banner {
 
 @media (max-width: 760px) {
   .media-banner {
-    padding: calc(72px + 0.75rem) 0 0.75rem;
+    padding: calc(72px + 0.75rem) 0 0.35rem;
   }
 
   body.has-notice .media-banner {
@@ -417,6 +417,10 @@ body.has-notice .media-banner {
 
   .media-banner-split {
     border-radius: 14px;
+  }
+
+  .hero {
+    padding-top: 2rem;
   }
 }
 
