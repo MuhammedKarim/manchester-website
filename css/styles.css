@@ -301,7 +301,7 @@ body.poster-open {
 .brand strong {
   display: block;
   font-family: "Cormorant Garamond", serif;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   letter-spacing: 0.06em;
   line-height: 1.1;
 }
@@ -1232,13 +1232,13 @@ dd {
   }
 
   .brand strong {
-    font-size: 1rem;
+    font-size: 0.8rem;
     line-height: 1.05;
     margin: 0;
   }
 
   .brand small {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     line-height: 1;
     margin-top: 0.2rem;
   }
