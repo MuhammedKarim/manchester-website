@@ -1,8 +1,10 @@
 import { DurableObject } from "cloudflare:workers";
 
-const ALLOWED_ORIGINS = new Set([
-  "https://khanqah-naqshbandia-site.pages.dev/"
-]);
+const ALLOWED_ORIGINS = new Set();
+
+// const ALLOWED_ORIGINS = new Set([
+//   "https://khanqah-naqshbandia-site.pages.dev/"
+// ]);
 
 const ACTIVE_TIMEOUT_MS = 90 * 1000;
 const ALARM_INTERVAL_MS = 30 * 1000;
