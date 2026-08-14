@@ -877,6 +877,19 @@ strong {
   padding: clamp(1.4rem, 4vw, 2.4rem);
 }
 
+.contact-person {
+  margin: 1.25rem 0 0;
+  color: var(--gold-soft);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.contact-person + .phone-link {
+  margin-top: 0.45rem;
+}
+
 .text-link,
 .phone-link {
   display: inline-flex;
@@ -1555,5 +1568,80 @@ dd {
 
   .prayer-time-main {
     font-size: 0.9rem;
+  }
+}
+
+.live-visitors {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 35;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+
+  min-height: 38px;
+  padding: 0.5rem 0.85rem;
+
+  border: 1px solid rgba(214, 184, 90, 0.3);
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(16, 56, 27, 0.96),
+      rgba(7, 16, 10, 0.96)
+    );
+
+  color: var(--text);
+
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  backdrop-filter: blur(12px);
+}
+
+.live-visitors[hidden] {
+  display: none;
+}
+
+.live-visitors-dot {
+  width: 8px;
+  height: 8px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: var(--gold-soft);
+
+  box-shadow:
+    0 0 0 3px rgba(214, 184, 90, 0.1),
+    0 0 12px rgba(214, 184, 90, 0.55);
+}
+
+@media (max-width: 760px) {
+  .live-visitors {
+    right: 0.85rem;
+    bottom: 0.85rem;
+
+    min-height: 36px;
+
+    padding: 0.45rem 0.75rem;
+
+    font-size: 0.72rem;
+  }
+
+  .live-visitors-dot {
+    width: 7px;
+    height: 7px;
   }
 }

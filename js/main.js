@@ -1,5 +1,6 @@
 const PRAYER_TIMES_URL = 'https://muhammedkarim.github.io/manchester-khanqah/prayer-times.json';
 const DHIKR_TIMES_URL = 'https://sufi.org.uk/live-dzp';
+const LIVE_PRESENCE_URL = 'wss://khanqah-presence.muhammedkarim.workers.dev/presence';
 
 const POSTER_CONTROL_URL = 'assets/poster.json';
 
@@ -1642,3 +1643,276 @@ if (dhikrSection) {
     10 * 60 * 1000
   );
 }
+
+const liveVisitors =
+  document.querySelector(
+    '[data-live-visitors]'
+  );
+
+const liveVisitorCount =
+  document.querySelector(
+    '[data-live-visitor-count]'
+  );
+
+const PRESENCE_HEARTBEAT_MS =
+  30 * 1000;
+
+let presenceSocket = null;
+let presenceHeartbeatTimer = null;
+let presenceReconnectTimer = null;
+let presenceReconnectDelay = 2000;
+
+function setPresenceCount(count) {
+  if (
+    !liveVisitors ||
+    !liveVisitorCount
+  ) {
+    return;
+  }
+
+  const safeCount =
+    Math.max(
+      0,
+      Number(count) || 0
+    );
+
+  liveVisitorCount.textContent =
+    safeCount === 1
+      ? '1 live visitor'
+      : `${safeCount} live visitors`;
+
+  liveVisitors.hidden = false;
+}
+
+function sendPresenceMessage(type) {
+  if (
+    presenceSocket?.readyState !==
+    WebSocket.OPEN
+  ) {
+    return;
+  }
+
+  presenceSocket.send(
+    JSON.stringify({
+      type
+    })
+  );
+}
+
+function stopPresenceHeartbeat() {
+  if (!presenceHeartbeatTimer) {
+    return;
+  }
+
+  clearInterval(
+    presenceHeartbeatTimer
+  );
+
+  presenceHeartbeatTimer = null;
+}
+
+function startPresenceHeartbeat() {
+  stopPresenceHeartbeat();
+
+  if (
+    document.visibilityState !==
+    'visible'
+  ) {
+    return;
+  }
+
+  sendPresenceMessage(
+    'heartbeat'
+  );
+
+  presenceHeartbeatTimer =
+    setInterval(
+      () => {
+        if (
+          document.visibilityState ===
+          'visible'
+        ) {
+          sendPresenceMessage(
+            'heartbeat'
+          );
+        }
+      },
+      PRESENCE_HEARTBEAT_MS
+    );
+}
+
+function schedulePresenceReconnect() {
+  if (
+    presenceReconnectTimer ||
+    document.visibilityState ===
+      'hidden'
+  ) {
+    return;
+  }
+
+  presenceReconnectTimer =
+    setTimeout(
+      () => {
+        presenceReconnectTimer =
+          null;
+
+        connectPresence();
+
+        presenceReconnectDelay =
+          Math.min(
+            presenceReconnectDelay *
+              1.5,
+            15000
+          );
+      },
+      presenceReconnectDelay
+    );
+}
+
+function connectPresence() {
+  if (
+    !liveVisitors ||
+    !liveVisitorCount ||
+    !LIVE_PRESENCE_URL
+  ) {
+    return;
+  }
+
+  if (
+    document.visibilityState ===
+    'hidden'
+  ) {
+    return;
+  }
+
+  if (
+    presenceSocket &&
+    (
+      presenceSocket.readyState ===
+        WebSocket.OPEN ||
+      presenceSocket.readyState ===
+        WebSocket.CONNECTING
+    )
+  ) {
+    return;
+  }
+
+  try {
+    presenceSocket =
+      new WebSocket(
+        LIVE_PRESENCE_URL
+      );
+  } catch {
+    schedulePresenceReconnect();
+    return;
+  }
+
+  presenceSocket.addEventListener(
+    'open',
+    () => {
+      presenceReconnectDelay =
+        2000;
+
+      sendPresenceMessage(
+        'active'
+      );
+
+      startPresenceHeartbeat();
+    }
+  );
+
+  presenceSocket.addEventListener(
+    'message',
+    event => {
+      try {
+        const data =
+          JSON.parse(
+            event.data
+          );
+
+        if (
+          data.type ===
+            'presence' &&
+          Number.isFinite(
+            Number(data.count)
+          )
+        ) {
+          setPresenceCount(
+            data.count
+          );
+        }
+      } catch {
+      }
+    }
+  );
+
+  presenceSocket.addEventListener(
+    'close',
+    () => {
+      stopPresenceHeartbeat();
+
+      presenceSocket = null;
+
+      schedulePresenceReconnect();
+    }
+  );
+
+  presenceSocket.addEventListener(
+    'error',
+    () => {
+      presenceSocket?.close();
+    }
+  );
+}
+
+document.addEventListener(
+  'visibilitychange',
+  () => {
+    if (
+      document.visibilityState ===
+      'visible'
+    ) {
+      if (
+        presenceSocket?.readyState ===
+        WebSocket.OPEN
+      ) {
+        sendPresenceMessage(
+          'active'
+        );
+
+        startPresenceHeartbeat();
+      } else {
+        connectPresence();
+      }
+    } else {
+      sendPresenceMessage(
+        'inactive'
+      );
+
+      stopPresenceHeartbeat();
+    }
+  }
+);
+
+window.addEventListener(
+  'pagehide',
+  () => {
+    sendPresenceMessage(
+      'inactive'
+    );
+
+    stopPresenceHeartbeat();
+
+    if (
+      presenceSocket?.readyState ===
+        WebSocket.OPEN
+    ) {
+      presenceSocket.close(
+        1000,
+        'Page closed'
+      );
+    }
+  }
+);
+
+connectPresence();

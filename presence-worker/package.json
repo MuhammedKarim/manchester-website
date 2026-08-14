@@ -1,0 +1,7 @@
+{
+  "name": "khanqah-presence",
+  "private": true,
+  "devDependencies": {
+    "wrangler": "latest"
+  }
+}

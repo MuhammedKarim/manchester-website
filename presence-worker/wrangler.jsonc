@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "khanqah-presence",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-14",
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "PRESENCE",
+        "class_name": "Presence"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "Presence"
+      ]
+    }
+  ]
+}
