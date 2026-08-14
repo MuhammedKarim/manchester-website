@@ -1,7 +1,5 @@
 import { DurableObject } from "cloudflare:workers";
 
-const ALLOWED_ORIGINS = new Set();
-
 // const ALLOWED_ORIGINS = new Set([
 //   "https://khanqah-naqshbandia-site.pages.dev/"
 // ]);
@@ -28,16 +26,31 @@ export default {
       });
     }
 
+    function isAllowedOrigin(origin) {
+        if (!origin) {
+            return false;
+        }
+
+        try {
+            const url = new URL(origin);
+
+            return (
+            url.hostname === "khanqah-naqshbandia-site.pages.dev" ||
+            url.hostname.endsWith(
+                ".khanqah-naqshbandia-site.pages.dev"
+            )
+            );
+        } catch {
+            return false;
+        }
+    }
+
     const origin = request.headers.get("Origin");
 
-    if (
-      origin &&
-      ALLOWED_ORIGINS.size &&
-      !ALLOWED_ORIGINS.has(origin)
-    ) {
-      return new Response("Forbidden", {
-        status: 403
-      });
+    if (!isAllowedOrigin(origin)) {
+        return new Response("Forbidden", {
+            status: 403
+        });
     }
 
     const presence =

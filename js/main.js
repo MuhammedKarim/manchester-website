@@ -1678,8 +1678,8 @@ function setPresenceCount(count) {
 
   liveVisitorCount.textContent =
     safeCount === 1
-      ? '1 live visitor'
-      : `${safeCount} live visitors`;
+      ? '1 Live Visitor'
+      : `${safeCount} Live Visitors`;
 
   liveVisitors.hidden = false;
 }
