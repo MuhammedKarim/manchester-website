@@ -1,0 +1,23 @@
+{
+  "livePresenceUrl": "wss://khanqah-presence.muhammedkarim.workers.dev/presence",
+
+  "sharedBanner": {
+    "image": "assets/shared/banner.png",
+    "topUrl": "https://sufi.org.uk",
+    "bottomUrl": "https://sufi.org.uk/live"
+  },
+
+  "poster": {
+    "controlUrl": "assets/shared/poster.json",
+    "folder": "assets/shared"
+  },
+
+  "dhikr": {
+    "enabled": true,
+    "timesUrl": "https://sufi.org.uk/live-dzp",
+    "title": "Remembrance of Allah",
+    "description": "Live audio broadcasts of Dhikr gatherings are held daily after Fajr and Maghrib/Isha, led by Hadhrat Sheikh Asif Hussain Farooqui, Daamat Barakaatuhum (UK).",
+    "secondaryText": "All are warmly welcome to attend in person or join via the live stream.",
+    "liveUrl": "https://sufi.org.uk/live"
+  }
+}

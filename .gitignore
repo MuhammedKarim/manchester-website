@@ -3,6 +3,5 @@ presence-worker/.wrangler/
 presence-worker/.dev.vars
 presence-worker/.env
 presence-worker/.env.*
-
 .DS_Store
 Thumbs.db
