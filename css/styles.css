@@ -861,6 +861,7 @@ dd {
 .footer-inner p { margin: 0; }
 .footer-inner strong { font-family: "Cormorant Garamond", serif; font-size: 1.2rem; }
 .footer-change-masjid {
+  margin-left: auto;
   padding: .55rem .8rem;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -948,6 +949,11 @@ dd {
   }
   body.has-notice .nav-menu { inset: calc(92px + var(--notice-height)) 20px auto; }
   .nav-menu.is-open { opacity: 1; pointer-events: auto; transform: none; }
+  .nav-change-masjid {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
 }
 
 @media (max-width: 980px) {
@@ -984,7 +990,15 @@ dd {
   .location-address-row { justify-content: center; }
   .directions-button { width: 100%; }
   .map-frame { height: 280px; }
-  .footer-inner { flex-direction: column; align-items: flex-start; justify-content: center; }
+  .footer-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-change-masjid {
+    margin-left: auto;
+    flex-shrink: 0;
+  }
   .live-visitors { right: .85rem; bottom: .85rem; min-height: 36px; padding: .45rem .75rem; font-size: .72rem; }
   .masjid-selector-grid { grid-template-columns: 1fr; }
   .prayer-table th, .prayer-table td { padding: .82rem .58rem; }
