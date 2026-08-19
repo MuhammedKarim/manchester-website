@@ -33,8 +33,8 @@ function setCount(count) {
 
   countElement.textContent =
     value === 1
-      ? '1 person online'
-      : `${value} people online`;
+      ? '1 Live Visitor'
+      : `${value} Live Visitors`;
 
   container.hidden =
     false;
