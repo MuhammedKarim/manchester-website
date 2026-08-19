@@ -41,18 +41,55 @@ export function initNavigation(
   navMenu?.addEventListener(
     'click',
     event => {
+      const link =
+        event.target.closest('a');
+
+      if (!link) {
+        return;
+      }
+
+      const href =
+        link.getAttribute('href');
+
+      navMenu.classList.remove(
+        'is-open'
+      );
+
+      navToggle?.setAttribute(
+        'aria-expanded',
+        'false'
+      );
+
       if (
-        event.target.matches('a')
+        !href ||
+        !href.startsWith('#') ||
+        href === '#'
       ) {
-        navMenu.classList.remove(
-          'is-open'
+        return;
+      }
+
+      event.preventDefault();
+
+      const target =
+        document.querySelector(
+          href
         );
 
-        navToggle?.setAttribute(
-          'aria-expanded',
-          'false'
-        );
+      if (!target) {
+        return;
       }
+
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+
+      history.replaceState(
+        history.state,
+        '',
+        window.location.pathname +
+          window.location.search
+      );
     }
   );
 
