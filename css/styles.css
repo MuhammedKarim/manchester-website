@@ -89,6 +89,14 @@ strong { color: var(--gold-soft); font-weight: 600; }
     #07100a;
   padding: clamp(2rem, 6vw, 5rem) 0;
 }
+body.has-notice .masjid-selector {
+  padding-top:
+    calc(
+      clamp(2rem, 6vw, 5rem) +
+      var(--notice-height)
+    );
+}
+
 .masjid-selector-shell {
   width: min(1180px, calc(100% - 32px));
   margin: auto;
@@ -215,7 +223,7 @@ strong { color: var(--gold-soft); font-weight: 600; }
   top: 0;
   left: 0;
   right: 0;
-  z-index: 40;
+  z-index: 250;
   width: 100%;
   height: var(--notice-height);
   overflow: hidden;
