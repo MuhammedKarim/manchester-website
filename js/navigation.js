@@ -20,6 +20,24 @@ function setHeaderState() {
   );
 }
 
+function closeMenu() {
+  navMenu?.classList.remove(
+    'is-open'
+  );
+
+  navToggle?.setAttribute(
+    'aria-expanded',
+    'false'
+  );
+}
+
+function getCleanUrl() {
+  return (
+    window.location.pathname +
+    window.location.search
+  );
+}
+
 export function initNavigation(
   onChangeMasjid
 ) {
@@ -38,37 +56,33 @@ export function initNavigation(
     }
   );
 
-  navMenu?.addEventListener(
+  document.addEventListener(
     'click',
     event => {
       const link =
-        event.target.closest('a');
+        event.target.closest(
+          'a[href^="#"]'
+        );
 
       if (!link) {
         return;
       }
 
       const href =
-        link.getAttribute('href');
+        link.getAttribute(
+          'href'
+        );
 
-      navMenu.classList.remove(
-        'is-open'
-      );
-
-      navToggle?.setAttribute(
-        'aria-expanded',
-        'false'
-      );
-
-      if (
-        !href ||
-        !href.startsWith('#') ||
-        href === '#'
-      ) {
+      if (!href) {
         return;
       }
 
       event.preventDefault();
+      closeMenu();
+
+      if (href === '#') {
+        return;
+      }
 
       const target =
         document.querySelector(
@@ -87,8 +101,7 @@ export function initNavigation(
       history.replaceState(
         history.state,
         '',
-        window.location.pathname +
-          window.location.search
+        getCleanUrl()
       );
     }
   );
@@ -101,15 +114,7 @@ export function initNavigation(
       button.addEventListener(
         'click',
         () => {
-          navMenu?.classList.remove(
-            'is-open'
-          );
-
-          navToggle?.setAttribute(
-            'aria-expanded',
-            'false'
-          );
-
+          closeMenu();
           onChangeMasjid();
         }
       );
@@ -124,15 +129,7 @@ export function initNavigation(
           'is-open'
         )
       ) {
-        navMenu.classList.remove(
-          'is-open'
-        );
-
-        navToggle?.setAttribute(
-          'aria-expanded',
-          'false'
-        );
-
+        closeMenu();
         navToggle?.focus();
       }
     }

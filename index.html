@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Khanqah prayer times, announcements, facilities, donations and contact details.">
-  <title>Khanqah Naqshbandia</title>
+  <meta name="description" content="Khanqah Naqshbandia Mujaddidia prayer times, announcements, facilities, donations and contact details.">
+  <title>Khanqah Naqshbandia Mujaddidia</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -35,8 +36,9 @@
   <section class="masjid-selector" data-masjid-selector hidden>
     <div class="masjid-selector-shell">
       <p class="eyebrow arabic selector-bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
-      <h1 data-selector-title>Choose your Khanqah</h1>
-      <p class="masjid-selector-intro" data-selector-intro></p>
+      <h1 data-selector-title>KHANQAH NAQSHBANDIA MUJADDIDIA</h1>
+      <p class="masjid-selector-country" data-selector-country>UNITED KINGDOM</p>
+      <p class="masjid-selector-intro" data-selector-intro>Select a Khanqah below</p>
       <div class="masjid-selector-grid" data-masjid-selector-grid></div>
     </div>
   </section>
@@ -102,10 +104,10 @@
           <div class="hero-copy reveal">
             <p class="eyebrow arabic">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
             <h1 id="hero-title" data-hero-name></h1>
-            <p class="hero-lede" data-hero-location></p>
+            <p class="hero-lede"><span data-hero-location></span><span class="hero-coming-soon" data-hero-coming-soon hidden>COMING SOON</span></p>
             <div class="hero-actions">
               <a class="button button-primary" href="#" data-timetable-download>Download Monthly Timetable</a>
-              <a class="button button-ghost" href="#donate" data-donate-button>Support the Masjid</a>
+              <a class="button button-ghost" href="#donate" data-donate-button>Support the Khanqah</a>
             </div>
           </div>
 
@@ -158,7 +160,7 @@
             </div>
             <p class="dhikr-status" data-dhikr-status hidden></p>
           </div>
-          <a class="text-link" data-dhikr-live-link target="_blank" rel="noopener noreferrer">Listen live</a>
+          <a class="text-link" data-dhikr-live-link target="_blank" rel="noopener noreferrer">Listen live at sufi.org.uk/live</a>
         </article>
       </section>
 
@@ -172,16 +174,48 @@
       <section class="section donate" id="donate" aria-labelledby="donate-title">
         <div class="container donate-grid">
           <div class="section-intro reveal">
-            <p class="eyebrow">Donate</p><h2 id="donate-title">Support the Masjid</h2>
+            <p class="eyebrow">Donate</p><h2 id="donate-title">Support the Khanqah</h2>
             <blockquote>“Whoever builds a mosque for the sake of Allah, Allah will build for him a house like it in Paradise.” <cite>— Sahih al-Bukhari &amp; Sahih Muslim</cite></blockquote>
           </div>
           <article class="bank-card reveal" aria-label="Bank transfer details">
             <h3>Bank transfer details</h3>
             <dl>
-              <div><dt>Account name</dt><dd data-bank-account-name></dd></div>
-              <div><dt>Bank</dt><dd data-bank-name></dd></div>
-              <div><dt>Sort code</dt><dd class="numeric" data-bank-sort-code></dd></div>
-              <div><dt>Account number</dt><dd class="numeric" data-bank-account-number></dd></div>
+              <div>
+                <dt>Account name</dt>
+                <dd class="bank-value-row">
+                  <span data-bank-account-name></span>
+                  <button class="copy-bank-button" type="button" data-copy-bank="accountName" aria-label="Copy account name">
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H8V7h11v14Z"/></svg>
+                  </button>
+                </dd>
+              </div>
+              <div>
+                <dt>Bank</dt>
+                <dd class="bank-value-row">
+                  <span data-bank-name></span>
+                  <button class="copy-bank-button" type="button" data-copy-bank="bank" aria-label="Copy bank name">
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H8V7h11v14Z"/></svg>
+                  </button>
+                </dd>
+              </div>
+              <div>
+                <dt>Sort code</dt>
+                <dd class="bank-value-row numeric">
+                  <span data-bank-sort-code></span>
+                  <button class="copy-bank-button" type="button" data-copy-bank="sortCode" aria-label="Copy sort code">
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H8V7h11v14Z"/></svg>
+                  </button>
+                </dd>
+              </div>
+              <div>
+                <dt>Account number</dt>
+                <dd class="bank-value-row numeric">
+                  <span data-bank-account-number></span>
+                  <button class="copy-bank-button" type="button" data-copy-bank="accountNumber" aria-label="Copy account number">
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H8V7h11v14Z"/></svg>
+                  </button>
+                </dd>
+              </div>
             </dl>
           </article>
         </div>
@@ -191,7 +225,7 @@
         <div class="container contact-hours">
           <div class="centered"><p class="eyebrow">Visit & Contact</p><h2>Location</h2></div>
           <div class="location-card reveal">
-            <div class="map-frame"><iframe data-map-frame title="Masjid location" src="about:blank" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+            <div class="map-frame"><iframe data-map-frame title="Khanqah location" src="about:blank" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div>
             <div class="location-details">
               <div class="location-info">
                 <p class="location-label" data-location-name></p>
@@ -215,15 +249,133 @@
               <p class="eyebrow">Contact us</p><h2 id="contact-title">Get in touch</h2><p>For further enquiries, please contact us directly.</p>
               <p class="contact-person" data-contact-name hidden></p>
               <a class="phone-link" data-contact-phone></a>
+              <a class="email-link" data-contact-email></a>
             </article>
           </div>
+          <article
+            class="glass-card contact-form-card reveal"
+            data-contact-form-card
+          >
+            <div class="contact-form-heading">
+              <p class="eyebrow">Contact form</p>
+
+              <h2>Send us a message</h2>
+
+              <p>
+                Complete the form below and your message will be sent
+                directly to this Khanqah.
+              </p>
+            </div>
+
+            <form
+              class="contact-form"
+              data-contact-form
+              novalidate
+            >
+              <div class="contact-form-grid">
+                <label class="contact-form-field">
+                  <span>Name</span>
+
+                  <input
+                    type="text"
+                    name="name"
+                    autocomplete="name"
+                    maxlength="100"
+                    required
+                  >
+                </label>
+
+                <label class="contact-form-field">
+                  <span>Phone Number</span>
+
+                  <input
+                    type="tel"
+                    name="phone"
+                    autocomplete="tel"
+                    maxlength="30"
+                    required
+                  >
+                </label>
+
+                <label class="contact-form-field">
+                  <span>Email</span>
+
+                  <input
+                    type="email"
+                    name="email"
+                    autocomplete="email"
+                    maxlength="200"
+                    required
+                  >
+                </label>
+
+                <label class="contact-form-field">
+                  <span>Subject</span>
+
+                  <input
+                    type="text"
+                    name="subject"
+                    maxlength="150"
+                    required
+                  >
+                </label>
+              </div>
+
+              <label class="contact-form-field contact-form-message">
+                <span>Message</span>
+
+                <textarea
+                  name="message"
+                  rows="7"
+                  maxlength="5000"
+                  required
+                ></textarea>
+              </label>
+
+              <div
+                class="contact-form-honeypot"
+                aria-hidden="true"
+              >
+                <label>
+                  Website
+
+                  <input
+                    type="text"
+                    name="website"
+                    tabindex="-1"
+                    autocomplete="off"
+                  >
+                </label>
+              </div>
+
+              <div
+                class="contact-turnstile"
+                data-contact-turnstile
+              ></div>
+
+              <div class="contact-form-actions">
+                <button
+                  class="button button-primary"
+                  type="submit"
+                  data-contact-submit
+                >
+                  Send Message
+                </button>
+
+                <p
+                  class="contact-form-status"
+                  data-contact-form-status
+                  aria-live="polite"
+                ></p>
+              </div>
+            </form>
+          </article>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
       <div class="container footer-inner">
-        <p><strong data-footer-name></strong></p>
         <button class="footer-change-masjid" type="button" data-change-masjid>Change Khanqah</button>
       </div>
     </footer>
@@ -233,6 +385,7 @@
     <span class="live-visitors-dot" aria-hidden="true"></span><span data-live-visitor-count>0 Live Visitors</span>
   </div>
 
+  <script src="https://unpkg.com/@umalqura/core@0.0.7/dist/umalqura.min.js"></script>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

@@ -3,20 +3,12 @@ import {
   makeManchesterDate
 } from './prayer-times.js';
 
-const ROLLOVER_MINUTES =
-  30;
+const ROLLOVER_MINUTES = 30;
 
-let currentDhikrConfig =
-  null;
-
-let dhikrData =
-  null;
-
-let renderTimer =
-  null;
-
-let reloadTimer =
-  null;
+let currentDhikrConfig = null;
+let dhikrData = null;
+let renderTimer = null;
+let reloadTimer = null;
 
 const section =
   document.querySelector(
@@ -73,9 +65,7 @@ const status =
     '[data-dhikr-status]'
   );
 
-function formatDhikrTime(
-  time
-) {
+function formatDhikrTime(time) {
   if (!time) {
     return '—';
   }
@@ -86,51 +76,31 @@ function formatDhikrTime(
   ] = time.split(':');
 
   const hour =
-    Number(
-      hourString
-    );
+    Number(hourString);
 
-  const period =
-    hour >= 12
-      ? 'PM'
-      : 'AM';
-
-  const twelveHour =
-    hour % 12 ||
-    12;
-
-  return `${twelveHour}:${minute} ${period}`;
+  return `${hour % 12 || 12}:${minute} ${hour >= 12 ? 'PM' : 'AM'}`;
 }
 
-function getDhikrDisplayTime(
-  period
-) {
+function getDhikrDisplayTime(period) {
   if (!dhikrData) {
     return null;
   }
 
   const todayTime =
-    dhikrData.today
-      ?.[period] ||
+    dhikrData.today?.[period] ||
     null;
 
   const tomorrowTime =
-    dhikrData.tomorrow
-      ?.[period] ||
+    dhikrData.tomorrow?.[period] ||
     null;
 
   if (!todayTime) {
     return tomorrowTime;
   }
 
-  const todayKey =
-    getDateKey(
-      new Date()
-    );
-
   const gatheringTime =
     makeManchesterDate(
-      todayKey,
+      getDateKey(new Date()),
       todayTime
     );
 
@@ -140,16 +110,14 @@ function getDhikrDisplayTime(
 
   const rolloverTime =
     new Date(
-      gatheringTime
-        .getTime() +
+      gatheringTime.getTime() +
       ROLLOVER_MINUTES *
         60 *
         1000
     );
 
   if (
-    new Date() >=
-      rolloverTime &&
+    new Date() >= rolloverTime &&
     tomorrowTime
   ) {
     return tomorrowTime;
@@ -164,10 +132,8 @@ function hasDhikrNight() {
   }
 
   return Boolean(
-    dhikrData.today
-      ?.night ||
-    dhikrData.tomorrow
-      ?.night
+    dhikrData.today?.night ||
+    dhikrData.tomorrow?.night
   );
 }
 
@@ -224,25 +190,21 @@ function renderDhikrTimes() {
 
 async function loadDhikrTimes() {
   if (
-    !currentDhikrConfig
-      ?.timesUrl
+    !currentDhikrConfig?.timesUrl
   ) {
     return;
   }
 
   try {
     if (status) {
-      status.hidden =
-        true;
+      status.hidden = true;
     }
 
     const response =
       await fetch(
-        currentDhikrConfig
-          .timesUrl,
+        currentDhikrConfig.timesUrl,
         {
-          cache:
-            'no-store'
+          cache: 'no-store'
         }
       );
 
@@ -263,23 +225,19 @@ async function loadDhikrTimes() {
     );
 
     if (morning) {
-      morning.textContent =
-        '—';
+      morning.textContent = '—';
     }
 
     if (evening) {
-      evening.textContent =
-        '—';
+      evening.textContent = '—';
     }
 
     if (night) {
-      night.textContent =
-        '—';
+      night.textContent = '—';
     }
 
     if (nightCol) {
-      nightCol.hidden =
-        true;
+      nightCol.hidden = true;
     }
 
     section?.classList.remove(
@@ -287,9 +245,7 @@ async function loadDhikrTimes() {
     );
 
     if (status) {
-      status.hidden =
-        false;
-
+      status.hidden = false;
       status.textContent =
         'Gathering times are temporarily unavailable.';
     }
@@ -297,22 +253,12 @@ async function loadDhikrTimes() {
 }
 
 export function stopDhikr() {
-  clearInterval(
-    renderTimer
-  );
+  clearInterval(renderTimer);
+  clearInterval(reloadTimer);
 
-  clearInterval(
-    reloadTimer
-  );
-
-  renderTimer =
-    null;
-
-  reloadTimer =
-    null;
-
-  dhikrData =
-    null;
+  renderTimer = null;
+  reloadTimer = null;
+  dhikrData = null;
 }
 
 export function initDhikr(
@@ -323,60 +269,54 @@ export function initDhikr(
   currentDhikrConfig =
     dhikrConfig;
 
-  const dhikrEnabled =
-    currentDhikrConfig
-      ?.enabled === true &&
+  const enabled =
+    currentDhikrConfig?.enabled === true &&
     Boolean(
-      currentDhikrConfig
-        ?.timesUrl
+      currentDhikrConfig?.timesUrl
     );
 
   if (section) {
-    section.hidden =
-      !dhikrEnabled;
+    section.hidden = !enabled;
   }
 
   if (navItem) {
-    navItem.hidden =
-      !dhikrEnabled;
+    navItem.hidden = !enabled;
   }
 
   if (title) {
     title.textContent =
-      currentDhikrConfig
-        ?.title ||
+      currentDhikrConfig?.title ||
       'Remembrance of Allah';
   }
 
   if (description) {
     description.textContent =
-      currentDhikrConfig
-        ?.description ||
+      currentDhikrConfig?.description ||
       '';
   }
 
   if (secondary) {
     secondary.textContent =
-      currentDhikrConfig
-        ?.secondaryText ||
+      currentDhikrConfig?.secondaryText ||
       '';
   }
 
   if (liveLink) {
     const liveUrl =
-      currentDhikrConfig
-        ?.liveUrl ||
+      currentDhikrConfig?.liveUrl ||
       '';
 
     liveLink.href =
-      liveUrl ||
-      '#';
+      liveUrl || '#';
 
-    liveLink.hidden =
-      !liveUrl;
+    liveLink.textContent =
+      currentDhikrConfig?.liveText ||
+      'Listen live at sufi.org.uk/live';
+
+    liveLink.hidden = !liveUrl;
   }
 
-  if (!dhikrEnabled) {
+  if (!enabled) {
     return;
   }
 
@@ -391,8 +331,6 @@ export function initDhikr(
   reloadTimer =
     setInterval(
       loadDhikrTimes,
-      10 *
-        60 *
-        1000
+      10 * 60 * 1000
     );
 }

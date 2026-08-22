@@ -1,5 +1,7 @@
 const TIME_ZONE = 'Europe/London';
 
+const HIJRI_DATE_OFFSET_DAYS = 0;
+
 const PRAYERS = [
   ['fajr', 'Fajr'],
   ['sunrise', 'Sunrise'],
@@ -88,17 +90,6 @@ const gregorianFormatter =
     }
   );
 
-const hijriFormatter =
-  new Intl.DateTimeFormat(
-    'en-GB-u-ca-islamic-umalqura',
-    {
-      timeZone: TIME_ZONE,
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    }
-  );
-
 function dateParts(
   date = new Date()
 ) {
@@ -168,10 +159,16 @@ function addDays(
     date.getUTCFullYear(),
     String(
       date.getUTCMonth() + 1
-    ).padStart(2, '0'),
+    ).padStart(
+      2,
+      '0'
+    ),
     String(
       date.getUTCDate()
-    ).padStart(2, '0')
+    ).padStart(
+      2,
+      '0'
+    )
   ].join('-');
 }
 
@@ -282,7 +279,8 @@ export function makeManchesterDate(
     );
 
   if (
-    corrected !== offset
+    corrected !==
+    offset
   ) {
     candidate =
       new Date(
@@ -294,7 +292,9 @@ export function makeManchesterDate(
   return candidate;
 }
 
-function formatTime(time) {
+function formatTime(
+  time
+) {
   if (!time) {
     return '—';
   }
@@ -498,7 +498,9 @@ function nextEvent(
   return null;
 }
 
-function formatCountdown(ms) {
+function formatCountdown(
+  ms
+) {
   const total =
     Math.max(
       0,
@@ -530,41 +532,111 @@ function formatCountdown(ms) {
     .join(':');
 }
 
-function formatHijri(
-  date
+function getHijriDateForDisplay(
+  now,
+  todayKey,
+  today
 ) {
-  const parts =
-    hijriFormatter
-      .formatToParts(
-        date
-      );
+  const [
+    year,
+    month,
+    day
+  ] = todayKey
+    .split('-')
+    .map(Number);
 
-  const values =
-    Object.fromEntries(
-      parts
-        .filter(
-          part =>
-            part.type !==
-              'literal' &&
-            part.type !==
-              'era'
-        )
-        .map(
-          part => [
-            part.type,
-            part.value
-          ]
-        )
+  const hijriDisplayDate =
+    new Date(
+      year,
+      month - 1,
+      day,
+      12,
+      0,
+      0,
+      0
     );
 
-  return `${
-    values.day
-  } ${
-    values.month
-  } ${
-    values.year
-  }`.toUpperCase() +
-    ' AH';
+  const maghribStr =
+    today?.maghrib
+      ?.start;
+
+  if (maghribStr) {
+    const maghribTime =
+      makeManchesterDate(
+        todayKey,
+        maghribStr
+      );
+
+    if (
+      maghribTime &&
+      now >= maghribTime
+    ) {
+      hijriDisplayDate.setDate(
+        hijriDisplayDate.getDate() +
+        1
+      );
+    }
+  }
+
+  if (
+    HIJRI_DATE_OFFSET_DAYS !==
+    0
+  ) {
+    hijriDisplayDate.setDate(
+      hijriDisplayDate.getDate() +
+      HIJRI_DATE_OFFSET_DAYS
+    );
+  }
+
+  return umalqura(
+    hijriDisplayDate
+  );
+}
+
+function resetPrayerWidget() {
+  prayerTimes =
+    null;
+
+  if (countdownLabel) {
+    countdownLabel.textContent =
+      'Prayer times unavailable';
+  }
+
+  if (countdownTime) {
+    countdownTime.textContent =
+      '--:--:--';
+  }
+
+  if (countdownTarget) {
+    countdownTarget.textContent =
+      '';
+  }
+
+  if (tableBody) {
+    tableBody.innerHTML = `
+      <tr>
+        <td
+          colspan="3"
+          class="prayer-loading"
+        >
+          Prayer times are not available.
+        </td>
+      </tr>
+    `;
+  }
+
+  if (jumuahTime) {
+    jumuahTime.textContent =
+      '—';
+  }
+
+  if (status) {
+    status.hidden =
+      true;
+
+    status.textContent =
+      '';
+  }
 }
 
 function renderTable(
@@ -574,6 +646,10 @@ function renderTable(
   today,
   tomorrow
 ) {
+  if (!tableBody) {
+    return;
+  }
+
   tableBody.innerHTML =
     PRAYERS
       .map(
@@ -595,10 +671,18 @@ function renderTable(
             return `
               <tr>
                 <td>
-                  <span class="prayer-name">${label}</span>
+                  <span class="prayer-name">
+                    ${label}
+                  </span>
                 </td>
-                <td class="prayer-time-muted">—</td>
-                <td class="prayer-time-muted">—</td>
+
+                <td class="prayer-time-muted">
+                  —
+                </td>
+
+                <td class="prayer-time-muted">
+                  —
+                </td>
               </tr>
             `;
           }
@@ -606,7 +690,11 @@ function renderTable(
           const badge =
             display
               .isTomorrow
-              ? '<span class="prayer-day-badge">Tomorrow</span>'
+              ? `
+                <span class="prayer-day-badge">
+                  Tomorrow
+                </span>
+              `
               : '';
 
           const jamat =
@@ -618,21 +706,35 @@ function renderTable(
           return `
             <tr>
               <td>
-                <span class="prayer-name">${label}${badge}</span>
+                <span class="prayer-name">
+                  ${label}${badge}
+                </span>
               </td>
+
               <td>
-                <span class="prayer-time-main">${formatTime(
-                  display
-                    .timing
-                    .start
-                )}</span>
+                <span class="prayer-time-main">
+                  ${formatTime(
+                    display
+                      .timing
+                      .start
+                  )}
+                </span>
               </td>
-              <td class="${jamat ? '' : 'prayer-time-muted'}">
+
+              <td class="${
+                jamat
+                  ? ''
+                  : 'prayer-time-muted'
+              }">
                 ${
                   jamat
-                    ? `<span class="prayer-time-main">${formatTime(
-                        jamat
-                      )}</span>`
+                    ? `
+                      <span class="prayer-time-main">
+                        ${formatTime(
+                          jamat
+                        )}
+                      </span>
+                    `
                     : '—'
                 }
               </td>
@@ -652,7 +754,9 @@ function render() {
     new Date();
 
   const todayKey =
-    getDateKey(now);
+    getDateKey(
+      now
+    );
 
   const tomorrowKey =
     addDays(
@@ -670,72 +774,93 @@ function render() {
       tomorrowKey
     ];
 
-  clock.textContent =
-    clockFormatter
-      .format(now)
-      .toUpperCase();
+  if (clock) {
+    clock.textContent =
+      clockFormatter
+        .format(
+          now
+        )
+        .toUpperCase();
 
-  clock.setAttribute(
-    'datetime',
-    now.toISOString()
-  );
-
-  gregorian.textContent =
-    gregorianFormatter
-      .format(now)
-      .toUpperCase();
-
-  let hijriDate =
-    now;
-
-  const maghribStart =
-    today?.maghrib
-      ?.start;
-
-  if (maghribStart) {
-    const maghrib =
-      makeManchesterDate(
-        todayKey,
-        maghribStart
-      );
-
-    if (
-      maghrib &&
-      now >= maghrib
-    ) {
-      hijriDate =
-        makeManchesterDate(
-          tomorrowKey,
-          '12:00'
-        ) ||
-        now;
-    }
+    clock.setAttribute(
+      'datetime',
+      now.toISOString()
+    );
   }
 
-  hijri.textContent =
-    formatHijri(
-      hijriDate
-    );
+  if (gregorian) {
+    gregorian.textContent =
+      gregorianFormatter
+        .format(
+          now
+        )
+        .toUpperCase();
+  }
+
+  if (hijri) {
+    try {
+      const hijriDate =
+        getHijriDateForDisplay(
+          now,
+          todayKey,
+          today
+        );
+
+      hijri.textContent =
+        hijriDate
+          .format(
+            'd MMMM yyyy'
+          )
+          .toUpperCase() +
+        ' AH';
+    } catch (error) {
+      console.error(
+        'Unable to calculate Hijri date:',
+        error
+      );
+
+      hijri.textContent =
+        '—';
+    }
+  }
 
   if (!prayerTimes) {
     return;
   }
 
   if (!today) {
-    countdownLabel.textContent =
-      'Prayer times unavailable';
+    if (countdownLabel) {
+      countdownLabel.textContent =
+        'Prayer times unavailable';
+    }
 
-    countdownTime.textContent =
-      '--:--:--';
+    if (countdownTime) {
+      countdownTime.textContent =
+        '--:--:--';
+    }
 
-    countdownTarget.textContent =
-      todayKey;
+    if (countdownTarget) {
+      countdownTarget.textContent =
+        todayKey;
+    }
 
-    tableBody.innerHTML =
-      '<tr><td colspan="3" class="prayer-loading">No prayer times found for today.</td></tr>';
+    if (tableBody) {
+      tableBody.innerHTML = `
+        <tr>
+          <td
+            colspan="3"
+            class="prayer-loading"
+          >
+            No prayer times found for today.
+          </td>
+        </tr>
+      `;
+    }
 
-    jumuahTime.textContent =
-      '—';
+    if (jumuahTime) {
+      jumuahTime.textContent =
+        '—';
+    }
 
     return;
   }
@@ -750,26 +875,38 @@ function render() {
     );
 
   if (next) {
-    countdownLabel.textContent =
-      next.label;
+    if (countdownLabel) {
+      countdownLabel.textContent =
+        next.label;
+    }
 
-    countdownTime.textContent =
-      formatCountdown(
-        next.date -
-        now
-      );
+    if (countdownTime) {
+      countdownTime.textContent =
+        formatCountdown(
+          next.date -
+          now
+        );
+    }
 
-    countdownTarget.textContent =
-      next.target;
+    if (countdownTarget) {
+      countdownTarget.textContent =
+        next.target;
+    }
   } else {
-    countdownLabel.textContent =
-      'Next prayer';
+    if (countdownLabel) {
+      countdownLabel.textContent =
+        'Next prayer';
+    }
 
-    countdownTime.textContent =
-      '--:--:--';
+    if (countdownTime) {
+      countdownTime.textContent =
+        '--:--:--';
+    }
 
-    countdownTarget.textContent =
-      'Next day prayer times are not available yet.';
+    if (countdownTarget) {
+      countdownTarget.textContent =
+        'Next day prayer times are not available yet.';
+    }
   }
 
   renderTable(
@@ -796,12 +933,14 @@ function render() {
       dhuhr?.timing
     );
 
-  jumuahTime.textContent =
-    dhuhrJamat
-      ? formatTime(
-          dhuhrJamat
-        )
-      : '—';
+  if (jumuahTime) {
+    jumuahTime.textContent =
+      dhuhrJamat
+        ? formatTime(
+            dhuhrJamat
+          )
+        : '—';
+  }
 }
 
 async function load() {
@@ -809,22 +948,29 @@ async function load() {
     !currentMasjid
       ?.prayerTimesUrl
   ) {
-    prayerTimes =
-      null;
+    resetPrayerWidget();
 
-    status.hidden =
-      false;
+    if (status) {
+      status.hidden =
+        false;
 
-    status.textContent =
-      'Prayer times have not been configured for this Masjid.';
+      status.textContent =
+        'Prayer times have not been configured for this Khanqah.';
+    }
 
-    render();
     return;
   }
 
   try {
-    status.hidden =
-      true;
+    resetPrayerWidget();
+
+    if (status) {
+      status.hidden =
+        false;
+
+      status.textContent =
+        'Loading prayer times…';
+    }
 
     const response =
       await fetch(
@@ -836,17 +982,25 @@ async function load() {
         }
       );
 
-    if (
-      !response.ok
-    ) {
+    if (!response.ok) {
       throw new Error(
         `HTTP ${response.status}`
       );
     }
 
+    const data =
+      await response.json();
+
     prayerTimes =
-      await response
-        .json();
+      data;
+
+    if (status) {
+      status.hidden =
+        true;
+
+      status.textContent =
+        '';
+    }
 
     render();
   } catch (error) {
@@ -855,11 +1009,15 @@ async function load() {
       error
     );
 
-    status.hidden =
-      false;
+    resetPrayerWidget();
 
-    status.textContent =
-      'Prayer times are temporarily unavailable.';
+    if (status) {
+      status.hidden =
+        false;
+
+      status.textContent =
+        'Prayer times are temporarily unavailable.';
+    }
   }
 }
 
@@ -872,9 +1030,16 @@ export function stopPrayerTimes() {
     reloadTimer
   );
 
-  renderTimer = null;
-  reloadTimer = null;
-  prayerTimes = null;
+  renderTimer =
+    null;
+
+  reloadTimer =
+    null;
+
+  currentMasjid =
+    null;
+
+  resetPrayerWidget();
 }
 
 export function initPrayerTimes(
@@ -885,7 +1050,10 @@ export function initPrayerTimes(
   currentMasjid =
     masjid;
 
+  resetPrayerWidget();
+
   render();
+
   load();
 
   renderTimer =
@@ -897,6 +1065,8 @@ export function initPrayerTimes(
   reloadTimer =
     setInterval(
       load,
-      30 * 60 * 1000
+      30 *
+        60 *
+        1000
     );
 }

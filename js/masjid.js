@@ -6,12 +6,10 @@ function setText(
     .querySelectorAll(
       selector
     )
-    .forEach(
-      element => {
-        element.textContent =
-          value;
-      }
-    );
+    .forEach(element => {
+      element.textContent =
+        value;
+    });
 }
 
 function setSectionVisibility(
@@ -24,15 +22,68 @@ function setSectionVisibility(
   }
 }
 
-export function applyMasjidContent(
-  masjid
+async function copyValue(
+  button,
+  value
 ) {
+  if (!value) {
+    return;
+  }
+
+  const originalLabel =
+    button.getAttribute(
+      'aria-label'
+    );
+
+  try {
+    await navigator.clipboard
+      .writeText(value);
+
+    button.classList.add(
+      'is-copied'
+    );
+
+    button.setAttribute(
+      'aria-label',
+      'Copied'
+    );
+  } catch {
+    button.setAttribute(
+      'aria-label',
+      'Copy failed'
+    );
+  }
+
+  setTimeout(
+    () => {
+      button.classList.remove(
+        'is-copied'
+      );
+
+      button.setAttribute(
+        'aria-label',
+        originalLabel ||
+        'Copy'
+      );
+    },
+    1600
+  );
+}
+
+export function applyMasjidContent(
+  masjid,
+  siteConfig
+) {
+  const siteName =
+    siteConfig?.siteName ||
+    'Khanqah Naqshbandia Mujaddidia';
+
   document.title =
-    `${masjid.name} | ${masjid.location}`;
+    `${siteName} | ${masjid.location}`;
 
   setText(
     '[data-brand-name]',
-    masjid.name
+    siteName
   );
 
   setText(
@@ -42,7 +93,7 @@ export function applyMasjidContent(
 
   setText(
     '[data-hero-name]',
-    masjid.name
+    siteName
   );
 
   setText(
@@ -51,14 +102,19 @@ export function applyMasjidContent(
   );
 
   setText(
-    '[data-footer-name]',
-    masjid.name
+    '[data-location-name]',
+    siteName
   );
 
-  setText(
-    '[data-location-name]',
-    masjid.name
-  );
+  const comingSoon =
+    document.querySelector(
+      '[data-hero-coming-soon]'
+    );
+
+  if (comingSoon) {
+    comingSoon.hidden =
+      masjid.comingSoon !== true;
+  }
 
   setText(
     '[data-about-eyebrow]',
@@ -80,22 +136,19 @@ export function applyMasjidContent(
 
   setText(
     '[data-bank-account-name]',
-    masjid.donation
-      ?.accountName ||
+    masjid.donation?.accountName ||
       ''
   );
 
   setText(
     '[data-bank-name]',
-    masjid.donation
-      ?.bank ||
+    masjid.donation?.bank ||
       ''
   );
 
   setText(
     '[data-bank-sort-code]',
-    masjid.donation
-      ?.sortCode ||
+    masjid.donation?.sortCode ||
       ''
   );
 
@@ -106,18 +159,27 @@ export function applyMasjidContent(
       ''
   );
 
-  const logo =
-    document.querySelector(
-      '[data-masjid-logo]'
-    );
+  document
+    .querySelectorAll(
+      '[data-copy-bank]'
+    )
+    .forEach(button => {
+      const field =
+        button.dataset.copyBank;
 
-  if (logo) {
-    logo.src =
-      masjid.logo ||
-      '';
+      button.onclick =
+        () => {
+          const value =
+            masjid.donation
+              ?.[field] ||
+            '';
 
-    logo.alt = '';
-  }
+          copyValue(
+            button,
+            value
+          );
+        };
+    });
 
   const aboutCopy =
     document.querySelector(
@@ -132,8 +194,8 @@ export function applyMasjidContent(
         []
       )
         .map(
-          paragraph =>
-            `<p>${paragraph}</p>`
+          text =>
+            `<p>${text}</p>`
         )
         .join('');
   }
@@ -212,22 +274,22 @@ export function applyMasjidContent(
       ).join('<br>');
   }
 
-  const copyButton =
+  const copyAddressButton =
     document.querySelector(
       '.copy-address-button'
     );
 
-  if (copyButton) {
-    copyButton.dataset
+  if (copyAddressButton) {
+    copyAddressButton.dataset
       .copyAddress =
-      masjid.address
-        ?.copy ||
+      masjid.address?.copy ||
       '';
 
-    copyButton.onclick =
+    copyAddressButton.onclick =
       async () => {
         const value =
-          copyButton.dataset
+          copyAddressButton
+            .dataset
             .copyAddress;
 
         if (!value) {
@@ -235,25 +297,27 @@ export function applyMasjidContent(
         }
 
         const originalText =
-          copyButton.textContent;
+          copyAddressButton
+            .textContent;
 
         try {
           await navigator
             .clipboard
-            .writeText(
-              value
-            );
+            .writeText(value);
 
-          copyButton.textContent =
+          copyAddressButton
+            .textContent =
             'Copied';
         } catch {
-          copyButton.textContent =
+          copyAddressButton
+            .textContent =
             'Copy failed';
         }
 
         setTimeout(
           () => {
-            copyButton.textContent =
+            copyAddressButton
+              .textContent =
               originalText;
           },
           1600
@@ -273,7 +337,7 @@ export function applyMasjidContent(
       'about:blank';
 
     map.title =
-      `Location of ${masjid.name}`;
+      `Location of ${siteName} ${masjid.location}`;
   }
 
   const directions =
@@ -282,17 +346,16 @@ export function applyMasjidContent(
     );
 
   if (directions) {
-    const directionsUrl =
+    const url =
       masjid.address
         ?.directionsUrl ||
       '';
 
     directions.href =
-      directionsUrl ||
-      '#';
+      url || '#';
 
     directions.hidden =
-      !directionsUrl;
+      !url;
   }
 
   const contactName =
@@ -302,13 +365,11 @@ export function applyMasjidContent(
 
   if (contactName) {
     contactName.textContent =
-      masjid.contact
-        ?.name ||
+      masjid.contact?.name ||
       '';
 
     contactName.hidden =
-      !masjid.contact
-        ?.name;
+      !masjid.contact?.name;
   }
 
   const phone =
@@ -317,23 +378,42 @@ export function applyMasjidContent(
     );
 
   if (phone) {
-    const rawNumber =
-      masjid.contact
-        ?.phone ||
+    const raw =
+      masjid.contact?.phone ||
       '';
 
     phone.href =
-      rawNumber
-        ? `tel:${rawNumber}`
+      raw
+        ? `tel:${raw}`
         : '#';
 
     phone.textContent =
       masjid.contact
         ?.displayPhone ||
-      rawNumber ||
+      raw ||
       'Contact details coming soon';
+  }
 
-    phone.hidden =
-      false;
+  const email =
+    document.querySelector(
+      '[data-contact-email]'
+    );
+
+  if (email) {
+    const emailAddress =
+      masjid.contact
+        ?.email ||
+      '';
+
+    email.href =
+      emailAddress
+        ? `mailto:${emailAddress}`
+        : '#';
+
+    email.textContent =
+      emailAddress;
+
+    email.hidden =
+      !emailAddress;
   }
 }

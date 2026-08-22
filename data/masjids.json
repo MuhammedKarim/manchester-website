@@ -1,14 +1,8 @@
 {
-  "defaultMasjid": "khanqah-naqshbandia",
-  "selectionTitle": "Choose your Khanqah",
-  "selectionIntro": "Select a Khanqah to view its prayer times, announcements, facilities, donation details and contact information.",
   "masjids": {
     "manchester": {
-      "name": "Khanqah Naqshbandia Mujaddidia",
-      "shortName": "Khanqah Naqshbandia",
       "location": "Manchester",
-      "selectorImage": "assets/masjids/manchester/selector.jpg",
-      "logo": "assets/masjids/manchester/logo.png",
+      "selectorImage": "assets/masjids/manchester/manchester.jpg",
       "prayerTimesUrl": "https://muhammedkarim.github.io/manchester-khanqah/prayer-times.json",
       "about": {
         "eyebrow": "About us",
@@ -16,17 +10,17 @@
         "paragraphs": [
           "The Manchester Khanqah is of the Naqshbandia Mujaddidia Sufi order and was one of the first of its kind in Europe. The word Khanqah is Persian in origin and describes a place set aside for Islamic spiritual contemplation, self-rectification, and study.",
           "This spiritual aspect of Islam, known as Sufism, includes gatherings for the remembrance of Allah. Verses of the Holy Qur\u2019an are recited, with time for meditation and reflection on the Divine Names and the condition of one\u2019s own heart.",
-          "The centre opened in 1994 in Burnage, south Manchester, and now provides daily prayers, Friday prayer, and events throughout the Islamic calendar."
+          "The centre opened in 1994 in Burnage, South Manchester, and now provides daily prayers, Friday prayer, and events throughout the Islamic calendar."
         ]
       },
       "facilities": [
         {
           "name": "Masjid",
-          "description": "A spacious prayer hall for approximately 1,000 worshippers."
+          "description": "A spacious Masjid for approximately 1,000 worshippers."
         },
         {
           "name": "Car park",
-          "description": "A large on-site car park with ample space."
+          "description": "A large on-site car park with 50+ spaces."
         },
         {
           "name": "Wudhu khana",
@@ -52,7 +46,8 @@
       "contact": {
         "name": "Iftikhar Amin",
         "phone": "07967631738",
-        "displayPhone": "07967 631738"
+        "displayPhone": "07967 631738",
+        "email": "manchester@murtaza.org.uk"
       },
       "address": {
         "display": [
@@ -67,30 +62,27 @@
         "folder": "assets/masjids/manchester"
       }
     },
-    "london": {
-      "name": "Masjid Uthman",
-      "shortName": "Masjid Uthman",
-      "location": "London",
-      "selectorImage": "assets/masjids/london/selector.jpg",
-      "logo": "assets/masjids/london/logo.png",
+    "croydon": {
+      "location": "Croydon",
+      "selectorImage": "assets/masjids/croydon/croydon.jpg",
       "prayerTimesUrl": "https://muhammedkarim.github.io/prayer-times/prayer-times.json",
       "about": {
         "eyebrow": "About us",
         "title": "A place for spiritual contemplation",
         "paragraphs": [
-          "The Manchester Khanqah is of the Naqshbandia Mujaddidia Sufi order and was one of the first of its kind in Europe. The word Khanqah is Persian in origin and describes a place set aside for Islamic spiritual contemplation, self-rectification, and study.",
+          "The Croydon Khanqah is of the Naqshbandia Mujaddidia Sufi order and was one of the first of its kind in Europe. The word Khanqah is Persian in origin and describes a place set aside for Islamic spiritual contemplation, self-rectification, and study.",
           "This spiritual aspect of Islam, known as Sufism, includes gatherings for the remembrance of Allah. Verses of the Holy Qur\u2019an are recited, with time for meditation and reflection on the Divine Names and the condition of one\u2019s own heart.",
-          "The centre opened in 1994 in Burnage, south Manchester, and now provides daily prayers, Friday prayer, and events throughout the Islamic calendar."
+          "The centre opened in 2000 in Croydon and now provides daily prayers, Friday prayer, and events throughout the Islamic calendar."
         ]
       },
       "facilities": [
         {
           "name": "Masjid",
-          "description": "A spacious prayer hall for approximately 1,000 worshippers."
+          "description": "A spacious Masjid for approximately 1,200 worshippers."
         },
         {
           "name": "Car park",
-          "description": "A large on-site car park with ample space."
+          "description": "A large on-site car park with 35 spaces."
         },
         {
           "name": "Wudhu khana",
@@ -114,9 +106,10 @@
       },
       "openingHours": "Open 15 minutes before and 15 minutes after each Jamat time.",
       "contact": {
-        "name": "Iftikhar Amin",
-        "phone": "07967631738",
-        "displayPhone": "07967 631738"
+        "name": "Mumtaz Hassan",
+        "phone": "07974332496",
+        "displayPhone": "07974 332496",
+        "email": "croydon@murtaza.org.uk"
       },
       "address": {
         "display": [
@@ -128,33 +121,30 @@
         "directionsUrl": "https://www.google.com/maps/dir/?api=1&destination=South+Norwood+Islamic+Community+Centre+(Masjid+Uthman),+1-3+Clifford+Rd,+London+SE25+4PF"
       },
       "assets": {
-        "folder": "assets/masjids/london"
+        "folder": "assets/masjids/croydon"
       }
     },
     "bradford": {
-      "name": "Khanqah Naqshbandia Masjid Farooqia",
-      "shortName": "Masjid Farooqia",
       "location": "Bradford",
-      "selectorImage": "assets/masjids/bradford/selector.jpg",
-      "logo": "assets/masjids/bradford/logo.png",
+      "selectorImage": "assets/masjids/bradford/bradford.jpg",
       "prayerTimesUrl": "https://muhammedkarim.github.io/bradford-prayers/prayer-times.json",
       "about": {
         "eyebrow": "About us",
         "title": "A place for spiritual contemplation",
         "paragraphs": [
-          "The Manchester Khanqah is of the Naqshbandia Mujaddidia Sufi order and was one of the first of its kind in Europe. The word Khanqah is Persian in origin and describes a place set aside for Islamic spiritual contemplation, self-rectification, and study.",
+          "The Bradford Khanqah is of the Naqshbandia Mujaddidia Sufi order and was one of the first of its kind in Europe. The word Khanqah is Persian in origin and describes a place set aside for Islamic spiritual contemplation, self-rectification, and study.",
           "This spiritual aspect of Islam, known as Sufism, includes gatherings for the remembrance of Allah. Verses of the Holy Qur\u2019an are recited, with time for meditation and reflection on the Divine Names and the condition of one\u2019s own heart.",
-          "The centre opened in 1994 in Burnage, south Manchester, and now provides daily prayers, Friday prayer, and events throughout the Islamic calendar."
+          "The centre opened in 2006 in Bradford and now provides daily prayers, Friday prayer, and events throughout the Islamic calendar."
         ]
       },
       "facilities": [
         {
           "name": "Masjid",
-          "description": "A spacious prayer hall for approximately 1,000 worshippers."
+          "description": "A spacious Masjid for approximately 300 worshippers."
         },
         {
           "name": "Car park",
-          "description": "A large on-site car park with ample space."
+          "description": "A large on-site car park with 20 spaces."
         },
         {
           "name": "Wudhu khana",
@@ -178,9 +168,10 @@
       },
       "openingHours": "Open 15 minutes before and 15 minutes after each Jamat time.",
       "contact": {
-        "name": "Iftikhar Amin",
-        "phone": "07967631738",
-        "displayPhone": "07967 631738"
+        "name": "Azhar Younis",
+        "phone": "07811487025",
+        "displayPhone": "07811 487025",
+        "email": "bradford@murtaza.org.uk"
       },
       "address": {
         "display": [
@@ -196,29 +187,26 @@
       }
     },
     "burnley": {
-      "name": "Masjid Ali Murtaza",
-      "shortName": "Masjid Ali Murtaza",
       "location": "Burnley",
-      "selectorImage": "assets/masjids/burnley/selector.jpg",
-      "logo": "assets/masjids/burnley/logo.png",
+      "selectorImage": "assets/masjids/burnley/burnley.jpg",
       "prayerTimesUrl": "https://muhammedkarim.github.io/burnley-prayers/prayer-times.json",
       "about": {
         "eyebrow": "About us",
         "title": "A place for spiritual contemplation",
         "paragraphs": [
-          "The Manchester Khanqah is of the Naqshbandia Mujaddidia Sufi order and was one of the first of its kind in Europe. The word Khanqah is Persian in origin and describes a place set aside for Islamic spiritual contemplation, self-rectification, and study.",
+          "The Burnley Khanqah is of the Naqshbandia Mujaddidia Sufi order and was one of the first of its kind in Europe. The word Khanqah is Persian in origin and describes a place set aside for Islamic spiritual contemplation, self-rectification, and study.",
           "This spiritual aspect of Islam, known as Sufism, includes gatherings for the remembrance of Allah. Verses of the Holy Qur\u2019an are recited, with time for meditation and reflection on the Divine Names and the condition of one\u2019s own heart.",
-          "The centre opened in 1994 in Burnage, south Manchester, and now provides daily prayers, Friday prayer, and events throughout the Islamic calendar."
+          "The centre opened in 2009 in Burnley and now provides daily prayers, Friday prayer, and events throughout the Islamic calendar."
         ]
       },
       "facilities": [
         {
           "name": "Masjid",
-          "description": "A spacious prayer hall for approximately 1,000 worshippers."
+          "description": "A spacious Masjid for approximately 800 worshippers."
         },
         {
           "name": "Car park",
-          "description": "A large on-site car park with ample space."
+          "description": "A large on-site car park with 40 spaces."
         },
         {
           "name": "Wudhu khana",
@@ -242,9 +230,10 @@
       },
       "openingHours": "Open 15 minutes before and 15 minutes after each Jamat time.",
       "contact": {
-        "name": "Iftikhar Amin",
-        "phone": "07967631738",
-        "displayPhone": "07967 631738"
+        "name": "Majid Ali",
+        "phone": "07989220101",
+        "displayPhone": "07989 220101",
+        "email": "burnley@murtaza.org.uk"
       },
       "address": {
         "display": [
@@ -257,6 +246,69 @@
       },
       "assets": {
         "folder": "assets/masjids/burnley"
+      }
+    },
+    "maidenhead": {
+      "location": "Maidenhead",
+      "selectorImage": "assets/masjids/maidenhead/maidenhead.jpg",
+      "prayerTimesUrl": "",
+      "comingSoon": true,
+      "about": {
+        "eyebrow": "About us",
+        "title": "A place for spiritual contemplation",
+        "paragraphs": [
+          "The Maidenhead Khanqah is of the Naqshbandia Mujaddidia Sufi order and was one of the first of its kind in Europe. The word Khanqah is Persian in origin and describes a place set aside for Islamic spiritual contemplation, self-rectification, and study.",
+          "This spiritual aspect of Islam, known as Sufism, includes gatherings for the remembrance of Allah. Verses of the Holy Qur\u2019an are recited, with time for meditation and reflection on the Divine Names and the condition of one\u2019s own heart.",
+          "The centre opens in 2026 in Maidenhead and will provide daily prayers, Friday prayer, and events throughout the Islamic calendar."
+        ]
+      },
+      "facilities": [
+        {
+          "name": "Masjid",
+          "description": "A spacious Masjid for approximately 200 worshippers."
+        },
+        {
+          "name": "Car park",
+          "description": "A large on-site car park with 10 spaces."
+        },
+        {
+          "name": "Wudhu khana",
+          "description": "Dedicated ablution facilities available on site."
+        },
+        {
+          "name": "Toilets",
+          "description": "Clean and well-maintained facilities."
+        },
+        {
+          "name": "Itr shelf",
+          "description": "Itr and fragrances available on site."
+        }
+      ],
+      "donation": {
+        "enabled": true,
+        "accountName": "Khanqah Naqshbandia Asifia",
+        "bank": "Lloyds Bank",
+        "sortCode": "30 \u2013 54 \u2013 66",
+        "accountNumber": "87746568"
+      },
+      "openingHours": "Open 15 minutes before and 15 minutes after each Jamat time.",
+      "contact": {
+        "name": "Imran Jamil",
+        "phone": "07830261443",
+        "displayPhone": "07830 261443",
+        "email": "maidenhead@murtaza.org.uk"
+      },
+      "address": {
+        "display": [
+          "Wootton Way",
+          "Maidenhead, SL6 4PE"
+        ],
+        "copy": "Wootton Way, Maidenhead, SL6 4PE",
+        "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2482.907107360088!2d-0.7421865000000001!3d51.51492019999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487662b3b107b675%3A0xe956f0e8e39a22d9!2sThe%20Crown!5e0!3m2!1sen!2suk!4v1787335198455!5m2!1sen!2suk",
+        "directionsUrl": "https://www.google.com/maps/dir/?api=1&destination=The+Crown,+108+Boyn+Hill+Rd,+Maidenhead+SL6+4PE"
+      },
+      "assets": {
+        "folder": "assets/masjids/maidenhead"
       }
     }
   }

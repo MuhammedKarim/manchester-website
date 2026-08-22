@@ -17,12 +17,16 @@ import { initPoster } from './poster.js';
 import { initTimetable } from './timetable.js';
 import { initPresence } from './presence.js';
 import { initSharedBanner } from './shared.js';
+import {
+  initContactForm,
+  setContactFormKhanqah
+} from './contact-form.js';
 
 const MASJIDS_CONFIG_URL =
   'data/masjids.json';
 
-const SITE_CONFIG_URL =
-  'data/site.json';
+const CONFIG_URL =
+  'data/config.json';
 
 let masjidsConfig = null;
 let siteConfig = null;
@@ -73,43 +77,51 @@ function getCleanUrl() {
   );
 }
 
-function clearUrlFragment() {
+function replaceHistoryState(state) {
   history.replaceState(
-    history.state,
+    state,
     '',
     getCleanUrl()
   );
 }
 
-function setSelectorHistoryState() {
-  history.replaceState(
-    {
-      view: 'selector'
-    },
-    '',
-    getCleanUrl()
-  );
-}
-
-function pushSelectorHistoryState() {
+function pushHistoryState(state) {
   history.pushState(
-    {
-      view: 'selector'
-    },
+    state,
     '',
     getCleanUrl()
   );
 }
 
-function pushKhanqahHistoryState(id) {
-  history.pushState(
-    {
-      view: 'khanqah',
-      khanqahId: id
-    },
-    '',
-    getCleanUrl()
+function showSelector({
+  pushHistory = false
+} = {}) {
+  stopPrayerTimes();
+  stopDhikr();
+
+  if (pushHistory) {
+    pushHistoryState({
+      view: 'selector'
+    });
+  } else {
+    replaceHistoryState({
+      view: 'selector'
+    });
+  }
+
+  createMasjidSelector(
+    masjidsConfig,
+    activateMasjid,
+    getSavedMasjid(),
+    siteConfig
   );
+
+  showMasjidSelector();
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'instant'
+  });
 }
 
 async function activateMasjid(
@@ -128,27 +140,33 @@ async function activateMasjid(
   }
 
   currentMasjidId = id;
-
   saveMasjid(id);
 
   if (pushHistory) {
-    pushKhanqahHistoryState(
-      id
-    );
+    pushHistoryState({
+      view: 'khanqah',
+      khanqahId: id
+    });
   } else {
-    clearUrlFragment();
+    replaceHistoryState({
+      view: 'khanqah',
+      khanqahId: id
+    });
   }
 
   stopPrayerTimes();
   stopDhikr();
 
   applyMasjidContent(
-    masjid
+    masjid,
+    siteConfig
+  );
+
+  setContactFormKhanqah(
+    id
   );
 
   hideMasjidSelector();
-
-  clearUrlFragment();
 
   await initTimetable(
     masjid
@@ -168,47 +186,18 @@ async function activateMasjid(
   });
 }
 
-function changeMasjid(
-  {
-    pushHistory = true
-  } = {}
-) {
-  stopPrayerTimes();
-  stopDhikr();
-
-  if (pushHistory) {
-    pushSelectorHistoryState();
-  } else {
-    clearUrlFragment();
-  }
-
-  createMasjidSelector(
-    masjidsConfig,
-    activateMasjid,
-    currentMasjidId
-  );
-
-  showMasjidSelector();
-
-  clearUrlFragment();
-
-  window.scrollTo({
-    top: 0,
-    behavior: 'instant'
+function changeMasjid() {
+  showSelector({
+    pushHistory: true
   });
 }
 
-function handlePopState(
-  event
-) {
+function handlePopState(event) {
   const state =
     event.state;
 
-  clearUrlFragment();
-
   if (
-    state?.view ===
-      'khanqah' &&
+    state?.view === 'khanqah' &&
     state.khanqahId &&
     masjidsConfig
       ?.masjids
@@ -224,7 +213,7 @@ function handlePopState(
     return;
   }
 
-  changeMasjid({
+  showSelector({
     pushHistory: false
   });
 }
@@ -239,11 +228,9 @@ async function boot() {
         MASJIDS_CONFIG_URL
       ),
       loadJson(
-        SITE_CONFIG_URL
+        CONFIG_URL
       )
     ]);
-
-    clearUrlFragment();
 
     initNavigation(
       changeMasjid
@@ -253,6 +240,19 @@ async function boot() {
       siteConfig.sharedBanner
     );
 
+    const logo =
+      document.querySelector(
+        '[data-masjid-logo]'
+      );
+
+    if (logo) {
+      logo.src =
+        siteConfig.logo ||
+        '';
+
+      logo.alt = '';
+    }
+
     initPresence(
       siteConfig.livePresenceUrl
     );
@@ -261,40 +261,18 @@ async function boot() {
       siteConfig.poster
     );
 
+    initContactForm(
+      siteConfig.contactForm
+    );
+
     window.addEventListener(
       'popstate',
       handlePopState
     );
 
-    const savedMasjid =
-      getSavedMasjid();
-
-    if (
-      savedMasjid &&
-      masjidsConfig
-        .masjids
-        ?.[savedMasjid]
-    ) {
-      setSelectorHistoryState();
-
-      await activateMasjid(
-        savedMasjid
-      );
-
-      return;
-    }
-
-    setSelectorHistoryState();
-
-    createMasjidSelector(
-      masjidsConfig,
-      activateMasjid,
-      null
-    );
-
-    showMasjidSelector();
-
-    clearUrlFragment();
+    showSelector({
+      pushHistory: false
+    });
   } catch (error) {
     console.error(
       'Unable to initialise website:',

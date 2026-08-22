@@ -1,61 +1,100 @@
-const selector = document.querySelector('[data-masjid-selector]');
-const grid = document.querySelector('[data-masjid-selector-grid]');
-const title = document.querySelector('[data-selector-title]');
-const intro = document.querySelector('[data-selector-intro]');
-const siteShell = document.querySelector('[data-site-shell]');
+const selector =
+  document.querySelector(
+    '[data-masjid-selector]'
+  );
+
+const grid =
+  document.querySelector(
+    '[data-masjid-selector-grid]'
+  );
+
+const title =
+  document.querySelector(
+    '[data-selector-title]'
+  );
+
+const country =
+  document.querySelector(
+    '[data-selector-country]'
+  );
+
+const intro =
+  document.querySelector(
+    '[data-selector-intro]'
+  );
+
+const siteShell =
+  document.querySelector(
+    '[data-site-shell]'
+  );
 
 export function createMasjidSelector(
   config,
   onSelect,
-  currentId
+  currentId,
+  siteConfig
 ) {
-  if (!selector || !grid) {
+  if (
+    !selector ||
+    !grid
+  ) {
     return;
   }
 
   title.textContent =
-    config.selectionTitle ||
-    'Choose your Khanqah';
+    (
+      siteConfig?.siteName ||
+      'Khanqah Naqshbandia Mujaddidia'
+    ).toUpperCase();
+
+  if (country) {
+    country.textContent =
+      siteConfig?.selectorCountry ||
+      'UNITED KINGDOM';
+  }
 
   intro.textContent =
-    config.selectionIntro ||
-    '';
+    'Select a Khanqah below';
 
   grid.innerHTML =
     Object.entries(
       config.masjids || {}
     )
-      .map(([id, masjid]) => `
-        <button
-          class="masjid-choice"
-          type="button"
-          data-select-masjid="${id}"
-        >
-          ${
-            currentId === id
-              ? '<span class="masjid-choice-current">Selected</span>'
-              : ''
-          }
+      .map(
+        ([id, masjid]) => `
+          <button
+            class="masjid-choice"
+            type="button"
+            data-select-masjid="${id}"
+          >
+            <span class="masjid-choice-media">
+              <img
+                src="${masjid.selectorImage || ''}"
+                alt=""
+                data-selector-image
+              >
 
-          <span class="masjid-choice-media">
-            <img
-              src="${masjid.selectorImage || ''}"
-              alt=""
-              data-selector-image
-            >
-          </span>
+              ${
+                masjid.comingSoon === true
+                  ? '<span class="masjid-choice-coming-soon">Coming Soon</span>'
+                  : ''
+              }
 
-          <span class="masjid-choice-copy">
-            <span class="masjid-choice-name">
-              ${masjid.name || ''}
+              ${
+                currentId === id
+                  ? '<span class="masjid-choice-current">Selected</span>'
+                  : ''
+              }
             </span>
 
-            <span class="masjid-choice-location">
-              ${masjid.location || ''}
+            <span class="masjid-choice-copy">
+              <span class="masjid-choice-location">
+                ${masjid.location || ''}
+              </span>
             </span>
-          </span>
-        </button>
-      `)
+          </button>
+        `
+      )
       .join('');
 
   grid
@@ -66,13 +105,7 @@ export function createMasjidSelector(
       image.addEventListener(
         'error',
         () => {
-          const media =
-            image.parentElement;
-
-          image.remove();
-
-          media.innerHTML =
-            '<span class="masjid-choice-fallback">Khanqah</span>';
+          image.hidden = true;
         },
         {
           once: true
@@ -89,7 +122,8 @@ export function createMasjidSelector(
         'click',
         () => {
           onSelect(
-            button.dataset.selectMasjid
+            button.dataset
+              .selectMasjid
           );
         }
       );
