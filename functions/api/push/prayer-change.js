@@ -127,10 +127,43 @@ export async function onRequestPost(context) {
   const rows = subscriptions.results || [];
 
   if (rows.length === 0) {
+    const subscriptionCount = await env.DB
+      .prepare(`
+        SELECT COUNT(*) AS count
+        FROM push_subscriptions
+      `)
+      .first();
+
+    const preferenceCount = await env.DB
+      .prepare(`
+        SELECT COUNT(*) AS count
+        FROM notification_preferences
+      `)
+      .first();
+
+    const matchingPreferences = await env.DB
+      .prepare(`
+        SELECT
+          subscription_id,
+          khanqah_id,
+          announcements,
+          prayer_changes
+        FROM notification_preferences
+        WHERE khanqah_id = ?
+      `)
+      .bind(khanqahId)
+      .all();
+
     return json({
       success: true,
       sent: 0,
-      message: 'No users are subscribed to prayer time changes for this Khanqah.'
+      debug: {
+        receivedKhanqahId: khanqahId,
+        subscriptionCount: subscriptionCount?.count ?? null,
+        preferenceCount: preferenceCount?.count ?? null,
+        matchingPreferences: matchingPreferences.results || []
+      },
+      message: 'No matching prayer-change subscribers were found.'
     });
   }
 
