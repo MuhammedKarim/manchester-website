@@ -4,7 +4,7 @@ async function checkPosters(env) {
     !env.POSTER_CHECK_KEY
   ) {
     throw new Error(
-      'Poster checker configuration is incomplete.'
+      'Poster checker configuration is not complete.'
     );
   }
 
