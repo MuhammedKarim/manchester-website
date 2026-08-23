@@ -1,3 +1,3 @@
 name = "khanqah-site"
+pages_build_output_dir = "."
 compatibility_date = "2026-08-23"
-compatibility_flags = ["nodejs_compat"]
