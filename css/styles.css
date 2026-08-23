@@ -2150,3 +2150,56 @@ dd {
     font-size: .82rem;
   }
 }
+
+.notification-admin {
+  min-height: 100svh;
+  display: grid;
+  align-items: center;
+  padding: 3rem 0;
+}
+
+.notification-admin-card {
+  width: min(100%, 680px);
+  margin-inline: auto;
+}
+
+.notification-admin-card h1 {
+  max-width: none;
+  font-size: clamp(2.8rem, 7vw, 5rem);
+}
+
+.notification-admin-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.notification-admin-form select {
+  width: 100%;
+  min-height: 50px;
+  padding: .75rem .9rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #0d1b11;
+  color: var(--text);
+  outline: none;
+}
+
+.notification-admin-form select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(214, 184, 90, .08);
+}
+
+.notification-admin-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+.notification-admin-status.is-success {
+  color: var(--gold-soft);
+}
+
+.notification-admin-status.is-error {
+  color: #ffb4b4;
+}

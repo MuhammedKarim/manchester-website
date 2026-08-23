@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Notification Admin</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <main class="notification-admin">
+    <div class="container">
+      <article class="glass-card notification-admin-card">
+        <p class="eyebrow">Notifications</p>
+        <h1>Prayer Time Change</h1>
+
+        <p class="muted">
+          Send a prayer time change notification to subscribers of a specific Khanqah.
+        </p>
+
+        <form class="notification-admin-form" data-prayer-notification-form>
+          <label class="contact-form-field">
+            <span>Admin Key</span>
+            <input type="password" name="adminKey" autocomplete="off" required>
+          </label>
+
+          <label class="contact-form-field">
+            <span>Khanqah</span>
+            <select name="khanqahId" data-admin-khanqah required>
+              <option value="">Select a Khanqah</option>
+            </select>
+          </label>
+
+          <label class="contact-form-field">
+            <span>Prayer</span>
+            <select name="prayer" required>
+              <option value="">Select prayer</option>
+              <option value="Fajr">Fajr</option>
+              <option value="Dhuhr">Dhuhr</option>
+              <option value="Asr">Asr</option>
+              <option value="Maghrib">Maghrib</option>
+              <option value="Isha">Isha</option>
+              <option value="Jumuah">Jumuah</option>
+              <option value="Eid">Eid</option>
+            </select>
+          </label>
+
+          <label class="contact-form-field">
+            <span>When</span>
+            <input type="text" name="dateText" value="Tomorrow" placeholder="Tomorrow" required>
+          </label>
+
+          <label class="contact-form-field">
+            <span>New Jamat Time</span>
+            <input type="time" name="time" required>
+          </label>
+
+          <button class="button button-primary" type="submit" data-admin-submit>
+            Send Notification
+          </button>
+
+          <p class="notification-admin-status" data-admin-status aria-live="polite"></p>
+        </form>
+      </article>
+    </div>
+  </main>
+
+  <script type="module" src="js/admin-notifications.js"></script>
+</body>
+</html>
