@@ -127,43 +127,12 @@ export async function onRequestPost(context) {
   const rows = subscriptions.results || [];
 
   if (rows.length === 0) {
-    const subscriptionCount = await env.DB
-      .prepare(`
-        SELECT COUNT(*) AS count
-        FROM push_subscriptions
-      `)
-      .first();
-
-    const preferenceCount = await env.DB
-      .prepare(`
-        SELECT COUNT(*) AS count
-        FROM notification_preferences
-      `)
-      .first();
-
-    const matchingPreferences = await env.DB
-      .prepare(`
-        SELECT
-          subscription_id,
-          khanqah_id,
-          announcements,
-          prayer_changes
-        FROM notification_preferences
-        WHERE khanqah_id = ?
-      `)
-      .bind(khanqahId)
-      .all();
-
     return json({
       success: true,
       sent: 0,
-      debug: {
-        receivedKhanqahId: khanqahId,
-        subscriptionCount: subscriptionCount?.count ?? null,
-        preferenceCount: preferenceCount?.count ?? null,
-        matchingPreferences: matchingPreferences.results || []
-      },
-      message: 'No matching prayer-change subscribers were found.'
+      failed: 0,
+      removed: 0,
+      message: 'No users are subscribed to prayer time changes for this Khanqah.'
     });
   }
 
@@ -187,6 +156,8 @@ export async function onRequestPost(context) {
   let removed = 0;
   let failed = 0;
 
+  const failures = [];
+
   for (const row of rows) {
     const subscription = {
       endpoint: row.endpoint,
@@ -208,7 +179,9 @@ export async function onRequestPost(context) {
 
       sent += 1;
     } catch (error) {
-      const statusCode = error?.statusCode;
+      const statusCode =
+        error?.statusCode ||
+        null;
 
       if (
         statusCode === 404 ||
@@ -220,12 +193,42 @@ export async function onRequestPost(context) {
         );
 
         removed += 1;
+
+        failures.push({
+          subscriptionId: row.id,
+          statusCode,
+          message:
+            error?.message ||
+            'Subscription is no longer valid.',
+          body:
+            error?.body ||
+            null,
+          removed: true
+        });
       } else {
         failed += 1;
 
+        failures.push({
+          subscriptionId: row.id,
+          statusCode,
+          message:
+            error?.message ||
+            'Unknown push error.',
+          body:
+            error?.body ||
+            null,
+          removed: false
+        });
+
         console.error(
           'Unable to send push notification:',
-          error
+          {
+            subscriptionId: row.id,
+            statusCode,
+            message: error?.message,
+            body: error?.body,
+            stack: error?.stack
+          }
         );
       }
     }
@@ -255,6 +258,7 @@ export async function onRequestPost(context) {
     success: true,
     sent,
     failed,
-    removed
+    removed,
+    failures
   });
 }
