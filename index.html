@@ -16,20 +16,29 @@
 
   <div class="notice-banner" data-notice-banner hidden>
     <button class="notice-banner-button" type="button" data-poster-open>
-      <span class="notice-track">
-        <span>IMPORTANT NOTICE - CLICK TO OPEN</span><span>IMPORTANT NOTICE - CLICK TO OPEN</span>
-        <span>IMPORTANT NOTICE - CLICK TO OPEN</span><span>IMPORTANT NOTICE - CLICK TO OPEN</span>
-        <span aria-hidden="true">IMPORTANT NOTICE - CLICK TO OPEN</span><span aria-hidden="true">IMPORTANT NOTICE - CLICK TO OPEN</span>
-        <span aria-hidden="true">IMPORTANT NOTICE - CLICK TO OPEN</span><span aria-hidden="true">IMPORTANT NOTICE - CLICK TO OPEN</span>
-      </span>
+      <span class="notice-track" data-notice-track></span>
     </button>
   </div>
 
-  <div class="poster-modal" data-poster-modal role="dialog" aria-modal="true" aria-label="Important notice" hidden>
+  <div class="poster-modal" data-poster-modal role="dialog" aria-modal="true" aria-label="Important notices" hidden>
     <div class="poster-modal-backdrop" data-poster-close></div>
+
     <div class="poster-modal-content">
       <button class="poster-modal-close" type="button" data-poster-close aria-label="Close notice">×</button>
-      <img data-poster-image src="" alt="Important notice">
+
+      <div class="poster-carousel" data-poster-carousel>
+        <p class="poster-notice-label" data-poster-label></p>
+
+        <img data-poster-image src="" alt="Important notice">
+
+        <button class="poster-carousel-button poster-carousel-prev" type="button" data-poster-prev aria-label="Previous notice" hidden>‹</button>
+        <button class="poster-carousel-button poster-carousel-next" type="button" data-poster-next aria-label="Next notice" hidden>›</button>
+
+        <div class="poster-carousel-footer" data-poster-footer hidden>
+          <div class="poster-carousel-dots" data-poster-dots></div>
+          <p class="poster-carousel-count" data-poster-count></p>
+        </div>
+      </div>
     </div>
   </div>
 

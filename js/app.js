@@ -13,7 +13,11 @@ import {
   initDhikr,
   stopDhikr
 } from './dhikr.js';
-import { initPoster } from './poster.js';
+import {
+  initPoster,
+  setPosterKhanqah,
+  showGlobalPosterOnly
+} from './poster.js';
 import { initTimetable } from './timetable.js';
 import { initPresence } from './presence.js';
 import { initSharedBanner } from './shared.js';
@@ -21,25 +25,24 @@ import {
   initContactForm,
   setContactFormKhanqah
 } from './contact-form.js';
+import {
+  initNotifications
+} from './notifications.js';
 
-const MASJIDS_CONFIG_URL =
-  'data/masjids.json';
-
-const CONFIG_URL =
-  'data/config.json';
+const MASJIDS_CONFIG_URL = 'data/masjids.json';
+const CONFIG_URL = 'data/config.json';
 
 let masjidsConfig = null;
 let siteConfig = null;
 let currentMasjidId = null;
 
 async function loadJson(url) {
-  const response =
-    await fetch(
-      `${url}?v=${Date.now()}`,
-      {
-        cache: 'no-store'
-      }
-    );
+  const response = await fetch(
+    `${url}?v=${Date.now()}`,
+    {
+      cache: 'no-store'
+    }
+  );
 
   if (!response.ok) {
     throw new Error(
@@ -52,9 +55,7 @@ async function loadJson(url) {
 
 function getSavedMasjid() {
   try {
-    return localStorage.getItem(
-      'selectedMasjid'
-    );
+    return localStorage.getItem('selectedMasjid');
   } catch {
     return null;
   }
@@ -98,6 +99,8 @@ function showSelector({
 } = {}) {
   stopPrayerTimes();
   stopDhikr();
+
+  showGlobalPosterOnly();
 
   if (pushHistory) {
     pushHistoryState({
@@ -162,23 +165,17 @@ async function activateMasjid(
     siteConfig
   );
 
-  setContactFormKhanqah(
-    id
-  );
+  setContactFormKhanqah(id);
 
   hideMasjidSelector();
 
-  await initTimetable(
-    masjid
-  );
+  await setPosterKhanqah(masjid);
 
-  initPrayerTimes(
-    masjid
-  );
+  await initTimetable(masjid);
 
-  initDhikr(
-    siteConfig.dhikr
-  );
+  initPrayerTimes(masjid);
+
+  initDhikr(siteConfig.dhikr);
 
   window.scrollTo({
     top: 0,
@@ -193,8 +190,7 @@ function changeMasjid() {
 }
 
 function handlePopState(event) {
-  const state =
-    event.state;
+  const state = event.state;
 
   if (
     state?.view === 'khanqah' &&
@@ -224,26 +220,19 @@ async function boot() {
       masjidsConfig,
       siteConfig
     ] = await Promise.all([
-      loadJson(
-        MASJIDS_CONFIG_URL
-      ),
-      loadJson(
-        CONFIG_URL
-      )
+      loadJson(MASJIDS_CONFIG_URL),
+      loadJson(CONFIG_URL)
     ]);
 
-    initNavigation(
-      changeMasjid
-    );
+    initNavigation(changeMasjid);
 
     initSharedBanner(
       siteConfig.sharedBanner
     );
 
-    const logo =
-      document.querySelector(
-        '[data-masjid-logo]'
-      );
+    const logo = document.querySelector(
+      '[data-masjid-logo]'
+    );
 
     if (logo) {
       logo.src =
@@ -257,7 +246,9 @@ async function boot() {
       siteConfig.livePresenceUrl
     );
 
-    initPoster(
+    await initNotifications();
+    
+    await initPoster(
       siteConfig.poster
     );
 
