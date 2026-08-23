@@ -54,7 +54,13 @@ export async function onRequestPost(context) {
     !env.VAPID_SUBJECT
   ) {
     return json({
-      error: 'Push configuration is incomplete.'
+      error: 'Push configuration is incomplete.',
+      missing: {
+        DB: !env.DB,
+        VAPID_PUBLIC_KEY: !env.VAPID_PUBLIC_KEY,
+        VAPID_PRIVATE_KEY: !env.VAPID_PRIVATE_KEY,
+        VAPID_SUBJECT: !env.VAPID_SUBJECT
+      }
     }, 500);
   }
 
