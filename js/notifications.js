@@ -1,25 +1,21 @@
-const STORAGE_KEY =
-  'khanqahNotificationPreferences';
+const STORAGE_KEY = 'khanqahNotificationPreferences';
 
 let registration = null;
 let publicKey = null;
 
 function urlBase64ToUint8Array(base64String) {
-  const padding =
-    '='.repeat(
-      (4 - base64String.length % 4) % 4
-    );
+  const padding = '='.repeat(
+    (4 - base64String.length % 4) % 4
+  );
 
-  const base64 =
-    (
-      base64String +
-      padding
-    )
-      .replace(/-/g, '+')
-      .replace(/_/g, '/');
+  const base64 = (
+    base64String +
+    padding
+  )
+    .replace(/-/g, '+')
+    .replace(/_/g, '/');
 
-  const rawData =
-    atob(base64);
+  const rawData = atob(base64);
 
   return Uint8Array.from(
     [...rawData].map(
@@ -42,8 +38,7 @@ function getPreferences() {
 }
 
 function hasAnyPreference() {
-  const preferences =
-    getPreferences();
+  const preferences = getPreferences();
 
   return Object.values(
     preferences
@@ -54,18 +49,80 @@ function hasAnyPreference() {
   );
 }
 
+function isIOS() {
+  return (
+    /iPad|iPhone|iPod/.test(
+      navigator.userAgent
+    ) ||
+    (
+      navigator.platform === 'MacIntel' &&
+      navigator.maxTouchPoints > 1
+    )
+  );
+}
+
+function isStandalone() {
+  return (
+    window.matchMedia(
+      '(display-mode: standalone)'
+    ).matches ||
+    window.navigator.standalone === true
+  );
+}
+
+function showNotificationMessage(message) {
+  window.alert(message);
+}
+
+export function canEnableNotifications() {
+  if (
+    isIOS() &&
+    !isStandalone()
+  ) {
+    return {
+      allowed: false,
+      reason: 'ios-install-required'
+    };
+  }
+
+  if (
+    !('serviceWorker' in navigator) ||
+    !('PushManager' in window) ||
+    !('Notification' in window)
+  ) {
+    return {
+      allowed: false,
+      reason: 'unsupported'
+    };
+  }
+
+  if (
+    Notification.permission ===
+    'denied'
+  ) {
+    return {
+      allowed: false,
+      reason: 'denied'
+    };
+  }
+
+  return {
+    allowed: true,
+    reason: null
+  };
+}
+
 async function getPublicKey() {
   if (publicKey) {
     return publicKey;
   }
 
-  const response =
-    await fetch(
-      '/api/push/config',
-      {
-        cache: 'no-store'
-      }
-    );
+  const response = await fetch(
+    '/api/push/config',
+    {
+      cache: 'no-store'
+    }
+  );
 
   if (!response.ok) {
     throw new Error(
@@ -73,11 +130,15 @@ async function getPublicKey() {
     );
   }
 
-  const data =
-    await response.json();
+  const data = await response.json();
 
-  publicKey =
-    data.publicKey;
+  if (!data.publicKey) {
+    throw new Error(
+      'Push configuration is unavailable.'
+    );
+  }
+
+  publicKey = data.publicKey;
 
   return publicKey;
 }
@@ -87,23 +148,18 @@ async function getSubscription() {
     return null;
   }
 
-  return registration
-    .pushManager
+  return registration.pushManager
     .getSubscription();
 }
 
 async function createSubscription() {
-  const key =
-    await getPublicKey();
+  const key = await getPublicKey();
 
-  return registration
-    .pushManager
+  return registration.pushManager
     .subscribe({
       userVisibleOnly: true,
       applicationServerKey:
-        urlBase64ToUint8Array(
-          key
-        )
+        urlBase64ToUint8Array(key)
     });
 }
 
@@ -130,97 +186,201 @@ async function syncSubscription() {
     return;
   }
 
-  const response =
-    await fetch(
-      '/api/push/subscribe',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type':
-            'application/json'
-        },
-        body:
-          JSON.stringify({
-            subscription:
-              subscription.toJSON(),
+  const response = await fetch(
+    '/api/push/subscribe',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type':
+          'application/json'
+      },
+      body: JSON.stringify({
+        subscription:
+          subscription.toJSON(),
 
-            preferences:
-              getPreferences()
-          })
-      }
-    );
+        preferences:
+          getPreferences()
+      })
+    }
+  );
+
+  const result = await response
+    .json()
+    .catch(() => ({}));
 
   if (!response.ok) {
     throw new Error(
+      result.error ||
       'Unable to save notification settings.'
     );
   }
 }
 
 export async function initNotifications() {
+  const capability =
+    canEnableNotifications();
+
   if (
-    !('serviceWorker' in navigator) ||
-    !('PushManager' in window) ||
-    !('Notification' in window)
+    !capability.allowed &&
+    capability.reason ===
+      'unsupported'
   ) {
     return false;
   }
 
-  registration =
-    await navigator
-      .serviceWorker
-      .register('/sw.js');
-
-  await navigator
-    .serviceWorker
-    .ready;
-
   if (
-    Notification.permission ===
-      'granted'
+    !('serviceWorker' in navigator)
   ) {
-    await syncSubscription()
-      .catch(error => {
-        console.error(
-          'Unable to sync notifications:',
-          error
-        );
-      });
+    return false;
   }
 
-  return true;
+  try {
+    registration =
+      await navigator
+        .serviceWorker
+        .register('/sw.js');
+
+    await navigator
+      .serviceWorker
+      .ready;
+
+    if (
+      'Notification' in window &&
+      Notification.permission ===
+        'granted'
+    ) {
+      await syncSubscription();
+    }
+
+    return true;
+  } catch (error) {
+    console.error(
+      'Unable to initialise notifications:',
+      error
+    );
+
+    return false;
+  }
 }
 
 export async function enableNotifications() {
-  if (!registration) {
+  const capability =
+    canEnableNotifications();
+
+  if (!capability.allowed) {
+    if (
+      capability.reason ===
+      'ios-install-required'
+    ) {
+      showNotificationMessage(
+        'To enable notifications on iPhone or iPad, add this website to your Home Screen first. Then open it from the Home Screen and enable notifications again.'
+      );
+
+      return false;
+    }
+
+    if (
+      capability.reason ===
+      'denied'
+    ) {
+      showNotificationMessage(
+        'Notifications are currently blocked for this website. Please enable them in your browser or device settings and try again.'
+      );
+
+      return false;
+    }
+
+    showNotificationMessage(
+      'Notifications are not supported by this browser.'
+    );
+
     return false;
+  }
+
+  if (!registration) {
+    try {
+      registration =
+        await navigator
+          .serviceWorker
+          .register('/sw.js');
+
+      await navigator
+        .serviceWorker
+        .ready;
+    } catch (error) {
+      console.error(
+        'Unable to register service worker:',
+        error
+      );
+
+      showNotificationMessage(
+        'Notifications could not be enabled. Please try again.'
+      );
+
+      return false;
+    }
   }
 
   let permission =
     Notification.permission;
 
   if (permission === 'default') {
-    permission =
-      await Notification
-        .requestPermission();
+    try {
+      permission =
+        await Notification
+          .requestPermission();
+    } catch (error) {
+      console.error(
+        'Unable to request notification permission:',
+        error
+      );
+
+      return false;
+    }
   }
 
-  if (permission !== 'granted') {
+  if (
+    permission !==
+    'granted'
+  ) {
     return false;
   }
 
-  await syncSubscription();
+  try {
+    await syncSubscription();
 
-  return true;
+    return true;
+  } catch (error) {
+    console.error(
+      'Unable to enable notifications:',
+      error
+    );
+
+    showNotificationMessage(
+      'Notifications could not be enabled. Please try again.'
+    );
+
+    return false;
+  }
 }
 
 export async function syncNotificationPreferences() {
   if (
+    !('Notification' in window) ||
     Notification.permission !==
       'granted'
   ) {
     return;
   }
 
-  await syncSubscription();
+  try {
+    await syncSubscription();
+  } catch (error) {
+    console.error(
+      'Unable to sync notification preferences:',
+      error
+    );
+
+    throw error;
+  }
 }
