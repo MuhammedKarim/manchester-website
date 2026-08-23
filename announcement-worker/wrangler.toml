@@ -6,4 +6,4 @@ compatibility_date = "2026-08-23"
 POSTER_CHECK_URL = "https://khanqah-naqshbandia-site.pages.dev/api/push/check-posters"
 
 [triggers]
-crons = ["*/5 * * * *"]
+crons = ["* * * * *"]
