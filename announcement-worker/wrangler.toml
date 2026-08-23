@@ -7,3 +7,9 @@ POSTER_CHECK_URL = "https://khanqah-naqshbandia-site.pages.dev/api/push/check-po
 
 [triggers]
 crons = ["*/5 * * * *"]
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
