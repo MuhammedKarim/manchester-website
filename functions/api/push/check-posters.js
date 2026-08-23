@@ -382,7 +382,7 @@ async function processPoster(
       'Khanqah Naqshbandia Mujaddidia';
 
     body =
-      'A new general announcement has been posted.';
+      'A new announcement has been posted. Click to view.'
 
     tag =
       'general-announcement';
@@ -397,7 +397,7 @@ async function processPoster(
       `${location} Khanqah`;
 
     body =
-      'A new announcement has been posted.';
+      'A new announcement has been posted. Click to view.'
 
     tag =
       `announcement-${khanqahId}`;
