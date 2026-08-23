@@ -2003,15 +2003,11 @@ dd {
   color: var(--gold-soft);
 }
 
-.khanqah-notifications-toggle-main,
-.khanqah-notifications-toggle-right {
+.khanqah-notifications-toggle-main {
+  min-width: 0;
   display: inline-flex;
   align-items: center;
   gap: .55rem;
-}
-
-.khanqah-notifications-toggle-main {
-  min-width: 0;
   font-size: .75rem;
   font-weight: 600;
   letter-spacing: .08em;
@@ -2022,14 +2018,6 @@ dd {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-}
-
-.khanqah-notifications-count {
-  color: var(--gold-soft);
-  font-size: .62rem;
-  font-weight: 600;
-  letter-spacing: .04em;
-  white-space: nowrap;
 }
 
 .khanqah-notifications-chevron {

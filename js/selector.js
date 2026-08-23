@@ -110,41 +110,15 @@ function bellIcon() {
   `;
 }
 
-function updateNotificationSummary(
-  wrapper,
-  id
-) {
-  const count =
-    getEnabledCount(id);
-
-  const trigger =
-    wrapper.querySelector(
-      '[data-notification-toggle]'
-    );
-
-  const countElement =
-    wrapper.querySelector(
-      '[data-notification-count]'
-    );
+function updateNotificationSummary(wrapper, id) {
+  const count = getEnabledCount(id);
+  const trigger = wrapper.querySelector('[data-notification-toggle]');
 
   if (!trigger) {
     return;
   }
 
-  trigger.classList.toggle(
-    'has-notifications',
-    count > 0
-  );
-
-  if (countElement) {
-    countElement.textContent =
-      count > 0
-        ? `${count} enabled`
-        : '';
-
-    countElement.hidden =
-      count === 0;
-  }
+  trigger.classList.toggle('has-notifications', count > 0);
 }
 
 function closeOtherPanels(
@@ -278,26 +252,7 @@ export function createMasjidSelector(
                   <span>Notifications</span>
                 </span>
 
-                <span class="khanqah-notifications-toggle-right">
-                  <span
-                    class="khanqah-notifications-count"
-                    data-notification-count
-                    ${enabledCount === 0 ? 'hidden' : ''}
-                  >
-                    ${
-                      enabledCount > 0
-                        ? `${enabledCount} enabled`
-                        : ''
-                    }
-                  </span>
-
-                  <span
-                    class="khanqah-notifications-chevron"
-                    aria-hidden="true"
-                  >
-                    ▾
-                  </span>
-                </span>
+                <span class="khanqah-notifications-chevron" aria-hidden="true">▾</span>
               </button>
 
               <div

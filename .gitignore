@@ -5,3 +5,4 @@ presence-worker/.env
 presence-worker/.env.*
 .DS_Store
 Thumbs.db
+node_modules/
