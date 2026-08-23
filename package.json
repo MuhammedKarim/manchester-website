@@ -17,8 +17,5 @@
   "bugs": {
     "url": "https://github.com/MuhammedKarim/manchester-website/issues"
   },
-  "homepage": "https://github.com/MuhammedKarim/manchester-website#readme",
-  "dependencies": {
-    "web-push": "^3.6.7"
-  }
+  "homepage": "https://github.com/MuhammedKarim/manchester-website#readme"
 }

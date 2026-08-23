@@ -1,4 +1,4 @@
-import webpush from 'web-push';
+import { sendWebPush } from '../../_lib/web-push.js';
 
 function json(data, status = 200) {
   return Response.json(data, {
@@ -15,7 +15,10 @@ function clean(value, maxLength = 200) {
     .slice(0, maxLength);
 }
 
-async function removeSubscription(env, subscriptionId) {
+async function removeSubscription(
+  env,
+  subscriptionId
+) {
   await env.DB
     .prepare(`
       DELETE FROM notification_preferences
@@ -36,7 +39,10 @@ async function removeSubscription(env, subscriptionId) {
 export async function onRequestPost(context) {
   const { request, env } = context;
 
-  const adminKey = request.headers.get('X-Admin-Key');
+  const adminKey =
+    request.headers.get(
+      'X-Admin-Key'
+    );
 
   if (
     !env.PUSH_ADMIN_KEY ||
@@ -57,9 +63,12 @@ export async function onRequestPost(context) {
       error: 'Push configuration is incomplete.',
       missing: {
         DB: !env.DB,
-        VAPID_PUBLIC_KEY: !env.VAPID_PUBLIC_KEY,
-        VAPID_PRIVATE_KEY: !env.VAPID_PRIVATE_KEY,
-        VAPID_SUBJECT: !env.VAPID_SUBJECT
+        VAPID_PUBLIC_KEY:
+          !env.VAPID_PUBLIC_KEY,
+        VAPID_PRIVATE_KEY:
+          !env.VAPID_PRIVATE_KEY,
+        VAPID_SUBJECT:
+          !env.VAPID_SUBJECT
       }
     }, 500);
   }
@@ -67,18 +76,43 @@ export async function onRequestPost(context) {
   let body;
 
   try {
-    body = await request.json();
+    body =
+      await request.json();
   } catch {
     return json({
       error: 'Invalid request.'
     }, 400);
   }
 
-  const khanqahId = clean(body.khanqahId, 100);
-  const location = clean(body.location, 100);
-  const prayer = clean(body.prayer, 50);
-  const dateText = clean(body.dateText, 100);
-  const time = clean(body.time, 50);
+  const khanqahId =
+    clean(
+      body.khanqahId,
+      100
+    );
+
+  const location =
+    clean(
+      body.location,
+      100
+    );
+
+  const prayer =
+    clean(
+      body.prayer,
+      50
+    );
+
+  const dateText =
+    clean(
+      body.dateText,
+      100
+    );
+
+  const time =
+    clean(
+      body.time,
+      50
+    );
 
   if (
     !khanqahId ||
@@ -102,29 +136,36 @@ export async function onRequestPost(context) {
     'Eid'
   ];
 
-  if (!allowedPrayers.includes(prayer)) {
+  if (
+    !allowedPrayers.includes(
+      prayer
+    )
+  ) {
     return json({
       error: 'Invalid prayer.'
     }, 400);
   }
 
-  const subscriptions = await env.DB
-    .prepare(`
-      SELECT
-        s.id,
-        s.endpoint,
-        s.p256dh,
-        s.auth
-      FROM push_subscriptions s
-      INNER JOIN notification_preferences p
-        ON p.subscription_id = s.id
-      WHERE p.khanqah_id = ?
-        AND p.prayer_changes = 1
-    `)
-    .bind(khanqahId)
-    .all();
+  const subscriptions =
+    await env.DB
+      .prepare(`
+        SELECT
+          s.id,
+          s.endpoint,
+          s.p256dh,
+          s.auth
+        FROM push_subscriptions s
+        INNER JOIN notification_preferences p
+          ON p.subscription_id = s.id
+        WHERE p.khanqah_id = ?
+          AND p.prayer_changes = 1
+      `)
+      .bind(khanqahId)
+      .all();
 
-  const rows = subscriptions.results || [];
+  const rows =
+    subscriptions.results ||
+    [];
 
   if (rows.length === 0) {
     return json({
@@ -132,50 +173,58 @@ export async function onRequestPost(context) {
       sent: 0,
       failed: 0,
       removed: 0,
-      message: 'No users are subscribed to prayer time changes for this Khanqah.'
+      message:
+        'No users are subscribed to prayer time changes for this Khanqah.'
     });
   }
 
-  webpush.setVapidDetails(
-    env.VAPID_SUBJECT,
-    env.VAPID_PUBLIC_KEY,
-    env.VAPID_PRIVATE_KEY
-  );
+  const title =
+    `${location} Khanqah — ${prayer} Time Change`;
 
-  const title = `${location} Khanqah — ${prayer} Time Change`;
-  const notificationBody = `${dateText}'s ${prayer} Jamat will be at ${time}.`;
+  const notificationBody =
+    `${dateText}'s ${prayer} Jamat will be at ${time}.`;
 
-  const payload = JSON.stringify({
-    title,
-    body: notificationBody,
-    url: '/',
-    tag: `prayer-${khanqahId}-${prayer.toLowerCase()}`
-  });
+  const payload =
+    JSON.stringify({
+      title,
+      body:
+        notificationBody,
+      url: '/',
+      tag:
+        `prayer-${khanqahId}-${prayer.toLowerCase()}`
+    });
 
   let sent = 0;
-  let removed = 0;
   let failed = 0;
+  let removed = 0;
 
   const failures = [];
 
   for (const row of rows) {
     const subscription = {
-      endpoint: row.endpoint,
+      endpoint:
+        row.endpoint,
       keys: {
-        p256dh: row.p256dh,
-        auth: row.auth
+        p256dh:
+          row.p256dh,
+        auth:
+          row.auth
       }
     };
 
     try {
-      await webpush.sendNotification(
+      await sendWebPush({
         subscription,
         payload,
-        {
-          TTL: 86400,
-          urgency: 'high'
-        }
-      );
+        vapidPublicKey:
+          env.VAPID_PUBLIC_KEY,
+        vapidPrivateKey:
+          env.VAPID_PRIVATE_KEY,
+        vapidSubject:
+          env.VAPID_SUBJECT,
+        ttl: 86400,
+        urgency: 'high'
+      });
 
       sent += 1;
     } catch (error) {
@@ -195,7 +244,8 @@ export async function onRequestPost(context) {
         removed += 1;
 
         failures.push({
-          subscriptionId: row.id,
+          subscriptionId:
+            row.id,
           statusCode,
           message:
             error?.message ||
@@ -205,32 +255,39 @@ export async function onRequestPost(context) {
             null,
           removed: true
         });
-      } else {
-        failed += 1;
 
-        failures.push({
-          subscriptionId: row.id,
+        continue;
+      }
+
+      failed += 1;
+
+      failures.push({
+        subscriptionId:
+          row.id,
+        statusCode,
+        message:
+          error?.message ||
+          'Unknown push error.',
+        body:
+          error?.body ||
+          null,
+        removed: false
+      });
+
+      console.error(
+        'Unable to send push notification:',
+        {
+          subscriptionId:
+            row.id,
           statusCode,
           message:
-            error?.message ||
-            'Unknown push error.',
+            error?.message,
           body:
-            error?.body ||
-            null,
-          removed: false
-        });
-
-        console.error(
-          'Unable to send push notification:',
-          {
-            subscriptionId: row.id,
-            statusCode,
-            message: error?.message,
-            body: error?.body,
-            stack: error?.stack
-          }
-        );
-      }
+            error?.body,
+          stack:
+            error?.stack
+        }
+      );
     }
   }
 
