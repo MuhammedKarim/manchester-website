@@ -71,10 +71,9 @@ const clockFormatter =
     'en-GB',
     {
       timeZone: TIME_ZONE,
-      hour: 'numeric',
+      hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit',
-      hour12: true
+      hourCycle: 'h23'
     }
   );
 
@@ -779,8 +778,7 @@ function render() {
       clockFormatter
         .format(
           now
-        )
-        .toUpperCase();
+        );
 
     clock.setAttribute(
       'datetime',
