@@ -1978,39 +1978,18 @@ dd {
   box-shadow: var(--shadow);
 }
 
-.khanqah-notifications-toggle {
-  width: 100%;
-  min-height: 52px;
+.khanqah-notifications-heading {
+  min-height: 50px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: .75rem;
-  padding: .7rem 1rem;
-  border: 0;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  text-align: left;
-}
-
-.khanqah-notifications-toggle:hover,
-.khanqah-notifications-toggle:focus-visible {
-  color: var(--gold-soft);
-  outline: none;
-}
-
-.khanqah-notifications-toggle.has-notifications {
-  color: var(--gold-soft);
-}
-
-.khanqah-notifications-toggle-main {
-  min-width: 0;
-  display: inline-flex;
-  align-items: center;
+  justify-content: center;
   gap: .55rem;
-  font-size: .75rem;
-  font-weight: 600;
-  letter-spacing: .08em;
+  padding: .75rem 1rem;
+  border-bottom: 1px solid rgba(214, 184, 90, .12);
+  color: var(--gold-soft);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .12em;
   text-transform: uppercase;
 }
 
@@ -2020,19 +1999,8 @@ dd {
   flex-shrink: 0;
 }
 
-.khanqah-notifications-chevron {
-  display: inline-block;
-  font-size: .85rem;
-  transition: transform .2s ease;
-}
-
-.khanqah-notifications-toggle[aria-expanded="true"] .khanqah-notifications-chevron {
-  transform: rotate(180deg);
-}
-
 .khanqah-notifications-panel {
-  padding: .25rem 1rem 1rem;
-  border-top: 1px solid rgba(214, 184, 90, .12);
+  padding: .2rem 1rem .8rem;
 }
 
 .notification-option {
@@ -2050,16 +2018,16 @@ dd {
 
 .notification-option-copy {
   min-width: 0;
-  display: grid;
-  gap: .18rem;
 }
 
 .notification-option-copy strong {
   color: var(--text);
   font-family: Jost, system-ui, sans-serif;
   font-size: .78rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.25;
+  letter-spacing: .08em;
+  text-transform: uppercase;
 }
 
 .notification-switch {
@@ -2117,13 +2085,10 @@ dd {
 }
 
 @media (max-width: 760px) {
-  .khanqah-notifications-toggle {
-    min-height: 56px;
+  .khanqah-notifications-heading {
+    min-height: 52px;
     padding-inline: 1.05rem;
-  }
-
-  .khanqah-notifications-toggle-main {
-    font-size: .78rem;
+    font-size: .82rem;
   }
 
   .khanqah-notifications-panel {
@@ -2135,7 +2100,7 @@ dd {
   }
 
   .notification-option-copy strong {
-    font-size: .82rem;
+    font-size: .84rem;
   }
 }
 

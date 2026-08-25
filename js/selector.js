@@ -73,16 +73,6 @@ function setKhanqahPreference(
   );
 }
 
-function getEnabledCount(id) {
-  const preferences =
-    getKhanqahPreferences(id);
-
-  return [
-    preferences.announcements,
-    preferences.prayerChanges
-  ].filter(Boolean).length;
-}
-
 function bellIcon() {
   return `
     <svg
@@ -108,53 +98,6 @@ function bellIcon() {
       ></path>
     </svg>
   `;
-}
-
-function updateNotificationSummary(wrapper, id) {
-  const count = getEnabledCount(id);
-  const trigger = wrapper.querySelector('[data-notification-toggle]');
-
-  if (!trigger) {
-    return;
-  }
-
-  trigger.classList.toggle('has-notifications', count > 0);
-}
-
-function closeOtherPanels(
-  currentWrapper
-) {
-  grid
-    .querySelectorAll(
-      '.masjid-choice-wrapper'
-    )
-    .forEach(wrapper => {
-      if (
-        wrapper ===
-        currentWrapper
-      ) {
-        return;
-      }
-
-      const panel =
-        wrapper.querySelector(
-          '[data-notification-panel]'
-        );
-
-      const trigger =
-        wrapper.querySelector(
-          '[data-notification-toggle]'
-        );
-
-      if (panel) {
-        panel.hidden = true;
-      }
-
-      trigger?.setAttribute(
-        'aria-expanded',
-        'false'
-      );
-    });
 }
 
 export function createMasjidSelector(
@@ -195,9 +138,6 @@ export function createMasjidSelector(
         const preferences =
           getKhanqahPreferences(id);
 
-        const enabledCount =
-          getEnabledCount(id);
-
         return `
           <article
             class="masjid-choice-wrapper"
@@ -236,31 +176,12 @@ export function createMasjidSelector(
             </button>
 
             <div class="khanqah-notifications">
-              <button
-                class="khanqah-notifications-toggle ${
-                  enabledCount > 0
-                    ? 'has-notifications'
-                    : ''
-                }"
-                type="button"
-                data-notification-toggle
-                aria-expanded="false"
-                aria-controls="notifications-${id}"
-              >
-                <span class="khanqah-notifications-toggle-main">
-                  ${bellIcon()}
-                  <span>Notifications</span>
-                </span>
+              <div class="khanqah-notifications-heading">
+                ${bellIcon()}
+                <span>Notifications</span>
+              </div>
 
-                <span class="khanqah-notifications-chevron" aria-hidden="true">▾</span>
-              </button>
-
-              <div
-                class="khanqah-notifications-panel"
-                id="notifications-${id}"
-                data-notification-panel
-                hidden
-              >
+              <div class="khanqah-notifications-panel">
                 <label class="notification-option">
                   <span class="notification-option-copy">
                     <strong>Announcements</strong>
@@ -340,51 +261,6 @@ export function createMasjidSelector(
 
   grid
     .querySelectorAll(
-      '[data-notification-toggle]'
-    )
-    .forEach(trigger => {
-      trigger.addEventListener(
-        'click',
-        event => {
-          event.stopPropagation();
-
-          const wrapper =
-            trigger.closest(
-              '.masjid-choice-wrapper'
-            );
-
-          const panel =
-            wrapper?.querySelector(
-              '[data-notification-panel]'
-            );
-
-          if (
-            !wrapper ||
-            !panel
-          ) {
-            return;
-          }
-
-          const opening =
-            panel.hidden;
-
-          closeOtherPanels(
-            wrapper
-          );
-
-          panel.hidden =
-            !opening;
-
-          trigger.setAttribute(
-            'aria-expanded',
-            String(opening)
-          );
-        }
-      );
-    });
-
-  grid
-    .querySelectorAll(
       '[data-notification-setting]'
     )
     .forEach(input => {
@@ -442,45 +318,9 @@ export function createMasjidSelector(
                 error
               );
             });
-
-          updateNotificationSummary(
-            wrapper,
-            id
-          );
         }
       );
     });
-
-  document.addEventListener(
-    'keydown',
-    event => {
-      if (
-        event.key !==
-        'Escape'
-      ) {
-        return;
-      }
-
-      grid
-        .querySelectorAll(
-          '[data-notification-panel]'
-        )
-        .forEach(panel => {
-          panel.hidden = true;
-        });
-
-      grid
-        .querySelectorAll(
-          '[data-notification-toggle]'
-        )
-        .forEach(trigger => {
-          trigger.setAttribute(
-            'aria-expanded',
-            'false'
-          );
-        });
-    }
-  );
 }
 
 export function showMasjidSelector() {

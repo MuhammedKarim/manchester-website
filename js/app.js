@@ -1,175 +1,87 @@
 import { initNavigation } from './navigation.js';
-import {
-  createMasjidSelector,
-  showMasjidSelector,
-  hideMasjidSelector
-} from './selector.js';
+import { createMasjidSelector, showMasjidSelector, hideMasjidSelector } from './selector.js';
 import { applyMasjidContent } from './masjid.js';
-import {
-  initPrayerTimes,
-  stopPrayerTimes
-} from './prayer-times.js';
-import {
-  initDhikr,
-  stopDhikr
-} from './dhikr.js';
-import {
-  initPoster,
-  setPosterKhanqah,
-  showGlobalPosterOnly
-} from './poster.js';
+import { initPrayerTimes, stopPrayerTimes } from './prayer-times.js';
+import { initDhikr, stopDhikr } from './dhikr.js';
+import { initPoster, setPosterKhanqah, showGlobalPosterOnly } from './poster.js';
 import { initTimetable } from './timetable.js';
 import { initPresence } from './presence.js';
 import { initSharedBanner } from './shared.js';
-import {
-  initContactForm,
-  setContactFormKhanqah
-} from './contact-form.js';
-import {
-  initNotifications
-} from './notifications.js';
+import { initNotifications } from './notifications.js';
 
 const MASJIDS_CONFIG_URL = 'data/masjids.json';
-const CONFIG_URL = 'data/config.json';
+const SITE_CONFIG_URL = 'data/site.json';
 
 let masjidsConfig = null;
 let siteConfig = null;
 let currentMasjidId = null;
 
 async function loadJson(url) {
-  const response = await fetch(
-    `${url}?v=${Date.now()}`,
-    {
-      cache: 'no-store'
-    }
-  );
+  const response = await fetch(`${url}?v=${Date.now()}`, {
+    cache: 'no-store'
+  });
 
   if (!response.ok) {
-    throw new Error(
-      `${url} failed with HTTP ${response.status}`
-    );
+    throw new Error(`${url} failed with HTTP ${response.status}`);
   }
 
   return response.json();
 }
 
-function getSavedMasjid() {
-  try {
-    return localStorage.getItem('selectedMasjid');
-  } catch {
+function getNotificationDestination() {
+  const params = new URLSearchParams(window.location.search);
+  const khanqahId = params.get('khanqah');
+  const section = params.get('section');
+
+  if (!khanqahId) {
     return null;
   }
+
+  return {
+    khanqahId,
+    section
+  };
 }
 
-function saveMasjid(id) {
-  try {
-    localStorage.setItem(
-      'selectedMasjid',
-      id
-    );
-  } catch {
-  }
-}
-
-function getCleanUrl() {
-  return (
-    window.location.pathname +
-    window.location.search
-  );
-}
-
-function replaceHistoryState(state) {
-  history.replaceState(
-    state,
+function cleanNotificationUrl() {
+  window.history.replaceState(
+    {},
     '',
-    getCleanUrl()
+    window.location.pathname
   );
 }
 
-function pushHistoryState(state) {
-  history.pushState(
-    state,
-    '',
-    getCleanUrl()
-  );
-}
-
-function showSelector({
-  pushHistory = false
-} = {}) {
-  stopPrayerTimes();
-  stopDhikr();
-
-  showGlobalPosterOnly();
-
-  if (pushHistory) {
-    pushHistoryState({
-      view: 'selector'
-    });
-  } else {
-    replaceHistoryState({
-      view: 'selector'
-    });
+function scrollToSection(section) {
+  if (!section) {
+    return;
   }
 
-  createMasjidSelector(
-    masjidsConfig,
-    activateMasjid,
-    getSavedMasjid(),
-    siteConfig
-  );
-
-  showMasjidSelector();
-
-  window.scrollTo({
-    top: 0,
-    behavior: 'instant'
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document
+        .getElementById(section)
+        ?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+    });
   });
 }
 
-async function activateMasjid(
-  id,
-  {
-    pushHistory = true
-  } = {}
-) {
-  const masjid =
-    masjidsConfig
-      ?.masjids
-      ?.[id];
+async function activateMasjid(id, options = {}) {
+  const masjid = masjidsConfig?.masjids?.[id];
 
   if (!masjid) {
     return;
   }
 
   currentMasjidId = id;
-  saveMasjid(id);
-
-  if (pushHistory) {
-    pushHistoryState({
-      view: 'khanqah',
-      khanqahId: id
-    });
-  } else {
-    replaceHistoryState({
-      view: 'khanqah',
-      khanqahId: id
-    });
-  }
 
   stopPrayerTimes();
   stopDhikr();
 
-  applyMasjidContent(
-    masjid,
-    siteConfig
-  );
-
-  setContactFormKhanqah(id);
-
+  applyMasjidContent(masjid);
   hideMasjidSelector();
-
-  await setPosterKhanqah(masjid);
 
   await initTimetable(masjid);
 
@@ -177,41 +89,84 @@ async function activateMasjid(
 
   initDhikr(siteConfig.dhikr);
 
-  window.scrollTo({
-    top: 0,
-    behavior: 'instant'
-  });
+  await setPosterKhanqah(masjid);
+
+  if (options.scrollToTop !== false) {
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant'
+    });
+  }
+}
+
+function showSelector() {
+  stopPrayerTimes();
+  stopDhikr();
+
+  showGlobalPosterOnly();
+
+  createMasjidSelector(
+    masjidsConfig,
+    async id => {
+      history.pushState(
+        {
+          view: 'khanqah',
+          khanqahId: id
+        },
+        '',
+        window.location.pathname
+      );
+
+      await activateMasjid(id);
+    },
+    currentMasjidId,
+    siteConfig
+  );
+
+  showMasjidSelector();
 }
 
 function changeMasjid() {
-  showSelector({
-    pushHistory: true
-  });
+  history.pushState(
+    {
+      view: 'selector'
+    },
+    '',
+    window.location.pathname
+  );
+
+  showSelector();
 }
 
-function handlePopState(event) {
-  const state = event.state;
+function setupHistory() {
+  history.replaceState(
+    {
+      view: 'selector'
+    },
+    '',
+    window.location.pathname
+  );
 
-  if (
-    state?.view === 'khanqah' &&
-    state.khanqahId &&
-    masjidsConfig
-      ?.masjids
-      ?.[state.khanqahId]
-  ) {
-    activateMasjid(
-      state.khanqahId,
-      {
-        pushHistory: false
+  window.addEventListener(
+    'popstate',
+    event => {
+      const state = event.state;
+
+      if (
+        state?.view === 'khanqah' &&
+        state?.khanqahId &&
+        masjidsConfig?.masjids?.[state.khanqahId]
+      ) {
+        activateMasjid(
+          state.khanqahId
+        );
+
+        return;
       }
-    );
 
-    return;
-  }
-
-  showSelector({
-    pushHistory: false
-  });
+      showSelector();
+    }
+  );
 }
 
 async function boot() {
@@ -221,7 +176,7 @@ async function boot() {
       siteConfig
     ] = await Promise.all([
       loadJson(MASJIDS_CONFIG_URL),
-      loadJson(CONFIG_URL)
+      loadJson(SITE_CONFIG_URL)
     ]);
 
     initNavigation(changeMasjid);
@@ -230,40 +185,72 @@ async function boot() {
       siteConfig.sharedBanner
     );
 
-    const logo = document.querySelector(
-      '[data-masjid-logo]'
-    );
-
-    if (logo) {
-      logo.src =
-        siteConfig.logo ||
-        '';
-
-      logo.alt = '';
-    }
-
     initPresence(
       siteConfig.livePresenceUrl
     );
 
     await initNotifications();
-    
+
     await initPoster(
       siteConfig.poster
     );
 
-    initContactForm(
-      siteConfig.contactForm
+    setupHistory();
+
+    const notificationDestination =
+      getNotificationDestination();
+
+    if (
+      notificationDestination &&
+      masjidsConfig.masjids?.[
+        notificationDestination.khanqahId
+      ]
+    ) {
+      history.replaceState(
+        {
+          view: 'khanqah',
+          khanqahId:
+            notificationDestination.khanqahId
+        },
+        '',
+        window.location.pathname
+      );
+
+      await activateMasjid(
+        notificationDestination.khanqahId,
+        {
+          scrollToTop: false
+        }
+      );
+
+      cleanNotificationUrl();
+
+      scrollToSection(
+        notificationDestination.section
+      );
+
+      return;
+    }
+
+    createMasjidSelector(
+      masjidsConfig,
+      async id => {
+        history.pushState(
+          {
+            view: 'khanqah',
+            khanqahId: id
+          },
+          '',
+          window.location.pathname
+        );
+
+        await activateMasjid(id);
+      },
+      null,
+      siteConfig
     );
 
-    window.addEventListener(
-      'popstate',
-      handlePopState
-    );
-
-    showSelector({
-      pushHistory: false
-    });
+    showMasjidSelector();
   } catch (error) {
     console.error(
       'Unable to initialise website:',

@@ -187,11 +187,9 @@ export async function onRequestPost(context) {
   const payload =
     JSON.stringify({
       title,
-      body:
-        notificationBody,
-      url: '/',
-      tag:
-        `prayer-${khanqahId}-${prayer.toLowerCase()}`
+      body: notificationBody,
+      url: `/?khanqah=${encodeURIComponent(khanqahId)}&section=prayer-times`,
+      tag: `prayer-${khanqahId}-${prayer.toLowerCase()}`
     });
 
   let sent = 0;

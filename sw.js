@@ -10,9 +10,7 @@ self.addEventListener('push', event => {
     };
   }
 
-  const title =
-    data.title ||
-    'Khanqah Naqshbandia Mujaddidia';
+  const title = data.title || 'Khanqah Naqshbandia Mujaddidia';
 
   const options = {
     body: data.body || '',
@@ -21,9 +19,7 @@ self.addEventListener('push', event => {
     data: {
       url: data.url || '/'
     },
-    tag:
-      data.tag ||
-      undefined
+    tag: data.tag || undefined
   };
 
   event.waitUntil(
@@ -37,24 +33,29 @@ self.addEventListener('push', event => {
 self.addEventListener('notificationclick', event => {
   event.notification.close();
 
-  const url =
-    event.notification.data?.url ||
-    '/';
+  const targetUrl =
+    new URL(
+      event.notification.data?.url || '/',
+      self.location.origin
+    ).href;
 
   event.waitUntil(
     clients.matchAll({
       type: 'window',
       includeUncontrolled: true
-    }).then(windowClients => {
+    }).then(async windowClients => {
       for (const client of windowClients) {
+        if ('navigate' in client) {
+          await client.navigate(targetUrl);
+        }
+
         if ('focus' in client) {
-          client.navigate(url);
           return client.focus();
         }
       }
 
       if (clients.openWindow) {
-        return clients.openWindow(url);
+        return clients.openWindow(targetUrl);
       }
     })
   );
