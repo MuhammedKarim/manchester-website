@@ -12,6 +12,8 @@ import { initNotifications } from './notifications.js';
 const MASJIDS_CONFIG_URL = 'data/masjids.json';
 const SITE_CONFIG_URL = 'data/config.json';
 
+const brandLogo = document.querySelector('[data-masjid-logo]');
+
 let masjidsConfig = null;
 let siteConfig = null;
 let currentMasjidId = null;
@@ -36,7 +38,6 @@ async function loadJson(url) {
 
 function getNotificationDestination() {
   const params = new URLSearchParams(window.location.search);
-
   const khanqahId = params.get('khanqah');
   const section = params.get('section');
 
@@ -67,8 +68,19 @@ function scrollToSection(section) {
   });
 }
 
+function applySharedLogo() {
+  if (
+    brandLogo &&
+    siteConfig?.logo
+  ) {
+    brandLogo.src =
+      siteConfig.logo;
+  }
+}
+
 async function activateMasjid(id, options = {}) {
-  const masjid = masjidsConfig?.masjids?.[id];
+  const masjid =
+    masjidsConfig?.masjids?.[id];
 
   if (!masjid) {
     return;
@@ -80,17 +92,36 @@ async function activateMasjid(id, options = {}) {
   stopDhikr();
 
   applyMasjidContent(masjid);
+
+  /*
+   * The logo is shared across all Khanqahs,
+   * so re-apply it after the Khanqah content
+   * in case masjid.js changes the image src.
+   */
+  applySharedLogo();
+
   hideMasjidSelector();
 
-  await initTimetable(masjid);
+  await initTimetable(
+    masjid
+  );
 
-  initPrayerTimes(masjid);
+  initPrayerTimes(
+    masjid
+  );
 
-  initDhikr(siteConfig.dhikr);
+  initDhikr(
+    siteConfig.dhikr
+  );
 
-  await setPosterKhanqah(masjid);
+  await setPosterKhanqah(
+    masjid
+  );
 
-  if (options.scrollToTop !== false) {
+  if (
+    options.scrollToTop !==
+    false
+  ) {
     window.scrollTo({
       top: 0,
       behavior: 'instant'
@@ -116,7 +147,9 @@ function showSelector() {
         window.location.pathname
       );
 
-      await activateMasjid(id);
+      await activateMasjid(
+        id
+      );
     },
     currentMasjidId,
     siteConfig
@@ -149,12 +182,17 @@ function setupHistory() {
   window.addEventListener(
     'popstate',
     event => {
-      const state = event.state;
+      const state =
+        event.state;
 
       if (
-        state?.view === 'khanqah' &&
+        state?.view ===
+          'khanqah' &&
         state?.khanqahId &&
-        masjidsConfig?.masjids?.[state.khanqahId]
+        masjidsConfig
+          ?.masjids?.[
+            state.khanqahId
+          ]
       ) {
         activateMasjid(
           state.khanqahId
@@ -174,9 +212,15 @@ async function boot() {
       masjidsConfig,
       siteConfig
     ] = await Promise.all([
-      loadJson(MASJIDS_CONFIG_URL),
-      loadJson(SITE_CONFIG_URL)
+      loadJson(
+        MASJIDS_CONFIG_URL
+      ),
+      loadJson(
+        SITE_CONFIG_URL
+      )
     ]);
+
+    applySharedLogo();
 
     initNavigation(
       changeMasjid
@@ -196,6 +240,11 @@ async function boot() {
       siteConfig.poster
     );
 
+    /*
+     * Read the notification destination
+     * before setupHistory() removes the
+     * query string from the URL.
+     */
     const notificationDestination =
       getNotificationDestination();
 
@@ -203,29 +252,34 @@ async function boot() {
 
     if (
       notificationDestination &&
-      masjidsConfig.masjids?.[
-        notificationDestination.khanqahId
-      ]
+      masjidsConfig
+        .masjids?.[
+          notificationDestination
+            .khanqahId
+        ]
     ) {
       history.pushState(
         {
           view: 'khanqah',
           khanqahId:
-            notificationDestination.khanqahId
+            notificationDestination
+              .khanqahId
         },
         '',
         window.location.pathname
       );
 
       await activateMasjid(
-        notificationDestination.khanqahId,
+        notificationDestination
+          .khanqahId,
         {
           scrollToTop: false
         }
       );
 
       scrollToSection(
-        notificationDestination.section
+        notificationDestination
+          .section
       );
 
       return;
@@ -243,7 +297,9 @@ async function boot() {
           window.location.pathname
         );
 
-        await activateMasjid(id);
+        await activateMasjid(
+          id
+        );
       },
       null,
       siteConfig
