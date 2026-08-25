@@ -10,7 +10,7 @@ import { initSharedBanner } from './shared.js';
 import { initNotifications } from './notifications.js';
 
 const MASJIDS_CONFIG_URL = 'data/masjids.json';
-const SITE_CONFIG_URL = 'data/site.json';
+const SITE_CONFIG_URL = 'data/config.json';
 
 let masjidsConfig = null;
 let siteConfig = null;
