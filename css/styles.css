@@ -667,7 +667,7 @@ body.has-notice .media-banner {
   min-height: 100svh;
   display: grid;
   align-items: center;
-  padding: 5rem 0;
+  padding: 5rem 0 2.5rem;
   overflow: hidden;
 }
 
@@ -998,6 +998,10 @@ body.has-notice .media-banner {
 
 .section {
   padding: clamp(4.5rem, 9vw, 8rem) 0;
+}
+
+.dhikr-section {
+  padding-top: clamp(2.25rem, 4.5vw, 4rem);
 }
 
 .split,
@@ -1861,7 +1865,7 @@ dd {
   .hero {
     min-height: auto;
     align-items: start;
-    padding: .75rem 0 4rem;
+    padding: .75rem 0 2rem;
   }
 
   .media-banner {
