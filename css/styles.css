@@ -78,7 +78,7 @@ button { color: inherit; }
   clip: auto;
   z-index: 1000;
   margin: 1rem;
-  padding: 0.75rem 1rem;
+  padding: .75rem 1rem;
   border-radius: 999px;
   background: var(--gold);
   color: #081009;
@@ -96,16 +96,18 @@ h1 {
   max-width: 11ch;
   font-size: clamp(3.8rem, 9vw, 7.6rem);
   font-weight: 600;
-  letter-spacing: -0.045em;
+  letter-spacing: -.045em;
 }
 
 h2 {
   font-size: clamp(2.4rem, 5vw, 4.5rem);
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -.03em;
 }
 
-h3 { font-size: 1.55rem; }
+h3 {
+  font-size: 1.55rem;
+}
 
 strong {
   color: var(--gold-soft);
@@ -115,9 +117,9 @@ strong {
 .eyebrow {
   margin: 0 0 1rem;
   color: var(--gold-soft);
-  font-size: 0.78rem;
+  font-size: .78rem;
   font-weight: 600;
-  letter-spacing: 0.28em;
+  letter-spacing: .28em;
   text-transform: uppercase;
 }
 
@@ -127,17 +129,14 @@ strong {
   z-index: 200;
   overflow: auto;
   background:
-    radial-gradient(circle at 18% 10%, rgba(214, 184, 90, 0.18), transparent 28rem),
-    radial-gradient(circle at 85% 85%, rgba(42, 129, 62, 0.17), transparent 30rem),
+    radial-gradient(circle at 18% 10%, rgba(214, 184, 90, .18), transparent 28rem),
+    radial-gradient(circle at 85% 85%, rgba(42, 129, 62, .17), transparent 30rem),
     #07100a;
-  padding: clamp(2rem, 6vw, 5rem) 0;
+  padding: 4rem 0 1.5rem;
 }
 
 body.has-notice .masjid-selector {
-  padding-top: calc(
-    clamp(2rem, 6vw, 5rem) +
-    var(--notice-height)
-  );
+  padding-top: calc(4rem + var(--notice-height));
 }
 
 .masjid-selector-shell {
@@ -147,27 +146,42 @@ body.has-notice .masjid-selector {
 }
 
 .selector-bismillah {
-  margin-bottom: 0.7rem;
-  font-size: clamp(1.35rem, 3vw, 2rem);
-  line-height: 1.5;
+  margin-bottom: .3rem;
+  font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+  line-height: 1.35;
 }
 
 .masjid-selector-shell h1 {
   max-width: none;
-  font-size: clamp(3rem, 7vw, 6rem);
+  font-size: clamp(2.5rem, 5.5vw, 4.8rem);
+  text-transform: uppercase;
+  margin-bottom: .45rem;
+  font-weight: bold;
+}
+
+.masjid-selector-country {
+  margin: 0 0 .55rem;
+  color: var(--gold-soft);
+  font-size: clamp(.8rem, 1.5vw, 1rem);
+  font-weight: 600;
+  letter-spacing: .28em;
+  text-transform: uppercase;
 }
 
 .masjid-selector-intro {
   max-width: 680px;
-  margin: 1rem auto 2.5rem;
+  margin: 0 auto 1.25rem;
   color: var(--muted);
-  font-size: 1.05rem;
+  font-size: .95rem;
+  font-weight: 400;
+  letter-spacing: .08em;
+  text-transform: uppercase;
 }
 
 .masjid-selector-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.2rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: .9rem;
   align-items: stretch;
 }
 
@@ -184,15 +198,15 @@ body.has-notice .masjid-selector {
   border-radius: 24px;
   background: linear-gradient(
     145deg,
-    rgba(255, 255, 255, 0.09),
-    rgba(255, 255, 255, 0.025)
+    rgba(255, 255, 255, .09),
+    rgba(255, 255, 255, .025)
   );
   box-shadow: var(--shadow);
   text-align: left;
   cursor: pointer;
   transition:
-    transform 0.22s ease,
-    border-color 0.22s ease;
+    transform .22s ease,
+    border-color .22s ease;
 }
 
 .masjid-choice:hover,
@@ -236,8 +250,11 @@ body.has-notice .masjid-selector {
   display: flex;
   flex: 1;
   flex-direction: column;
-  justify-content: flex-start;
-  padding: 1.1rem 1.15rem 1.25rem;
+  align-items: center;
+  justify-content: center;
+  min-height: 82px;
+  padding: .9rem .8rem;
+  text-align: center;
 }
 
 .masjid-choice-name {
@@ -251,26 +268,41 @@ body.has-notice .masjid-selector {
 
 .masjid-choice-location {
   display: block;
-  margin-top: .35rem;
-  color: var(--muted);
-  font-size: .78rem;
-  letter-spacing: .12em;
+  margin-top: 0;
+  color: var(--gold-soft);
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.25rem, 1.65vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: .02em;
   text-transform: uppercase;
 }
 
-.masjid-choice-current {
+.masjid-choice-current,
+.masjid-choice-coming-soon {
   position: absolute;
   top: .8rem;
-  right: .8rem;
-  z-index: 2;
-  padding: .25rem .55rem;
+  z-index: 3;
+  padding: .28rem .58rem;
   border-radius: 999px;
-  background: var(--gold);
-  color: #07100a;
   font-size: .62rem;
   font-weight: 700;
+  line-height: 1.2;
   letter-spacing: .08em;
   text-transform: uppercase;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .2);
+}
+
+.masjid-choice-current {
+  right: .8rem;
+  background: var(--gold);
+  color: #07100a;
+}
+
+.masjid-choice-coming-soon {
+  left: .8rem;
+  background: #b82020;
+  color: #fff;
 }
 
 .notice-banner {
@@ -1492,67 +1524,6 @@ dd {
   text-transform: none;
 }
 
-.masjid-selector-country {
-  margin: .45rem 0 0;
-  color: var(--gold-soft);
-  font-size: clamp(.9rem, 1.8vw, 1.15rem);
-  font-weight: 600;
-  letter-spacing: .3em;
-  text-transform: uppercase;
-}
-
-.masjid-selector-intro {
-  margin-top: .8rem;
-}
-
-.masjid-selector-grid {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-}
-
-.masjid-choice-copy {
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.masjid-choice-location {
-  margin-top: 0;
-  color: var(--gold-soft);
-  font-family: "Cormorant Garamond", serif;
-  font-size: clamp(1.45rem, 2.1vw, 1.85rem);
-  font-weight: 600;
-  line-height: 1.08;
-  letter-spacing: .01em;
-  text-transform: none;
-}
-
-.masjid-choice-current,
-.masjid-choice-coming-soon {
-  position: absolute;
-  top: .8rem;
-  z-index: 3;
-  padding: .28rem .58rem;
-  border-radius: 999px;
-  font-size: .62rem;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, .2);
-}
-
-.masjid-choice-current {
-  right: .8rem;
-  background: var(--gold);
-  color: #07100a;
-}
-
-.masjid-choice-coming-soon {
-  left: .8rem;
-  background: #b82020;
-  color: #fff;
-}
-
 .hero-lede {
   display: flex;
   flex-wrap: wrap;
@@ -1614,6 +1585,195 @@ dd {
 
 .copy-bank-button:active {
   transform: scale(.94);
+}
+
+.masjid-choice-wrapper {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+.masjid-choice-wrapper .masjid-choice {
+  flex: 1 1 auto;
+  height: auto;
+  border-radius: 24px 24px 0 0;
+  border-bottom-color: rgba(214, 184, 90, .12);
+}
+
+.khanqah-notifications {
+  position: relative;
+  border: 1px solid var(--line);
+  border-top: 0;
+  border-radius: 0 0 24px 24px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, .075),
+    rgba(255, 255, 255, .025)
+  );
+  box-shadow: var(--shadow);
+}
+
+.khanqah-notifications-heading {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  padding: .55rem .8rem;
+  border-bottom: 1px solid rgba(214, 184, 90, .12);
+  color: var(--gold-soft);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.notification-bell-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.khanqah-notifications-panel {
+  padding: .1rem .8rem .55rem;
+}
+
+.notification-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .55rem;
+  padding: .65rem 0;
+  cursor: pointer;
+}
+
+.notification-option + .notification-option {
+  border-top: 1px solid rgba(214, 184, 90, .1);
+}
+
+.notification-option-copy {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.notification-option-copy strong {
+  display: block;
+  color: var(--text);
+  font-family: Jost, system-ui, sans-serif;
+  font-size: .76rem;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: .025em;
+  text-transform: uppercase;
+}
+
+.notification-switch {
+  position: relative;
+  flex: 0 0 auto;
+  margin-left: .25rem;
+}
+
+.notification-switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.notification-switch-track {
+  width: 42px;
+  height: 24px;
+  display: block;
+  position: relative;
+  border: 1px solid rgba(183, 196, 181, .28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .06);
+  transition:
+    background .2s ease,
+    border-color .2s ease;
+}
+
+.notification-switch-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition:
+    transform .2s ease,
+    background .2s ease;
+}
+
+.notification-switch input:checked + .notification-switch-track {
+  border-color: var(--gold);
+  background: rgba(214, 184, 90, .22);
+}
+
+.notification-switch input:checked + .notification-switch-track .notification-switch-thumb {
+  background: var(--gold-soft);
+  transform: translateX(18px);
+}
+
+.notification-switch input:focus-visible + .notification-switch-track {
+  outline: 2px solid var(--gold-soft);
+  outline-offset: 3px;
+}
+
+.notification-admin {
+  min-height: 100svh;
+  display: grid;
+  align-items: center;
+  padding: 3rem 0;
+}
+
+.notification-admin-card {
+  width: min(100%, 680px);
+  margin-inline: auto;
+}
+
+.notification-admin-card h1 {
+  max-width: none;
+  font-size: clamp(2.8rem, 7vw, 5rem);
+}
+
+.notification-admin-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.notification-admin-form select {
+  width: 100%;
+  min-height: 50px;
+  padding: .75rem .9rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #0d1b11;
+  color: var(--text);
+  outline: none;
+}
+
+.notification-admin-form select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(214, 184, 90, .08);
+}
+
+.notification-admin-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+.notification-admin-status.is-success {
+  color: var(--gold-soft);
+}
+
+.notification-admin-status.is-error {
+  color: #ffb4b4;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1751,6 +1911,26 @@ dd {
     --notice-height: 36px;
   }
 
+  .masjid-selector {
+    padding: 1rem 0 1.25rem;
+  }
+
+  body.has-notice .masjid-selector {
+    padding-top: calc(1rem + var(--notice-height));
+  }
+
+  .selector-bismillah {
+    margin-bottom: .25rem;
+  }
+
+  .masjid-selector-shell h1 {
+    font-size: clamp(2.25rem, 10vw, 3.3rem);
+  }
+
+  .masjid-selector-intro {
+    margin-bottom: 1rem;
+  }
+
   .notice-track span {
     padding: .5rem 1.8rem;
     font-size: .68rem;
@@ -1872,6 +2052,36 @@ dd {
     grid-template-columns: 1fr;
   }
 
+  .masjid-choice-copy {
+    min-height: 78px;
+    padding: .85rem .8rem;
+  }
+
+  .masjid-choice-location {
+    font-size: 1.45rem;
+  }
+
+  .khanqah-notifications-heading {
+    min-height: 44px;
+    padding: .6rem .9rem;
+    font-size: .76rem;
+  }
+
+  .khanqah-notifications-panel {
+    padding-inline: .9rem;
+  }
+
+  .notification-option {
+    gap: .55rem;
+    padding: .75rem 0;
+  }
+
+  .notification-option-copy strong {
+    font-size: .8rem;
+    font-weight: 400;
+    letter-spacing: .02em;
+  }
+
   .prayer-table th,
   .prayer-table td {
     padding: .82rem .58rem;
@@ -1949,210 +2159,4 @@ dd {
     font-size: 1.15rem;
     text-align: right;
   }
-}
-
-.masjid-choice-wrapper {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
-}
-
-.masjid-choice-wrapper .masjid-choice {
-  flex: 1 1 auto;
-  height: auto;
-  border-radius: 24px 24px 0 0;
-  border-bottom-color: rgba(214, 184, 90, .12);
-}
-
-.khanqah-notifications {
-  position: relative;
-  border: 1px solid var(--line);
-  border-top: 0;
-  border-radius: 0 0 24px 24px;
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, .075),
-    rgba(255, 255, 255, .025)
-  );
-  box-shadow: var(--shadow);
-}
-
-.khanqah-notifications-heading {
-  min-height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .55rem;
-  padding: .75rem 1rem;
-  border-bottom: 1px solid rgba(214, 184, 90, .12);
-  color: var(--gold-soft);
-  font-size: .78rem;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-
-.notification-bell-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-.khanqah-notifications-panel {
-  padding: .2rem 1rem .8rem;
-}
-
-.notification-option {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: .9rem 0;
-  cursor: pointer;
-}
-
-.notification-option + .notification-option {
-  border-top: 1px solid rgba(214, 184, 90, .1);
-}
-
-.notification-option-copy {
-  min-width: 0;
-}
-
-.notification-option-copy strong {
-  color: var(--text);
-  font-family: Jost, system-ui, sans-serif;
-  font-size: .78rem;
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-.notification-switch {
-  position: relative;
-  flex: 0 0 auto;
-}
-
-.notification-switch input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.notification-switch-track {
-  width: 42px;
-  height: 24px;
-  display: block;
-  position: relative;
-  border: 1px solid rgba(183, 196, 181, .28);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .06);
-  transition:
-    background .2s ease,
-    border-color .2s ease;
-}
-
-.notification-switch-thumb {
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--muted);
-  transition:
-    transform .2s ease,
-    background .2s ease;
-}
-
-.notification-switch input:checked + .notification-switch-track {
-  border-color: var(--gold);
-  background: rgba(214, 184, 90, .22);
-}
-
-.notification-switch input:checked + .notification-switch-track .notification-switch-thumb {
-  background: var(--gold-soft);
-  transform: translateX(18px);
-}
-
-.notification-switch input:focus-visible + .notification-switch-track {
-  outline: 2px solid var(--gold-soft);
-  outline-offset: 3px;
-}
-
-@media (max-width: 760px) {
-  .khanqah-notifications-heading {
-    min-height: 52px;
-    padding-inline: 1.05rem;
-    font-size: .82rem;
-  }
-
-  .khanqah-notifications-panel {
-    padding-inline: 1.05rem;
-  }
-
-  .notification-option {
-    padding: 1rem 0;
-  }
-
-  .notification-option-copy strong {
-    font-size: .84rem;
-  }
-}
-
-.notification-admin {
-  min-height: 100svh;
-  display: grid;
-  align-items: center;
-  padding: 3rem 0;
-}
-
-.notification-admin-card {
-  width: min(100%, 680px);
-  margin-inline: auto;
-}
-
-.notification-admin-card h1 {
-  max-width: none;
-  font-size: clamp(2.8rem, 7vw, 5rem);
-}
-
-.notification-admin-form {
-  display: grid;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.notification-admin-form select {
-  width: 100%;
-  min-height: 50px;
-  padding: .75rem .9rem;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: #0d1b11;
-  color: var(--text);
-  outline: none;
-}
-
-.notification-admin-form select:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(214, 184, 90, .08);
-}
-
-.notification-admin-status {
-  margin: 0;
-  color: var(--muted);
-  font-size: .9rem;
-}
-
-.notification-admin-status.is-success {
-  color: var(--gold-soft);
-}
-
-.notification-admin-status.is-error {
-  color: #ffb4b4;
 }
