@@ -218,7 +218,10 @@ async function sendAnnouncement(
   const payload = JSON.stringify({
     title,
     body,
-    url: '/',
+    url:
+      type === 'khanqah_announcement' && khanqahId
+        ? `/?khanqah=${encodeURIComponent(khanqahId)}`
+        : '/',
     tag
   });
 
