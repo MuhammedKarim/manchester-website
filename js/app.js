@@ -25,11 +25,18 @@ async function loadJson(url) {
     throw new Error(`${url} failed with HTTP ${response.status}`);
   }
 
+  const contentType = response.headers.get('content-type') || '';
+
+  if (!contentType.toLowerCase().includes('application/json')) {
+    throw new Error(`${url} returned ${contentType || 'an unknown content type'} instead of JSON`);
+  }
+
   return response.json();
 }
 
 function getNotificationDestination() {
   const params = new URLSearchParams(window.location.search);
+
   const khanqahId = params.get('khanqah');
   const section = params.get('section');
 
@@ -41,14 +48,6 @@ function getNotificationDestination() {
     khanqahId,
     section
   };
-}
-
-function cleanNotificationUrl() {
-  window.history.replaceState(
-    {},
-    '',
-    window.location.pathname
-  );
 }
 
 function scrollToSection(section) {
@@ -179,7 +178,9 @@ async function boot() {
       loadJson(SITE_CONFIG_URL)
     ]);
 
-    initNavigation(changeMasjid);
+    initNavigation(
+      changeMasjid
+    );
 
     initSharedBanner(
       siteConfig.sharedBanner
@@ -195,10 +196,10 @@ async function boot() {
       siteConfig.poster
     );
 
-    setupHistory();
-
     const notificationDestination =
       getNotificationDestination();
+
+    setupHistory();
 
     if (
       notificationDestination &&
@@ -206,7 +207,7 @@ async function boot() {
         notificationDestination.khanqahId
       ]
     ) {
-      history.replaceState(
+      history.pushState(
         {
           view: 'khanqah',
           khanqahId:
@@ -222,8 +223,6 @@ async function boot() {
           scrollToTop: false
         }
       );
-
-      cleanNotificationUrl();
 
       scrollToSection(
         notificationDestination.section
