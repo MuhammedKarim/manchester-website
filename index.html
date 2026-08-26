@@ -50,10 +50,40 @@
 
   <section class="masjid-selector" data-masjid-selector hidden>
     <div class="masjid-selector-shell">
+      <section class="media-banner" data-media-banner aria-label="Latest Bayaans and Naats">
+        <div class="container">
+          <div class="media-banner-split">
+            <img
+              data-media-banner-image
+              src=""
+              alt="Latest Bayaans and Naats"
+            >
+            <a
+              class="media-banner-zone media-banner-zone-top"
+              data-media-banner-top
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open latest Bayaans"
+            ></a>
+            <a
+              class="media-banner-zone media-banner-zone-bottom"
+              data-media-banner-bottom
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open latest Naats"
+            ></a>
+          </div>
+        </div>
+      </section>
+
       <p class="eyebrow arabic selector-bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
       <h1 data-selector-title>KHANQAH NAQSHBANDIA MUJADDIDIA</h1>
       <p class="masjid-selector-country" data-selector-country>UNITED KINGDOM</p>
       <p class="masjid-selector-intro" data-selector-intro>Select a Khanqah below</p>
+
+
       <div class="masjid-selector-grid" data-masjid-selector-grid></div>
     </div>
   </section>
@@ -84,33 +114,7 @@
     </header>
 
     <main id="main">
-      <section class="media-banner" data-media-banner aria-label="Latest Bayaans and Naats">
-        <div class="container">
-          <div class="media-banner-split">
-            <img
-              data-media-banner-image
-              src=""
-              alt="Latest Bayaans and Naats"
-            >
-            <a
-              class="media-banner-zone media-banner-zone-top"
-              data-media-banner-top
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open latest Bayaans"
-            ></a>
-            <a
-              class="media-banner-zone media-banner-zone-bottom"
-              data-media-banner-bottom
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open latest Naats"
-            ></a>
-          </div>
-        </div>
-      </section>
+
 
       <section class="hero" id="home" aria-labelledby="hero-title">
         <div class="hero-orb hero-orb-one" aria-hidden="true"></div>
@@ -120,10 +124,7 @@
             <p class="eyebrow arabic">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
             <h1 id="hero-title" data-hero-name></h1>
             <p class="hero-lede"><span data-hero-location></span><span class="hero-coming-soon" data-hero-coming-soon hidden>COMING SOON</span></p>
-            <div class="hero-actions">
-              <a class="button button-primary" href="#" data-timetable-download>Download Monthly Timetable</a>
-              <a class="button button-ghost" href="#donate" data-donate-button>Support the Khanqah</a>
-            </div>
+
           </div>
 
           <div class="prayer-card prayer-card-wide" id="prayer-times">
@@ -148,6 +149,9 @@
             </div>
             <p class="prayer-status" data-prayer-status hidden></p>
           </section>
+          <div class="prayer-timetable-action">
+            <a class="button button-primary prayer-timetable-button" href="#" data-timetable-download>Download Monthly Timetable</a>
+          </div>
         </div>
         </div>
       </section>
@@ -157,7 +161,7 @@
         <article class="glass-card reveal">
           <p data-dhikr-description></p><p data-dhikr-secondary></p>
           <div class="dhikr-times">
-            <div class="dhikr-times-head"><p class="eyebrow">Gathering times</p></div>
+            <div class="dhikr-times-head"><p class="eyebrow">Today&#39;s Gathering Timings</p></div>
             <div class="dhikr-times-grid">
               <div class="dhikr-time-card"><span class="dhikr-time-label">Morning</span><strong class="dhikr-time-value" id="dhikr-morning">—</strong></div>
               <div class="dhikr-time-card"><span class="dhikr-time-label">Evening</span><strong class="dhikr-time-value" id="dhikr-evening">—</strong></div>

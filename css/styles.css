@@ -155,12 +155,12 @@ body.has-notice .masjid-selector {
   max-width: none;
   font-size: clamp(2.5rem, 5.5vw, 4.8rem);
   text-transform: uppercase;
-  margin-bottom: .45rem;
-  font-weight: bold;
+  margin-bottom: .8rem;
+  font-weight: 700;
 }
 
 .masjid-selector-country {
-  margin: 0 0 .55rem;
+  margin: 0 0 .9rem;
   color: var(--gold-soft);
   font-size: clamp(.8rem, 1.5vw, 1rem);
   font-weight: 600;
@@ -321,6 +321,7 @@ body.has-notice .masjid-selector {
 .notice-banner-button {
   display: block;
   width: 100%;
+  height: 100%;
   padding: 0;
   border: 0;
   overflow: hidden;
@@ -332,14 +333,31 @@ body.has-notice .masjid-selector {
 .notice-track {
   display: flex;
   width: max-content;
-  animation: notice-scroll 22s linear infinite;
+  height: 100%;
+  align-items: center;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  animation: notice-scroll var(--notice-duration, 22s) linear infinite;
+}
+
+.notice-track-group {
+  display: flex;
+  flex: 0 0 auto;
+  width: max-content;
+  height: 100%;
+  align-items: center;
 }
 
 .notice-track span {
-  flex-shrink: 0;
-  padding: .55rem 2.5rem;
+  flex: 0 0 auto;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 2.5rem;
   font-size: .76rem;
   font-weight: 700;
+  line-height: 1;
   letter-spacing: .12em;
   white-space: nowrap;
 }
@@ -349,8 +367,8 @@ body.has-notice .masjid-selector {
 }
 
 @keyframes notice-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
 }
 
 .poster-modal {
@@ -616,12 +634,29 @@ body.has-notice .site-header {
   padding: calc(82px + 1rem) 0 1rem;
 }
 
+.masjid-selector .media-banner {
+  padding: 0 0 1.5rem;
+}
+
+.masjid-selector .media-banner .container {
+  width: 100%;
+}
+
+.masjid-selector .media-banner-split {
+  width: min(100%, 920px);
+  margin-inline: auto;
+}
+
 body.has-notice .media-banner {
   padding-top: calc(
     82px +
     var(--notice-height) +
     1rem
   );
+}
+
+body.has-notice .masjid-selector .media-banner {
+  padding-top: 0;
 }
 
 .media-banner-split {
@@ -667,8 +702,12 @@ body.has-notice .media-banner {
   min-height: 100svh;
   display: grid;
   align-items: center;
-  padding: 5rem 0 2.5rem;
+  padding: calc(82px + 2.5rem) 0 2.5rem;
   overflow: hidden;
+}
+
+body.has-notice .hero {
+  padding-top: calc(82px + var(--notice-height) + 2.5rem);
 }
 
 .hero-grid {
@@ -717,13 +756,6 @@ body.has-notice .media-banner {
   font-weight: 600;
   letter-spacing: .04em;
   line-height: 1.1;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .85rem;
-  margin-top: 2rem;
 }
 
 .button {
@@ -777,6 +809,14 @@ body.has-notice .media-banner {
 .prayer-card-wide {
   width: min(100%, 700px);
   justify-self: end;
+}
+
+.prayer-timetable-action {
+  padding: .9rem .15rem .1rem;
+}
+
+.prayer-timetable-button {
+  width: 100%;
 }
 
 #prayer-times {
@@ -1865,7 +1905,11 @@ dd {
   .hero {
     min-height: auto;
     align-items: start;
-    padding: .75rem 0 2rem;
+    padding: calc(72px + 1.5rem) 0 2rem;
+  }
+
+  body.has-notice .hero {
+    padding-top: calc(72px + var(--notice-height) + 1.5rem);
   }
 
   .media-banner {
@@ -1888,10 +1932,6 @@ dd {
   .hero-copy .arabic,
   .hero-copy .eyebrow {
     margin-inline: auto;
-  }
-
-  .hero-actions {
-    justify-content: center;
   }
 
   .prayer-card-wide {
@@ -1933,6 +1973,14 @@ dd {
 
   .masjid-selector-intro {
     margin-bottom: 1rem;
+  }
+
+  .masjid-selector .media-banner {
+    padding-bottom: 1rem;
+  }
+
+  .masjid-selector .media-banner-split {
+    border-radius: 14px;
   }
 
   .notice-track span {
@@ -2006,7 +2054,6 @@ dd {
     border-radius: 14px;
   }
 
-  .hero-actions,
   .button {
     width: 100%;
   }

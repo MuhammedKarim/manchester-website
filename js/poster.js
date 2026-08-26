@@ -34,18 +34,77 @@ function createNoticeTrack(text) {
   }
 
   noticeTrack.innerHTML = '';
+  noticeTrack.style.removeProperty('--notice-duration');
 
-  for (let i = 0; i < 8; i += 1) {
-    const span = document.createElement('span');
+  const measure = document.createElement('span');
 
-    span.textContent = text;
+  measure.textContent = text;
+  measure.style.position = 'absolute';
+  measure.style.visibility = 'hidden';
+  measure.style.pointerEvents = 'none';
 
-    if (i >= 4) {
-      span.setAttribute('aria-hidden', 'true');
+  noticeTrack.appendChild(measure);
+
+  const itemWidth = Math.max(
+    measure.getBoundingClientRect().width,
+    1
+  );
+
+  measure.remove();
+
+  const viewportWidth = Math.max(
+    banner?.clientWidth || 0,
+    window.innerWidth || 0,
+    320
+  );
+
+  const copiesPerGroup = Math.max(
+    3,
+    Math.ceil(viewportWidth / itemWidth) + 2
+  );
+
+  const createGroup = hidden => {
+    const group = document.createElement('span');
+
+    group.className = 'notice-track-group';
+
+    if (hidden) {
+      group.setAttribute('aria-hidden', 'true');
     }
 
-    noticeTrack.appendChild(span);
-  }
+    for (let i = 0; i < copiesPerGroup; i += 1) {
+      const item = document.createElement('span');
+
+      item.textContent = text;
+      group.appendChild(item);
+    }
+
+    return group;
+  };
+
+  const firstGroup = createGroup(false);
+  const secondGroup = createGroup(true);
+
+  noticeTrack.append(
+    firstGroup,
+    secondGroup
+  );
+
+  requestAnimationFrame(() => {
+    const groupWidth =
+      firstGroup.getBoundingClientRect().width;
+
+    const pixelsPerSecond = 65;
+    const duration = Math.max(
+      12,
+      groupWidth / pixelsPerSecond
+    );
+
+    noticeTrack.style.setProperty(
+      '--notice-duration',
+      `${duration}s`
+    );
+  });
 }
 
 function updateBanner() {
@@ -387,6 +446,30 @@ export function showGlobalPosterOnly() {
     renderPoster();
   }
 }
+
+let noticeResizeTimer = null;
+
+window.addEventListener(
+  'resize',
+  () => {
+    if (
+      banner?.hidden ||
+      activePosters.length === 0
+    ) {
+      return;
+    }
+
+    clearTimeout(noticeResizeTimer);
+
+    noticeResizeTimer = setTimeout(
+      updateBanner,
+      150
+    );
+  },
+  {
+    passive: true
+  }
+);
 
 openButton?.addEventListener(
   'click',
