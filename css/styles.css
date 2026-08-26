@@ -1820,6 +1820,17 @@ dd {
   color: #ffb4b4;
 }
 
+
+@media (min-width: 1101px) {
+  .masjid-selector .media-banner {
+    padding-bottom: .85rem;
+  }
+
+  .masjid-selector .media-banner-split {
+    width: min(100%, 840px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
