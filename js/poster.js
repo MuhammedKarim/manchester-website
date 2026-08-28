@@ -27,6 +27,7 @@ let activePosters = [];
 let currentIndex = 0;
 let lastFocused = null;
 let touchStartX = null;
+let noticeRestartFrame = null;
 
 function createNoticeTrack(text) {
   if (!noticeTrack) {
@@ -107,6 +108,16 @@ function createNoticeTrack(text) {
   });
 }
 
+function restartNoticeAnimation() {
+  if (!noticeTrack || banner?.hidden) return;
+  cancelAnimationFrame(noticeRestartFrame);
+  noticeTrack.style.animation = 'none';
+  noticeTrack.getBoundingClientRect();
+  noticeRestartFrame = requestAnimationFrame(() => {
+    noticeTrack.style.removeProperty('animation');
+  });
+}
+
 function updateBanner() {
   if (!banner) {
     return;
@@ -129,7 +140,9 @@ function updateBanner() {
       : `${numberOfNotices} IMPORTANT NOTICES - CLICK TO OPEN`;
 
   createNoticeTrack(text);
+  restartNoticeAnimation();
 }
+
 
 async function findPoster(folder, timestamp) {
   if (!folder) {
@@ -445,6 +458,13 @@ export function showGlobalPosterOnly() {
   ) {
     renderPoster();
   }
+}
+
+export function refreshNoticeTicker() {
+  if (activePosters.length === 0) return;
+  requestAnimationFrame(() => {
+    updateBanner();
+  });
 }
 
 let noticeResizeTimer = null;

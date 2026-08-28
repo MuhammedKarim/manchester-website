@@ -20,11 +20,6 @@ const navItem =
     '[data-dhikr-nav-item]'
   );
 
-const title =
-  document.querySelector(
-    '[data-dhikr-title]'
-  );
-
 const description =
   document.querySelector(
     '[data-dhikr-description]'
@@ -281,12 +276,6 @@ export function initDhikr(
 
   if (navItem) {
     navItem.hidden = !enabled;
-  }
-
-  if (title) {
-    title.textContent =
-      currentDhikrConfig?.title ||
-      'Remembrance of Allah';
   }
 
   if (description) {

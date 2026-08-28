@@ -132,11 +132,11 @@ strong {
     radial-gradient(circle at 18% 10%, rgba(214, 184, 90, .18), transparent 28rem),
     radial-gradient(circle at 85% 85%, rgba(42, 129, 62, .17), transparent 30rem),
     #07100a;
-  padding: 4rem 0 1.5rem;
+  padding: 2rem 0 1.5rem;
 }
 
 body.has-notice .masjid-selector {
-  padding-top: calc(4rem + var(--notice-height));
+  padding-top: calc(2rem + var(--notice-height));
 }
 
 .masjid-selector-shell {
@@ -145,18 +145,14 @@ body.has-notice .masjid-selector {
   text-align: center;
 }
 
-.selector-bismillah {
-  margin-bottom: .3rem;
-  font-size: clamp(1.2rem, 2.5vw, 1.75rem);
-  line-height: 1.35;
-}
-
 .masjid-selector-shell h1 {
   max-width: none;
-  font-size: clamp(2.5rem, 5.5vw, 4.8rem);
-  text-transform: uppercase;
   margin-bottom: .8rem;
+  font-size: clamp(2.5rem, 5.5vw, 4.8rem);
   font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: .015em;
+  text-transform: uppercase;
 }
 
 .masjid-selector-country {
@@ -172,9 +168,10 @@ body.has-notice .masjid-selector {
   max-width: 680px;
   margin: 0 auto 1.25rem;
   color: var(--muted);
-  font-size: .95rem;
-  font-weight: 400;
-  letter-spacing: .08em;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: .11em;
   text-transform: uppercase;
 }
 
@@ -413,14 +410,16 @@ body.has-notice .masjid-selector {
   right: -14px;
   width: 44px;
   height: 44px;
-  display: grid;
-  place-items: center;
-  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 3px;
   border: 1px solid rgba(255, 255, 255, .25);
   border-radius: 50%;
   background: #07100a;
   color: #fff;
-  font-size: 1.8rem;
+  font-family: Arial, sans-serif;
+  font-size: 1.65rem;
   line-height: 1;
   cursor: pointer;
 }
@@ -449,8 +448,8 @@ body.has-notice .masjid-selector {
   position: absolute;
   top: 50%;
   z-index: 4;
-  width: 46px;
-  height: 46px;
+  width: 60px;
+  height: 60px;
   display: grid;
   place-items: center;
   padding: 0;
@@ -542,7 +541,6 @@ body.has-notice .site-header {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: .8rem;
   min-width: 0;
   color: var(--text);
   text-decoration: none;
@@ -567,24 +565,6 @@ body.has-notice .site-header {
   display: block;
 }
 
-.brand strong {
-  display: block;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.1rem;
-  letter-spacing: .06em;
-  line-height: 1.1;
-}
-
-.brand small {
-  display: block;
-  color: var(--muted);
-  font-size: .68rem;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  line-height: 1;
-  margin-top: .15rem;
-}
-
 .nav-menu {
   display: flex;
   align-items: center;
@@ -597,8 +577,7 @@ body.has-notice .site-header {
   background: rgba(255, 255, 255, .045);
 }
 
-.nav-menu a,
-.nav-change-masjid {
+.nav-menu a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -619,9 +598,7 @@ body.has-notice .site-header {
 
 .nav-menu a:hover,
 .nav-menu a:focus-visible,
-.nav-menu .nav-cta,
-.nav-change-masjid:hover,
-.nav-change-masjid:focus-visible {
+.nav-menu .nav-cta {
   background: rgba(214, 184, 90, .13);
   color: var(--gold-soft);
 }
@@ -809,14 +786,6 @@ body.has-notice .hero {
 .prayer-card-wide {
   width: min(100%, 700px);
   justify-self: end;
-}
-
-.prayer-timetable-action {
-  padding: .9rem .15rem .1rem;
-}
-
-.prayer-timetable-button {
-  width: 100%;
 }
 
 #prayer-times {
@@ -1122,9 +1091,9 @@ blockquote,
 }
 
 .dhikr-times {
-  margin-top: 1.5rem;
-  padding-top: 1.35rem;
-  border-top: 1px solid var(--line);
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
 }
 
 .dhikr-times-grid {
@@ -1470,39 +1439,6 @@ dd {
   cursor: wait;
 }
 
-.site-footer {
-  border-top: 1px solid var(--line);
-  background: rgba(0, 0, 0, .22);
-}
-
-.footer-inner {
-  min-height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 1rem;
-  color: var(--muted);
-}
-
-.footer-inner p {
-  margin: 0;
-}
-
-.footer-inner strong {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.2rem;
-}
-
-.footer-change-masjid {
-  margin-left: auto;
-  padding: .55rem .8rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--gold-soft);
-  cursor: pointer;
-}
-
 .live-visitors {
   position: fixed;
   right: 1.25rem;
@@ -1562,11 +1498,6 @@ dd {
 }
 
 .arabic,
-.selector-bismillah {
-  letter-spacing: normal;
-  word-spacing: .15em;
-  text-transform: none;
-}
 
 .hero-lede {
   display: flex;
@@ -1820,6 +1751,110 @@ dd {
   color: #ffb4b4;
 }
 
+.prayer-date-navigation {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) 42px;
+  align-items: center;
+  gap: .75rem;
+  margin-top: .65rem;
+}
+
+.prayer-date-copy {
+  min-width: 0;
+}
+
+.prayer-date-button {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 0 0 3px;
+  border: 1px solid rgba(214, 184, 90, .3);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .05);
+  color: var(--gold-soft);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.prayer-date-button:disabled {
+  opacity: .28;
+  color: var(--muted);
+  cursor: default;
+}
+
+.dhikr-copy {
+  margin-top: 1.5rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--line);
+}
+
+.dhikr-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.monthly-timetable-section {
+  padding-top: clamp(2.25rem, 4.5vw, 4rem);
+}
+
+.monthly-timetable-card {
+  width: min(100%, 630px);
+  margin: 2rem auto 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, .1),
+    rgba(255, 255, 255, .035)
+  );
+  box-shadow: var(--shadow);
+}
+
+.monthly-timetable-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: calc(var(--radius) - 10px);
+}
+
+.monthly-timetable-download {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.floating-change-khanqah {
+  position: fixed;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 35;
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(214, 184, 90, .3);
+  border-radius: 50%;
+  background: linear-gradient(
+    145deg,
+    rgba(16, 56, 27, .96),
+    rgba(7, 16, 10, .96)
+  );
+  color: var(--gold-soft);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, .3);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+}
+
+body.selector-open .floating-change-khanqah {
+  display: none !important;
+}
+
+.floating-change-khanqah svg {
+  width: 30px;
+  height: 30px;
+}
 
 @media (min-width: 1101px) {
   .masjid-selector .media-banner {
@@ -1900,11 +1935,7 @@ dd {
     transform: none;
   }
 
-  .nav-change-masjid {
-    width: 100%;
-    justify-content: center;
-    text-align: center;
-  }
+  
 }
 
 @media (max-width: 980px) {
@@ -1974,16 +2005,18 @@ dd {
     padding-top: calc(1rem + var(--notice-height));
   }
 
-  .selector-bismillah {
-    margin-bottom: .25rem;
-  }
+  
 
   .masjid-selector-shell h1 {
     font-size: clamp(2.25rem, 10vw, 3.3rem);
+    line-height: 1.12;
+    letter-spacing: .02em;
   }
 
   .masjid-selector-intro {
     margin-bottom: 1rem;
+    font-size: .98rem;
+    font-weight: 700;
   }
 
   .masjid-selector .media-banner {
@@ -2033,13 +2066,9 @@ dd {
     gap: .65rem;
   }
 
-  .brand strong {
-    font-size: 1rem;
-  }
+  
 
-  .brand small {
-    font-size: .7rem;
-  }
+  
 
   .nav-menu {
     inset: 82px 14px auto;
@@ -2186,19 +2215,28 @@ dd {
     justify-content: flex-start;
   }
 
-  .footer-inner {
-    min-height: 130px;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-end;
-    padding-top: 1.35rem;
-    padding-bottom: 4.75rem;
+  .floating-change-khanqah {
+    left: .85rem;
+    bottom: .85rem;
+    width: 44px;
+    height: 44px;
   }
 
-  .footer-change-masjid {
-    margin-left: auto;
-    flex-shrink: 0;
+  .floating-change-khanqah svg {
+    width: 22px;
+    height: 22px;
   }
+
+  .prayer-date-navigation {
+    grid-template-columns: 38px minmax(0, 1fr) 38px;
+    gap: .45rem;
+  }
+
+  .prayer-date-button {
+    width: 38px;
+    height: 38px;
+  }
+
 }
 
 @media (max-width: 620px) {

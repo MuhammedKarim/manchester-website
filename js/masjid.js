@@ -82,16 +82,6 @@ export function applyMasjidContent(
     `${siteName} | ${masjid.location}`;
 
   setText(
-    '[data-brand-name]',
-    siteName
-  );
-
-  setText(
-    '[data-brand-location]',
-    masjid.location
-  );
-
-  setText(
     '[data-hero-name]',
     siteName
   );

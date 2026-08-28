@@ -9,6 +9,7 @@ const title = document.querySelector('[data-selector-title]');
 const intro = document.querySelector('[data-selector-intro]');
 const country = document.querySelector('[data-selector-country]');
 const siteShell = document.querySelector('[data-site-shell]');
+const changeButton = document.querySelector('.floating-change-khanqah');
 
 const STORAGE_KEY = 'khanqahNotificationPreferences';
 
@@ -330,6 +331,7 @@ export function showMasjidSelector() {
 
   selector.hidden = false;
   siteShell.hidden = true;
+  if (changeButton) changeButton.hidden = true;
 
   document.body
     .classList
@@ -345,6 +347,7 @@ export function hideMasjidSelector() {
 
   selector.hidden = true;
   siteShell.hidden = false;
+  if (changeButton) changeButton.hidden = false;
 
   document.body
     .classList

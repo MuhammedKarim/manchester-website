@@ -3,7 +3,7 @@ import { createMasjidSelector, showMasjidSelector, hideMasjidSelector } from './
 import { applyMasjidContent } from './masjid.js';
 import { initPrayerTimes, stopPrayerTimes } from './prayer-times.js';
 import { initDhikr, stopDhikr } from './dhikr.js';
-import { initPoster, setPosterKhanqah, showGlobalPosterOnly } from './poster.js';
+import { initPoster, setPosterKhanqah, showGlobalPosterOnly, refreshNoticeTicker } from './poster.js';
 import { initTimetable } from './timetable.js';
 import { initPresence } from './presence.js';
 import { initSharedBanner } from './shared.js';
@@ -91,7 +91,7 @@ async function activateMasjid(id, options = {}) {
   stopPrayerTimes();
   stopDhikr();
 
-  applyMasjidContent(masjid);
+  applyMasjidContent(masjid, siteConfig);
 
   /*
    * The logo is shared across all Khanqahs,
@@ -156,6 +156,7 @@ function showSelector() {
   );
 
   showMasjidSelector();
+  refreshNoticeTicker();
 }
 
 function changeMasjid() {

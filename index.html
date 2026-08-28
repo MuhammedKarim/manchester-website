@@ -78,7 +78,6 @@
         </div>
       </section>
 
-      <p class="eyebrow arabic selector-bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
       <h1 data-selector-title>KHANQAH NAQSHBANDIA MUJADDIDIA</h1>
       <p class="masjid-selector-country" data-selector-country>UNITED KINGDOM</p>
       <p class="masjid-selector-intro" data-selector-intro>Select a Khanqah below</p>
@@ -93,7 +92,6 @@
       <nav class="nav container" aria-label="Primary navigation">
         <a class="brand" href="#home" aria-label="Masjid home">
           <span class="brand-mark" aria-hidden="true"><img data-masjid-logo src="" alt=""></span>
-          <span><strong data-brand-name></strong><small data-brand-location></small></span>
         </a>
 
         <button class="nav-toggle" type="button" aria-controls="primary-menu" aria-expanded="false" data-nav-toggle>
@@ -102,13 +100,12 @@
 
         <ul class="nav-menu" id="primary-menu" data-nav-menu>
           <li><a href="#prayer-times">Prayer Times</a></li>
-          <li><a href="#about">About</a></li>
           <li data-dhikr-nav-item><a href="#dhikr">Dhikr</a></li>
+          <li data-timetable-nav-item><a href="#monthly-timetable">Monthly Timetable</a></li>
+          <li><a href="#about">About</a></li>
           <li><a href="#facilities">Facilities</a></li>
-          <li data-timetable-nav-item><a href="#" data-timetable-download>Download Timetable</a></li>
           <li data-donate-nav-item><a href="#donate">Donate</a></li>
           <li><a class="nav-cta" href="#contact">Contact</a></li>
-          <li><button class="nav-change-masjid" type="button" data-change-masjid>Change Khanqah</button></li>
         </ul>
       </nav>
     </header>
@@ -121,7 +118,6 @@
         <div class="hero-orb hero-orb-two" aria-hidden="true"></div>
         <div class="container hero-grid">
           <div class="hero-copy reveal">
-            <p class="eyebrow arabic">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
             <h1 id="hero-title" data-hero-name></h1>
             <p class="hero-lede"><span data-hero-location></span><span class="hero-coming-soon" data-hero-coming-soon hidden>COMING SOON</span></p>
 
@@ -132,8 +128,14 @@
           <section class="prayer-widget" data-prayer-widget aria-label="Prayer times">
             <header class="prayer-widget-header">
               <time class="prayer-current-time" data-prayer-clock>--:--</time>
-              <p class="prayer-gregorian-date" data-prayer-gregorian>Loading date…</p>
-              <p class="prayer-hijri-date" data-prayer-hijri>Loading Hijri date…</p>
+              <div class="prayer-date-navigation">
+                <button class="prayer-date-button" type="button" data-prayer-prev aria-label="Previous prayer date">‹</button>
+                <div class="prayer-date-copy">
+                  <p class="prayer-gregorian-date" data-prayer-gregorian>Loading date…</p>
+                  <p class="prayer-hijri-date" data-prayer-hijri>Loading Hijri date…</p>
+                </div>
+                <button class="prayer-date-button" type="button" data-prayer-next aria-label="Next prayer date">›</button>
+              </div>
             </header>
             <div class="prayer-countdown">
               <p class="prayer-countdown-label" data-countdown-label>Loading next prayer…</p>
@@ -149,19 +151,15 @@
             </div>
             <p class="prayer-status" data-prayer-status hidden></p>
           </section>
-          <div class="prayer-timetable-action">
-            <a class="button button-primary prayer-timetable-button" href="#" data-timetable-download>Download Monthly Timetable</a>
-          </div>
         </div>
         </div>
       </section>
 
       <section class="section container split dhikr-section" id="dhikr" aria-labelledby="dhikr-title">
-        <div class="section-intro reveal"><p class="eyebrow">Dhikr gatherings</p><h2 id="dhikr-title" data-dhikr-title></h2></div>
+        <div class="section-intro reveal"><p class="eyebrow">Dhikr gatherings</p><h2 id="dhikr-title">Dhikr Gatherings</h2></div>
         <article class="glass-card reveal">
-          <p data-dhikr-description></p><p data-dhikr-secondary></p>
           <div class="dhikr-times">
-            <div class="dhikr-times-head"><p class="eyebrow">Today&#39;s Gathering Timings</p></div>
+            <div class="dhikr-times-head"><p class="eyebrow">Today&#39;s Dhikr Timings</p></div>
             <div class="dhikr-times-grid">
               <div class="dhikr-time-card"><span class="dhikr-time-label">Morning</span><strong class="dhikr-time-value" id="dhikr-morning">—</strong></div>
               <div class="dhikr-time-card"><span class="dhikr-time-label">Evening</span><strong class="dhikr-time-value" id="dhikr-evening">—</strong></div>
@@ -169,8 +167,23 @@
             </div>
             <p class="dhikr-status" data-dhikr-status hidden></p>
           </div>
+          <div class="dhikr-copy">
+            <p data-dhikr-description></p><p data-dhikr-secondary></p>
+          </div>
           <a class="text-link" data-dhikr-live-link target="_blank" rel="noopener noreferrer">Listen live at sufi.org.uk/live</a>
         </article>
+      </section>
+
+      <section class="section monthly-timetable-section" id="monthly-timetable" aria-labelledby="monthly-timetable-title" data-timetable-section hidden>
+        <div class="container">
+          <div class="section-intro centered reveal">
+            <p class="eyebrow">Monthly Timetable</p>
+          </div>
+          <div class="monthly-timetable-card reveal">
+            <img data-timetable-image src="" alt="Monthly prayer timetable">
+            <a class="button button-primary monthly-timetable-download" href="#" data-timetable-download>Download Monthly Timetable</a>
+          </div>
+        </div>
       </section>
 
       <section class="section feature-band" id="about" aria-labelledby="about-title">
@@ -393,12 +406,11 @@
       </section>
     </main>
 
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <button class="footer-change-masjid" type="button" data-change-masjid>Change Khanqah</button>
-      </div>
-    </footer>
   </div>
+
+  <button class="floating-change-khanqah" type="button" data-change-masjid aria-label="Change Khanqah" hidden>
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.42-1.41L7.83 13H20v-2Z"/></svg>
+  </button>
 
   <div class="live-visitors" data-live-visitors hidden aria-live="polite">
     <span class="live-visitors-dot" aria-hidden="true"></span><span data-live-visitor-count>0 Live Visitors</span>
