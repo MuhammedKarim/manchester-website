@@ -680,7 +680,7 @@ body.has-notice .masjid-selector .media-banner {
   display: grid;
   align-items: center;
   padding: calc(82px + 2.5rem) 0 2.5rem;
-  overflow: visible;
+  overflow: clip;
 }
 
 body.has-notice .hero {
@@ -692,6 +692,10 @@ body.has-notice .hero {
   grid-template-columns: minmax(0, 1fr) minmax(320px, 440px);
   gap: clamp(2rem, 6vw, 5rem);
   align-items: start;
+}
+
+.hero-grid > * {
+  min-width: 0;
 }
 
 .hero-copy {
@@ -1969,14 +1973,17 @@ body.selector-open .floating-change-khanqah {
   }
 
   .hero-grid {
-    grid-template-columns: 1fr;
-    justify-items: center;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: stretch;
     text-align: center;
   }
 
   .hero-copy {
     position: static;
     top: auto;
+    width: 100%;
+    max-width: 100%;
     text-align: center;
     margin-inline: auto;
   }
@@ -1991,6 +1998,7 @@ body.selector-open .floating-change-khanqah {
   .prayer-card-wide {
     justify-self: center;
     width: min(100%, 700px);
+    max-width: 100%;
   }
 
   .card-kicker {
