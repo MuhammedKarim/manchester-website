@@ -612,7 +612,7 @@ body.has-notice .site-header {
 }
 
 .masjid-selector .media-banner {
-  padding: 0 0 1.5rem;
+  padding: 0 0 2.5rem;
 }
 
 .masjid-selector .media-banner .container {
@@ -680,7 +680,7 @@ body.has-notice .masjid-selector .media-banner {
   display: grid;
   align-items: center;
   padding: calc(82px + 2.5rem) 0 2.5rem;
-  overflow: hidden;
+  overflow: visible;
 }
 
 body.has-notice .hero {
@@ -691,7 +691,17 @@ body.has-notice .hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 440px);
   gap: clamp(2rem, 6vw, 5rem);
-  align-items: center;
+  align-items: start;
+}
+
+.hero-copy {
+  position: sticky;
+  top: calc(82px + 2.5rem);
+  align-self: start;
+}
+
+body.has-notice .hero-copy {
+  top: calc(82px + var(--notice-height) + 2.5rem);
 }
 
 .hero-orb {
@@ -1858,7 +1868,7 @@ body.selector-open .floating-change-khanqah {
 
 @media (min-width: 1101px) {
   .masjid-selector .media-banner {
-    padding-bottom: .85rem;
+    padding-bottom: 2.5rem;
   }
 
   .masjid-selector .media-banner-split {
@@ -1965,6 +1975,8 @@ body.selector-open .floating-change-khanqah {
   }
 
   .hero-copy {
+    position: static;
+    top: auto;
     text-align: center;
     margin-inline: auto;
   }
@@ -2020,7 +2032,7 @@ body.selector-open .floating-change-khanqah {
   }
 
   .masjid-selector .media-banner {
-    padding-bottom: 1rem;
+    padding-bottom: 1.75rem;
   }
 
   .masjid-selector .media-banner-split {
