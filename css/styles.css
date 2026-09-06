@@ -256,11 +256,14 @@ body.has-notice .masjid-selector {
 
 .masjid-choice-name {
   display: block;
-  color: var(--text);
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.45rem;
-  font-weight: 600;
-  line-height: 1.05;
+  margin-top: .45rem;
+  color: var(--muted);
+  font-family: Jost, system-ui, sans-serif;
+  font-size: .78rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: .08em;
+  text-transform: uppercase;
 }
 
 .masjid-choice-location {
@@ -547,22 +550,30 @@ body.has-notice .site-header {
 }
 
 .brand-mark {
-  width: 56px;
-  height: 56px;
+  width: 72px;
+  height: 72px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: rgba(214, 184, 90, .06);
-  overflow: hidden;
   flex-shrink: 0;
+  overflow: hidden;
+  border: 1px solid rgba(240, 216, 135, .45);
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle,
+      rgba(16, 56, 27, .95),
+      rgba(7, 16, 10, .95)
+    );
+  box-shadow:
+    0 0 0 3px rgba(214, 184, 90, .06),
+    0 0 22px rgba(214, 184, 90, .12);
 }
 
 .brand-mark img {
-  width: 70%;
-  height: 70%;
-  object-fit: contain;
   display: block;
+  width: 91%;
+  height: 91%;
+  object-fit: contain;
 }
 
 .nav-menu {
@@ -743,10 +754,21 @@ body.has-notice .hero-copy {
   margin: 1rem 0 0;
   color: var(--gold-soft);
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-size: clamp(2rem, 3.8vw, 3rem);
   font-weight: 600;
   letter-spacing: .04em;
-  line-height: 1.1;
+  line-height: 1.08;
+}
+
+.hero-khanqah-name {
+  margin: .7rem 0 0;
+  color: var(--muted);
+  font-family: Jost, system-ui, sans-serif;
+  font-size: clamp(1rem, 1.7vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: .1em;
+  text-transform: uppercase;
 }
 
 .button {
@@ -2096,6 +2118,16 @@ body.selector-open .floating-change-khanqah {
 
   body.has-notice .nav-menu {
     inset: calc(82px + var(--notice-height)) 14px auto;
+  }
+
+  .brand-mark {
+    width: 58px;
+    height: 58px;
+  }
+
+  .brand-mark img {
+    width: 92%;
+    height: 92%;
   }
 
   .media-banner {

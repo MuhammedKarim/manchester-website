@@ -1,131 +1,8 @@
 {
   "masjids": {
-    "manchester": {
-      "location": "Manchester",
-      "selectorImage": "assets/masjids/manchester/manchester.jpg",
-      "prayerTimesUrl": "https://muhammedkarim.github.io/manchester-khanqah/prayer-times.json",
-      "about": {
-        "eyebrow": "About us",
-        "title": "A place for spiritual contemplation",
-        "paragraphs": [
-          "The Manchester Khanqah is of the Naqshbandia Mujaddidia Sufi order and was one of the first of its kind in Europe. The word Khanqah is Persian in origin and describes a place set aside for Islamic spiritual contemplation, self-rectification, and study.",
-          "This spiritual aspect of Islam, known as Sufism, includes gatherings for the remembrance of Allah. Verses of the Holy Qur\u2019an are recited, with time for meditation and reflection on the Divine Names and the condition of one\u2019s own heart.",
-          "The centre opened in 1994 in Burnage, South Manchester, and now provides daily prayers, Friday prayer, and events throughout the Islamic calendar."
-        ]
-      },
-      "facilities": [
-        {
-          "name": "Masjid",
-          "description": "A spacious Masjid for approximately 1,000 worshippers."
-        },
-        {
-          "name": "Car park",
-          "description": "A large on-site car park with 50+ spaces."
-        },
-        {
-          "name": "Wudhu khana",
-          "description": "Dedicated ablution facilities available on site."
-        },
-        {
-          "name": "Toilets",
-          "description": "Clean and well-maintained facilities."
-        },
-        {
-          "name": "Itr shelf",
-          "description": "Itr and fragrances available on site."
-        }
-      ],
-      "donation": {
-        "enabled": true,
-        "accountName": "Khanka Naqshbandia Mujaddadia",
-        "bank": "HSBC Bank",
-        "sortCode": "40 \u2013 31 \u2013 17",
-        "accountNumber": "21439936"
-      },
-      "openingHours": "Open from 15 minutes before until 15 minutes after each Jamat time.",
-      "contact": {
-        "name": "Iftikhar Amin",
-        "phone": "07967631738",
-        "displayPhone": "07967 631738",
-        "email": "manchester@murtaza.org.uk"
-      },
-      "address": {
-        "display": [
-          "181a Mauldeth Road",
-          "Manchester, M19 1BA"
-        ],
-        "copy": "181a Mauldeth Road, Manchester, M19 1BA",
-        "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d297.12407786985415!2d-2.2094067889563918!3d53.43284017031959!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487bb24ad1a7ca2b%3A0x3001b53abd084ea3!2sKhanka%20Naqshbandia%20Mujaddadia!5e0!3m2!1sen!2suk!4v1786138823246!5m2!1sen!2suk",
-        "directionsUrl": "https://www.google.com/maps/dir/?api=1&destination=Khanka+Naqshbandia+Mujaddadia,+181+Mauldeth+Rd,+Manchester+M19+1BA"
-      },
-      "assets": {
-        "folder": "assets/masjids/manchester"
-      }
-    },
-    "croydon": {
-      "location": "Croydon",
-      "selectorImage": "assets/masjids/croydon/croydon.jpg",
-      "prayerTimesUrl": "https://muhammedkarim.github.io/prayer-times/prayer-times.json",
-      "about": {
-        "eyebrow": "About us",
-        "title": "A place for spiritual contemplation",
-        "paragraphs": [
-          "The Croydon Khanqah is of the Naqshbandia Mujaddidia Sufi order and was one of the first of its kind in Europe. The word Khanqah is Persian in origin and describes a place set aside for Islamic spiritual contemplation, self-rectification, and study.",
-          "This spiritual aspect of Islam, known as Sufism, includes gatherings for the remembrance of Allah. Verses of the Holy Qur\u2019an are recited, with time for meditation and reflection on the Divine Names and the condition of one\u2019s own heart.",
-          "The centre opened in 2000 in Croydon and now provides daily prayers, Friday prayer, and events throughout the Islamic calendar."
-        ]
-      },
-      "facilities": [
-        {
-          "name": "Masjid",
-          "description": "A spacious Masjid for approximately 1,200 worshippers."
-        },
-        {
-          "name": "Car park",
-          "description": "A large on-site car park with 35 spaces."
-        },
-        {
-          "name": "Wudhu khana",
-          "description": "Dedicated ablution facilities available on site."
-        },
-        {
-          "name": "Toilets",
-          "description": "Clean and well-maintained facilities."
-        },
-        {
-          "name": "Itr shelf",
-          "description": "Itr and fragrances available on site."
-        }
-      ],
-      "donation": {
-        "enabled": true,
-        "accountName": "Islamic Cultural and Community Centre",
-        "bank": "Barclays Bank",
-        "sortCode": "20 \u2013 24 \u2013 61",
-        "accountNumber": "90075213"
-      },
-      "openingHours": "Open from 15 minutes before until 15 minutes after each Jamat time.",
-      "contact": {
-        "name": "Mumtaz Hassan",
-        "phone": "07974332496",
-        "displayPhone": "07974 332496",
-        "email": "croydon@murtaza.org.uk"
-      },
-      "address": {
-        "display": [
-          "3 Clifford Road",
-          "London, SE25 5JJ"
-        ],
-        "copy": "3 Clifford Road, London, SE25 5JJ",
-        "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d155.57955315962178!2d-0.07333730576961034!3d51.398041081444255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487601231f4526b7%3A0xc148bce02979a1c9!2sSouth%20Norwood%20Islamic%20Community%20Centre%20(Masjid%20Uthman)!5e0!3m2!1sen!2sin!4v1787134278314!5m2!1sen!2sin",
-        "directionsUrl": "https://www.google.com/maps/dir/?api=1&destination=South+Norwood+Islamic+Community+Centre+(Masjid+Uthman),+1-3+Clifford+Rd,+London+SE25+4PF"
-      },
-      "assets": {
-        "folder": "assets/masjids/croydon"
-      }
-    },
     "bradford": {
       "location": "Bradford",
+      "name": "Masjid Farooqia",
       "selectorImage": "assets/masjids/bradford/bradford.jpg",
       "prayerTimesUrl": "https://muhammedkarim.github.io/bradford-prayers/prayer-times.json",
       "about": {
@@ -188,6 +65,7 @@
     },
     "burnley": {
       "location": "Burnley",
+      "name": "Masjid Ali Murtaza",
       "selectorImage": "assets/masjids/burnley/burnley.jpg",
       "prayerTimesUrl": "https://muhammedkarim.github.io/burnley-prayers/prayer-times.json",
       "about": {
@@ -248,8 +126,72 @@
         "folder": "assets/masjids/burnley"
       }
     },
+    "croydon": {
+      "location": "Croydon",
+      "name": "Masjid Uthman",
+      "selectorImage": "assets/masjids/croydon/croydon.jpg",
+      "prayerTimesUrl": "https://muhammedkarim.github.io/prayer-times/prayer-times.json",
+      "about": {
+        "eyebrow": "About us",
+        "title": "A place for spiritual contemplation",
+        "paragraphs": [
+          "The Croydon Khanqah is of the Naqshbandia Mujaddidia Sufi order and was one of the first of its kind in Europe. The word Khanqah is Persian in origin and describes a place set aside for Islamic spiritual contemplation, self-rectification, and study.",
+          "This spiritual aspect of Islam, known as Sufism, includes gatherings for the remembrance of Allah. Verses of the Holy Qur\u2019an are recited, with time for meditation and reflection on the Divine Names and the condition of one\u2019s own heart.",
+          "The centre opened in 2000 in Croydon and now provides daily prayers, Friday prayer, and events throughout the Islamic calendar."
+        ]
+      },
+      "facilities": [
+        {
+          "name": "Masjid",
+          "description": "A spacious Masjid for approximately 1,200 worshippers."
+        },
+        {
+          "name": "Car park",
+          "description": "A large on-site car park with 35 spaces."
+        },
+        {
+          "name": "Wudhu khana",
+          "description": "Dedicated ablution facilities available on site."
+        },
+        {
+          "name": "Toilets",
+          "description": "Clean and well-maintained facilities."
+        },
+        {
+          "name": "Itr shelf",
+          "description": "Itr and fragrances available on site."
+        }
+      ],
+      "donation": {
+        "enabled": true,
+        "accountName": "Islamic Cultural and Community Centre",
+        "bank": "Barclays Bank",
+        "sortCode": "20 \u2013 24 \u2013 61",
+        "accountNumber": "90075213"
+      },
+      "openingHours": "Open from 15 minutes before until 15 minutes after each Jamat time.",
+      "contact": {
+        "name": "Mumtaz Hassan",
+        "phone": "07974332496",
+        "displayPhone": "07974 332496",
+        "email": "croydon@murtaza.org.uk"
+      },
+      "address": {
+        "display": [
+          "3 Clifford Road",
+          "London, SE25 5JJ"
+        ],
+        "copy": "3 Clifford Road, London, SE25 5JJ",
+        "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d155.57955315962178!2d-0.07333730576961034!3d51.398041081444255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487601231f4526b7%3A0xc148bce02979a1c9!2sSouth%20Norwood%20Islamic%20Community%20Centre%20(Masjid%20Uthman)!5e0!3m2!1sen!2sin!4v1787134278314!5m2!1sen!2sin",
+        "directionsUrl": "https://www.google.com/maps/dir/?api=1&destination=South+Norwood+Islamic+Community+Centre+(Masjid+Uthman),+1-3+Clifford+Rd,+London+SE25+4PF"
+      },
+      "assets": {
+        "folder": "assets/masjids/croydon"
+      }
+    },
     "maidenhead": {
       "location": "Maidenhead",
+      "name": "Masjid Asifia",
       "selectorImage": "assets/masjids/maidenhead/maidenhead.jpg",
       "prayerTimesUrl": "",
       "comingSoon": true,
@@ -309,6 +251,69 @@
       },
       "assets": {
         "folder": "assets/masjids/maidenhead"
+      }
+    },
+    "manchester": {
+      "location": "Manchester",
+      "name": "Masjid Abu Bakr Siddique",
+      "selectorImage": "assets/masjids/manchester/manchester.jpg",
+      "prayerTimesUrl": "https://muhammedkarim.github.io/manchester-khanqah/prayer-times.json",
+      "about": {
+        "eyebrow": "About us",
+        "title": "A place for spiritual contemplation",
+        "paragraphs": [
+          "The Manchester Khanqah is of the Naqshbandia Mujaddidia Sufi order and was one of the first of its kind in Europe. The word Khanqah is Persian in origin and describes a place set aside for Islamic spiritual contemplation, self-rectification, and study.",
+          "This spiritual aspect of Islam, known as Sufism, includes gatherings for the remembrance of Allah. Verses of the Holy Qur\u2019an are recited, with time for meditation and reflection on the Divine Names and the condition of one\u2019s own heart.",
+          "The centre opened in 1994 in Burnage, South Manchester, and now provides daily prayers, Friday prayer, and events throughout the Islamic calendar."
+        ]
+      },
+      "facilities": [
+        {
+          "name": "Masjid",
+          "description": "A spacious Masjid for approximately 1,000 worshippers."
+        },
+        {
+          "name": "Car park",
+          "description": "A large on-site car park with 50+ spaces."
+        },
+        {
+          "name": "Wudhu khana",
+          "description": "Dedicated ablution facilities available on site."
+        },
+        {
+          "name": "Toilets",
+          "description": "Clean and well-maintained facilities."
+        },
+        {
+          "name": "Itr shelf",
+          "description": "Itr and fragrances available on site."
+        }
+      ],
+      "donation": {
+        "enabled": true,
+        "accountName": "Khanka Naqshbandia Mujaddadia",
+        "bank": "HSBC Bank",
+        "sortCode": "40 \u2013 31 \u2013 17",
+        "accountNumber": "21439936"
+      },
+      "openingHours": "Open from 15 minutes before until 15 minutes after each Jamat time.",
+      "contact": {
+        "name": "Iftikhar Amin",
+        "phone": "07967631738",
+        "displayPhone": "07967 631738",
+        "email": "manchester@murtaza.org.uk"
+      },
+      "address": {
+        "display": [
+          "181a Mauldeth Road",
+          "Manchester, M19 1BA"
+        ],
+        "copy": "181a Mauldeth Road, Manchester, M19 1BA",
+        "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d297.12407786985415!2d-2.2094067889563918!3d53.43284017031959!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487bb24ad1a7ca2b%3A0x3001b53abd084ea3!2sKhanka%20Naqshbandia%20Mujaddadia!5e0!3m2!1sen!2suk!4v1786138823246!5m2!1sen!2suk",
+        "directionsUrl": "https://www.google.com/maps/dir/?api=1&destination=Khanka+Naqshbandia+Mujaddadia,+181+Mauldeth+Rd,+Manchester+M19+1BA"
+      },
+      "assets": {
+        "folder": "assets/masjids/manchester"
       }
     }
   }

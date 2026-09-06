@@ -91,6 +91,23 @@ export function applyMasjidContent(
     masjid.location
   );
 
+  const heroKhanqahName =
+    document.querySelector(
+      '[data-hero-khanqah-name]'
+    );
+
+  if (heroKhanqahName) {
+    const name =
+      masjid.name?.trim() ||
+      '';
+
+    heroKhanqahName.textContent =
+      name;
+
+    heroKhanqahName.hidden =
+      !name;
+  }
+
   setText(
     '[data-location-name]',
     siteName

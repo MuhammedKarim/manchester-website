@@ -173,6 +173,11 @@ export function createMasjidSelector(
                 <span class="masjid-choice-location">
                   ${masjid.location || ''}
                 </span>
+                ${
+                  masjid.name
+                    ? `<span class="masjid-choice-name">${masjid.name}</span>`
+                    : ''
+                }
               </span>
             </button>
 
