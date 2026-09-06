@@ -114,8 +114,8 @@ form?.addEventListener('submit', async event => {
 
   const confirmed = window.confirm(
     `Send this notification?\n\n` +
-    `${masjid.location} Khanqah — ${prayer} Time Change\n\n` +
-    `${dateText}'s ${prayer} Jamat will be at ${time}.`
+    `${masjid.location} — ${prayer} Time Change\n\n` +
+    `${dateText}'s ${prayer} Jamat will be at ${time} Insha Allah.`
   );
 
   if (!confirmed) {
