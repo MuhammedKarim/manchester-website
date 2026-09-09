@@ -1986,6 +1986,10 @@ body.selector-open .floating-change-khanqah {
     padding: calc(72px + 1.5rem) 0 2rem;
   }
 
+  .hero-lede {
+    justify-content: center;
+  }
+
   body.has-notice .hero {
     padding-top: calc(72px + var(--notice-height) + 1.5rem);
   }
@@ -2257,10 +2261,6 @@ body.selector-open .floating-change-khanqah {
 
   .contact-form-status {
     text-align: center;
-  }
-
-  .hero-lede {
-    justify-content: center;
   }
 
   .bank-value-row {
