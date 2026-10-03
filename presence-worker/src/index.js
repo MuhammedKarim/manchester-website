@@ -35,10 +35,11 @@ export default {
             const url = new URL(origin);
 
             return (
-            url.hostname === "khanqah-naqshbandia-site.pages.dev" ||
-            url.hostname.endsWith(
-                ".khanqah-naqshbandia-site.pages.dev"
-            )
+              url.hostname === "murtaza.org.uk" ||
+              url.hostname === "khanqah-naqshbandia-site.pages.dev" ||
+              url.hostname.endsWith(
+                  ".khanqah-naqshbandia-site.pages.dev"
+              )
             );
         } catch {
             return false;
