@@ -8,6 +8,7 @@ import { initTimetable } from './timetable.js';
 import { initPresence } from './presence.js';
 import { initSharedBanner } from './shared.js';
 import { initNotifications } from './notifications.js';
+import { initContactForm, setContactFormKhanqah } from './contact-form.js';
 
 const MASJIDS_CONFIG_URL = 'data/masjids.json';
 const SITE_CONFIG_URL = 'data/config.json';
@@ -87,6 +88,10 @@ async function activateMasjid(id, options = {}) {
   }
 
   currentMasjidId = id;
+
+  setContactFormKhanqah(
+    id
+  );
 
   stopPrayerTimes();
   stopDhikr();
@@ -222,6 +227,10 @@ async function boot() {
     ]);
 
     applySharedLogo();
+
+    initContactForm(
+      siteConfig.contactForm
+    );
 
     initNavigation(
       changeMasjid
