@@ -12,12 +12,35 @@ import { initContactForm, setContactFormKhanqah } from './contact-form.js';
 
 const MASJIDS_CONFIG_URL = 'data/masjids.json';
 const SITE_CONFIG_URL = 'data/config.json';
+const SELECTED_KHANQAH_STORAGE_KEY = 'selectedKhanqah';
 
 const brandLogo = document.querySelector('[data-masjid-logo]');
 
 let masjidsConfig = null;
 let siteConfig = null;
 let currentMasjidId = null;
+
+function getSavedKhanqahId() {
+  try {
+    return localStorage.getItem(SELECTED_KHANQAH_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function saveKhanqahId(id) {
+  try {
+    localStorage.setItem(SELECTED_KHANQAH_STORAGE_KEY, id);
+  } catch {
+  }
+}
+
+function clearSavedKhanqahId() {
+  try {
+    localStorage.removeItem(SELECTED_KHANQAH_STORAGE_KEY);
+  } catch {
+  }
+}
 
 async function loadJson(url) {
   const response = await fetch(`${url}?v=${Date.now()}`, {
@@ -143,6 +166,8 @@ function showSelector() {
   createMasjidSelector(
     masjidsConfig,
     async id => {
+      saveKhanqahId(id);
+
       history.pushState(
         {
           view: 'khanqah',
@@ -165,6 +190,8 @@ function showSelector() {
 }
 
 function changeMasjid() {
+  clearSavedKhanqahId();
+
   history.pushState(
     {
       view: 'selector'
@@ -295,9 +322,42 @@ async function boot() {
       return;
     }
 
+
+    const savedKhanqahId =
+      getSavedKhanqahId();
+
+    if (
+      savedKhanqahId &&
+      masjidsConfig
+        .masjids?.[
+          savedKhanqahId
+        ]
+    ) {
+      history.replaceState(
+        {
+          view: 'khanqah',
+          khanqahId: savedKhanqahId
+        },
+        '',
+        window.location.pathname
+      );
+
+      await activateMasjid(
+        savedKhanqahId
+      );
+
+      return;
+    }
+
+    if (savedKhanqahId) {
+      clearSavedKhanqahId();
+    }
+
     createMasjidSelector(
       masjidsConfig,
       async id => {
+        saveKhanqahId(id);
+
         history.pushState(
           {
             view: 'khanqah',
